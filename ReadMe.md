@@ -20,4 +20,5 @@ Some useful libraries (head files and import lib), which can be used in Visual S
   - BASSMIDI
 - cblas: c interface of BLAS (Basic Linear Algebra Subprograms)
 - iconv
+- cuda: Nvidia computation library
 
