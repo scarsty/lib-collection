@@ -19,6 +19,6 @@ Some useful libraries (head files and import lib), which can be used in Visual S
 - BASS: an audio library
   - BASSMIDI
 - cblas: c interface of BLAS (Basic Linear Algebra Subprograms)
-- iconv
+- iconv: a unix core library
 - cuda: Nvidia computation library
 
