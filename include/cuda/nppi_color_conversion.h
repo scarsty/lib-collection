@@ -81,7 +81,7 @@ extern "C" {
  *
  */
 
-/** @name RGBToYUV 
+/** @defgroup rgbtoyuv RGBToYUV 
  *  RGB to YUV color conversion.
  *
  *  Here is how NPP converts gamma corrected RGB or BGR to YUV. For digital RGB values in the range [0..255], 
@@ -163,9 +163,9 @@ NppStatus nppiRGBToYUV_8u_C3P3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst[3
  */
 NppStatus nppiRGBToYUV_8u_AC4P4R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst[4], int nDstStep, NppiSize oSizeROI);
 
-/** @} */
+/** @} rgbtoyuv */
 
-/** @name BGRToYUV 
+/** @defgroup bgrtoyuv BGRToYUV 
  *  BGR to YUV color conversion.
  *
  *  Here is how NPP converts gamma corrected RGB or BGR to YUV. For digital RGB values in the range [0..255], 
@@ -247,9 +247,9 @@ NppStatus nppiBGRToYUV_8u_C3P3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst[3
  */
 NppStatus nppiBGRToYUV_8u_AC4P4R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst[4], int nDstStep, NppiSize oSizeROI);
 
-/** @} */
+/** @} bgrtoyuv */
 
-/** @name YUVToRGB 
+/** @defgroup yuvtorgb YUVToRGB 
  *  YUV to RGB color conversion.
  *
  *  Here is how NPP converts YUV to gamma corrected RGB or BGR.
@@ -328,9 +328,9 @@ NppStatus nppiYUVToRGB_8u_P3R(const Npp8u * const pSrc[3], int nSrcStep, Npp8u *
  */
 NppStatus nppiYUVToRGB_8u_P3C3R(const Npp8u * const pSrc[3], int nSrcStep, Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
 
-/** @} */
+/** @} yuvtorgb */
 
-/** @name YUVToBGR 
+/** @defgroup yuvtobgr YUVToBGR 
  *  YUV to BGR color conversion.
  *
  *  Here is how NPP converts YUV to gamma corrected RGB or BGR.
@@ -409,9 +409,9 @@ NppStatus nppiYUVToBGR_8u_P3R(const Npp8u * const pSrc[3], int nSrcStep, Npp8u *
  */
 NppStatus nppiYUVToBGR_8u_P3C3R(const Npp8u * const pSrc[3], int nSrcStep, Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
 
-/** @} */
+/** @} yuvtobgr */
 
-/** @name RGBToYUV422 
+/** @defgroup rgbtoyuv422 RGBToYUV422 
  *  RGB to YUV422 color conversion.
  *
  * @{
@@ -455,9 +455,9 @@ NppStatus nppiRGBToYUV422_8u_P3R(const Npp8u * const pSrc[3], int nSrcStep, Npp8
  */
 NppStatus nppiRGBToYUV422_8u_C3P3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst[3], int rDstStep[3], NppiSize oSizeROI);
 
-/** @} */
+/** @} rgbtoyuv422 */
 
-/** @name YUV422ToRGB 
+/** @defgroup yuv422torgb YUV422ToRGB 
  *  YUV422 to RGB color conversion.
  *
  * @{
@@ -512,9 +512,9 @@ NppStatus nppiYUV422ToRGB_8u_P3C3R(const Npp8u* const pSrc[3], int rSrcStep[3], 
  */
 NppStatus nppiYUV422ToRGB_8u_P3AC4R(const Npp8u* const pSrc[3], int rSrcStep[3], Npp8u* pDst, int nDstStep, NppiSize oSizeROI);
 
-/** @} */
+/** @} yuv422torgb */
 
-/** @name RGBToYUV420 
+/** @defgroup rgbtoyuv420 RGBToYUV420 
  *  RGB to YUV420 color conversion.
  *
  * @{
@@ -546,9 +546,9 @@ NppStatus nppiRGBToYUV420_8u_P3R(const Npp8u * const pSrc[3], int nSrcStep, Npp8
  */
 NppStatus nppiRGBToYUV420_8u_C3P3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst[3], int rDstStep[3], NppiSize oSizeROI);
 
-/** @} */
+/** @} rgbtoyuv420 */
 
-/** @name YUV420ToRGB 
+/** @defgroup yuv420torgb YUV420ToRGB 
  *  YUV420 to RGB color conversion.
  *
  * @{
@@ -603,9 +603,9 @@ NppStatus nppiYUV420ToRGB_8u_P3C4R(const Npp8u * const pSrc[3], int rSrcStep[3],
  */
 NppStatus nppiYUV420ToRGB_8u_P3AC4R(const Npp8u * const pSrc[3], int rSrcStep[3], Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
 
-/** @} */
+/** @} yuv420torgb */
 
-/** @name NV21ToRGB 
+/** @defgroup nv21torgb NV21ToRGB 
  *  NV21 to RGB color conversion.
  *
  * @{
@@ -624,9 +624,9 @@ NppStatus nppiYUV420ToRGB_8u_P3AC4R(const Npp8u * const pSrc[3], int rSrcStep[3]
  */
 NppStatus nppiNV21ToRGB_8u_P2C4R(const Npp8u * const pSrc[2], int rSrcStep, Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
 
-/** @} */
+/** @} nv21torgb */
 
-/** @name BGRToYUV420 
+/** @defgroup bgrtoyuv420 BGRToYUV420 
  *  BGR to YUV420 color conversion.
  *
  * @{
@@ -646,9 +646,9 @@ NppStatus nppiNV21ToRGB_8u_P2C4R(const Npp8u * const pSrc[2], int rSrcStep, Npp8
  */
 NppStatus nppiBGRToYUV420_8u_AC4P3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst[3], int rDstStep[3], NppiSize oSizeROI);
  
-/** @} */
+/** @} bgrtoyuv420 */
 
-/** @name YUV420ToBGR 
+/** @defgroup yuv420tobgr YUV420ToBGR 
  *  YUV420 to BGR color conversion.
  *
  * @{
@@ -679,9 +679,9 @@ NppStatus nppiYUV420ToBGR_8u_P3C3R(const Npp8u * const pSrc[3], int rSrcStep[3],
  */
 NppStatus nppiYUV420ToBGR_8u_P3C4R(const Npp8u * const pSrc[3], int rSrcStep[3], Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
 
-/** @} */
+/** @} yuv420tobgr */
 
-/** @name NV21ToBGR 
+/** @defgroup nv21tobgr NV21ToBGR 
  *  NV21 to BGR color conversion.
  *
  * @{
@@ -700,9 +700,9 @@ NppStatus nppiYUV420ToBGR_8u_P3C4R(const Npp8u * const pSrc[3], int rSrcStep[3],
  */
 NppStatus nppiNV21ToBGR_8u_P2C4R(const Npp8u * const pSrc[2], int rSrcStep, Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
 
-/** @} */
+/** @} nv21tobgr */
 
-/** @name RGBToYCbCr 
+/** @defgroup rgbtoycbcr RGBToYCbCr 
  *  RGB to YCbCr color conversion.
  *
  *  Here is how NPP converts gamma corrected RGB or BGR to YCbCr.  In the YCbCr model, 
@@ -781,9 +781,9 @@ NppStatus nppiRGBToYCbCr_8u_C3P3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst
  */
 NppStatus nppiRGBToYCbCr_8u_AC4P3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst[3], int nDstStep, NppiSize oSizeROI);
 
-/** @} */
+/** @} rgbtoycbcr */
 
-/** @name YCbCrToRGB 
+/** @defgroup ycbcrtorgb YCbCrToRGB 
  *  YCbCr to RGB color conversion.
  *
  *  Here is how NPP converts YCbCr to gamma corrected RGB or BGR.  The output RGB values are saturated to the range [0..255].
@@ -869,9 +869,9 @@ NppStatus nppiYCbCrToRGB_8u_P3C3R(const Npp8u * const pSrc[3], int nSrcStep, Npp
  */
 NppStatus nppiYCbCrToRGB_8u_P3C4R(const Npp8u * const pSrc[3], int nSrcStep, Npp8u * pDst , int nDstStep, NppiSize oSizeROI, Npp8u nAval);
 
-/** @} */
+/** @} ycbcrtorgb */
 
-/** @name YCbCrToBGR 
+/** @defgroup ycbcrtobgr YCbCrToBGR 
  *  YCbCr to BGR color conversion.
  *
  * @{
@@ -903,9 +903,9 @@ NppStatus nppiYCbCrToBGR_8u_P3C3R(const Npp8u * const pSrc[3], int nSrcStep, Npp
  */
 NppStatus nppiYCbCrToBGR_8u_P3C4R(const Npp8u * const pSrc[3], int nSrcStep, Npp8u * pDst, int nDstStep, NppiSize oSizeROI, Npp8u nAval);
 
-/** @} */
+/** @} ycbcrtobgr */
 
-/** @name YCbCrToBGR_709CSC 
+/** @defgroup ycbcrtobgr709 YCbCrToBGR_709CSC 
  *  YCbCr to BGR_709CSC color conversion.
  *
  * @{
@@ -937,9 +937,9 @@ NppStatus nppiYCbCrToBGR_709CSC_8u_P3C3R(const Npp8u * const pSrc[3], int nSrcSt
  */
 NppStatus nppiYCbCrToBGR_709CSC_8u_P3C4R(const Npp8u * const pSrc[3], int nSrcStep, Npp8u * pDst, int nDstStep, NppiSize oSizeROI, Npp8u nAval);
 
-/** @} */
+/** @} ycbcrtobgr709 */
 
-/** @name RGBToYCbCr422 
+/** @defgroup rgbtoycbcr422 RGBToYCbCr422 
  *  RGB to YCbCr422 color conversion.
  *
  * @{
@@ -986,9 +986,9 @@ NppStatus nppiRGBToYCbCr422_8u_C3P3R(const Npp8u * pSrc, int nSrcStep, Npp8u * p
  */
 NppStatus nppiRGBToYCbCr422_8u_P3C2R(const Npp8u * const pSrc[3], int nSrcStep, Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
 
-/** @} */
+/** @} rgbtoycbcr422 */
 
-/** @name YCbCr422ToRGB 
+/** @defgroup ycbcr422torgb YCbCr422ToRGB 
  *  YCbCr422 to RGB color conversion.
  *
  * @{
@@ -1034,9 +1034,9 @@ NppStatus nppiYCbCr422ToRGB_8u_C2P3R(const Npp8u * pSrc, int nSrcStep, Npp8u * p
  */
 NppStatus nppiYCbCr422ToRGB_8u_P3C3R(const Npp8u * const pSrc[3], int rSrcStep[3], Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
 
-/** @} */
+/** @} ycbcr422torgb */
 
-/** @name RGBToYCrCb422 
+/** @defgroup rgbtoycrcb422 RGBToYCrCb422 
  *  RGB to YCrCb422 color conversion.
  *
  * @{
@@ -1069,9 +1069,9 @@ NppStatus nppiRGBToYCrCb422_8u_C3C2R(const Npp8u * pSrc, int nSrcStep, Npp8u * p
  */
 NppStatus nppiRGBToYCrCb422_8u_P3C2R(const Npp8u * const pSrc[3], int nSrcStep, Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
 
-/** @} */
+/** @} rgbtoycrcb422 */
 
-/** @name YCrCb422ToRGB 
+/** @defgroup ycrcb422torgb YCrCb422ToRGB 
  *  YCrCb422 to RGB color conversion.
  *
  * @{
@@ -1104,9 +1104,9 @@ NppStatus nppiYCrCb422ToRGB_8u_C2C3R(const Npp8u * pSrc, int nSrcStep, Npp8u * p
  */
 NppStatus nppiYCrCb422ToRGB_8u_C2P3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst[3], int nDstStep, NppiSize oSizeROI);
 
-/** @} */
+/** @} ycrcb422torgb */
 
-/** @name BGRToYCbCr422 
+/** @defgroup bgrtoycbcr422 BGRToYCbCr422 
  *  BGR to YCbCr422 color conversion.
  *
  * @{
@@ -1165,9 +1165,9 @@ NppStatus nppiBGRToYCbCr422_8u_C3P3R(const Npp8u * pSrc, int nSrcStep, Npp8u * p
  */
 NppStatus nppiBGRToYCbCr422_8u_AC4P3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst[3], int rDstStep[3], NppiSize oSizeROI);
 
-/** @} */
+/** @} bgrtoycbcr422 */
 
-/** @name YCbCr422ToBGR 
+/** @defgroup ycbcr422tobgr YCbCr422ToBGR 
  *  YCbCr422 to BGR color conversion.
  *
  * @{
@@ -1214,9 +1214,9 @@ NppStatus nppiYCbCr422ToBGR_8u_C2C4R(const Npp8u * pSrc, int nSrcStep, Npp8u * p
  */
 NppStatus nppiYCbCr422ToBGR_8u_P3C3R(const Npp8u * const pSrc[3], int rSrcStep[3], Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
 
-/** @} */
+/** @} ycbcr422tobgr */
 
-/** @name RGBToCbYCr422 
+/** @defgroup rgbtocbycr422 RGBToCbYCr422 
  *  RGB to CbYCr422 color conversion.
  *
  * @{
@@ -1249,9 +1249,9 @@ NppStatus nppiRGBToCbYCr422_8u_C3C2R(const Npp8u * pSrc, int nSrcStep, Npp8u * p
  */
 NppStatus nppiRGBToCbYCr422Gamma_8u_C3C2R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
 
-/** @} */
+/** @} rgbtocbycr422 */
 
-/** @name CbYCr422ToRGB 
+/** @defgroup cbcr422torgb CbYCr422ToRGB 
  *  CbYCr422 to RGB color conversion.
  *
  * @{
@@ -1271,9 +1271,9 @@ NppStatus nppiRGBToCbYCr422Gamma_8u_C3C2R(const Npp8u * pSrc, int nSrcStep, Npp8
  */
 NppStatus nppiCbYCr422ToRGB_8u_C2C3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
 
-/** @} */
+/** @} cbcr422torgb */
 
-/** @name BGRToCbYCr422 
+/** @defgroup bgrtocbycr422 BGRToCbYCr422 
  *  BGR to CbYCr422 color conversion.
  *
  * @{
@@ -1293,9 +1293,9 @@ NppStatus nppiCbYCr422ToRGB_8u_C2C3R(const Npp8u * pSrc, int nSrcStep, Npp8u * p
  */
 NppStatus nppiBGRToCbYCr422_8u_AC4C2R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
 
-/** @} */
+/** @} bgrtocbycr422 */
 
-/** @name BGRToCbYCr422_709HDTV 
+/** @defgroup bgrtocbycr422709HDTV BGRToCbYCr422_709HDTV 
  *  BGR to CbYCr422_709HDTV color conversion.
  *
  * @{
@@ -1328,9 +1328,9 @@ NppStatus nppiBGRToCbYCr422_709HDTV_8u_C3C2R(const Npp8u * pSrc, int nSrcStep, N
  */
 NppStatus nppiBGRToCbYCr422_709HDTV_8u_AC4C2R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
 
-/** @} */
+/** @} bgrtocbycr422709HDTV */
 
-/** @name CbYCr422ToBGR 
+/** @defgroup cbycr422tobgr CbYCr422ToBGR 
  *  CbYCr422 to BGR color conversion.
  *
  * @{
@@ -1351,9 +1351,9 @@ NppStatus nppiBGRToCbYCr422_709HDTV_8u_AC4C2R(const Npp8u * pSrc, int nSrcStep, 
  */
 NppStatus nppiCbYCr422ToBGR_8u_C2C4R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst, int nDstStep, NppiSize oSizeROI, Npp8u nAval);
 
-/** @} */
+/** @} cbycr422tobgr */
 
-/** @name CbYCr422ToBGR_709HDTV 
+/** @defgroup cbycr422tobgr709hdtv CbYCr422ToBGR_709HDTV 
  *  CbYCr422 to BGR_709HDTV color conversion.
  *
  * @{
@@ -1387,9 +1387,9 @@ NppStatus nppiCbYCr422ToBGR_709HDTV_8u_C2C3R(const Npp8u * pSrc, int nSrcStep, N
  */
 NppStatus nppiCbYCr422ToBGR_709HDTV_8u_C2C4R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst, int nDstStep, NppiSize oSizeROI, Npp8u nAval);
 
-/** @} */
+/** @} cbycr422tobgr709hdtv */
 
-/** @name RGBToYCbCr420 
+/** @defgroup rgbtoycbcr420 RGBToYCbCr420 
  *  RGB to YCbCr420 color conversion.
  *
  * @{
@@ -1409,9 +1409,9 @@ NppStatus nppiCbYCr422ToBGR_709HDTV_8u_C2C4R(const Npp8u * pSrc, int nSrcStep, N
  */
 NppStatus nppiRGBToYCbCr420_8u_C3P3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst[3], int rDstStep[3], NppiSize oSizeROI);
 
-/** @} */
+/** @} rgbtoycbcr420 */
 
-/** @name YCbCr420ToRGB 
+/** @defgroup ycbcr420torgb YCbCr420ToRGB 
  *  YCbCr420 to RGB color conversion.
  *
  * @{
@@ -1430,9 +1430,9 @@ NppStatus nppiRGBToYCbCr420_8u_C3P3R(const Npp8u * pSrc, int nSrcStep, Npp8u * p
  */
 NppStatus nppiYCbCr420ToRGB_8u_P3C3R(const Npp8u * const pSrc[3], int rSrcStep[3], Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
 
-/** @} */
+/** @} ycbcr420torgb */
 
-/** @name RGBToYCrCb420 
+/** @defgroup rgbtoycrcb420 RGBToYCrCb420 
  *  RGB to YCrCb420 color conversion.
  *
  * @{
@@ -1452,9 +1452,9 @@ NppStatus nppiYCbCr420ToRGB_8u_P3C3R(const Npp8u * const pSrc[3], int rSrcStep[3
  */
 NppStatus nppiRGBToYCrCb420_8u_AC4P3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst[3], int rDstStep[3], NppiSize oSizeROI);
 
-/** @} */
+/** @} rgbtoycrcb420 */
 
-/** @name YCrCb420ToRGB 
+/** @defgroup ycrcb420torgb YCrCb420ToRGB 
  *  YCrCb420 to RGB color conversion.
  *
  * @{
@@ -1474,9 +1474,9 @@ NppStatus nppiRGBToYCrCb420_8u_AC4P3R(const Npp8u * pSrc, int nSrcStep, Npp8u * 
  */
 NppStatus nppiYCrCb420ToRGB_8u_P3C4R(const Npp8u * const pSrc[3],int rSrcStep[3], Npp8u * pDst, int nDstStep, NppiSize oSizeROI, Npp8u nAval);
 
-/** @} */
+/** @} ycrcb420torgb */
 
-/** @name BGRToYCbCr420 
+/** @defgroup bgrtoycbcr420 BGRToYCbCr420 
  *  BGR to YCbCr420 color conversion.
  *
  * @{
@@ -1509,9 +1509,9 @@ NppStatus nppiBGRToYCbCr420_8u_C3P3R(const Npp8u * pSrc, int nSrcStep, Npp8u * p
  */
 NppStatus nppiBGRToYCbCr420_8u_AC4P3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst[3], int rDstStep[3], NppiSize oSizeROI);
 
-/** @} */
+/** @} bgrtoycbcr420 */
 
-/** @name BGRToYCbCr420_709CSC 
+/** @defgroup bgrtoycbcr420709csc BGRToYCbCr420_709CSC 
  *  BGR to YCbCr420_709CSC color conversion.
  *
  * @{
@@ -1544,9 +1544,9 @@ NppStatus nppiBGRToYCbCr420_709CSC_8u_C3P3R(const Npp8u * pSrc, int nSrcStep, Np
  */
 NppStatus nppiBGRToYCbCr420_709CSC_8u_AC4P3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst[3], int rDstStep[3], NppiSize oSizeROI);
 
-/** @} */
+/** @} bgrtoycbcr420709csc */
 
-/** @name BGRToYCbCr420_709HDTV 
+/** @defgroup bgrtoycbcr420709hdtv BGRToYCbCr420_709HDTV 
  *  BGR to YCbCr420_709HDTV color conversion.
  *
  * @{
@@ -1566,9 +1566,9 @@ NppStatus nppiBGRToYCbCr420_709CSC_8u_AC4P3R(const Npp8u * pSrc, int nSrcStep, N
  */
 NppStatus nppiBGRToYCbCr420_709HDTV_8u_AC4P3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst[3], int rDstStep[3], NppiSize oSizeROI);
 
-/** @} */
+/** @} bgrtoycbcr420709hdtv */
 
-/** @name BGRToYCrCb420_709CSC 
+/** @defgroup bgrtoycrdb420709csc BGRToYCrCb420_709CSC 
  *  BGR to YCrCb420_709CSC color conversion.
  * @{
  */
@@ -1599,9 +1599,9 @@ NppStatus nppiBGRToYCrCb420_709CSC_8u_C3P3R(const Npp8u * pSrc, int nSrcStep, Np
  */
 NppStatus nppiBGRToYCrCb420_709CSC_8u_AC4P3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst[3], int rDstStep[3], NppiSize oSizeROI);
 
-/** @} */
+/** @} bgrtoycrdb420709csc */
 
-/** @name YCbCr420ToBGR 
+/** @defgroup ycbcr420tobgr YCbCr420ToBGR 
  *  YCbCr420 to BGR color conversion.
  * @{
  */
@@ -1630,9 +1630,9 @@ NppStatus nppiYCbCr420ToBGR_8u_P3C3R(const Npp8u * const pSrc[3], int rSrcStep[3
  */
 NppStatus nppiYCbCr420ToBGR_8u_P3C4R(const Npp8u * const pSrc[3], int rSrcStep[3],Npp8u * pDst, int nDstStep, NppiSize oSizeROI, Npp8u nAval);
 
-/** @} */
+/** @} ycbcr420tobgr */
 
-/** @name YCbCr420ToBGR_709CSC 
+/** @defgroup ycbcr420tobgr709csc YCbCr420ToBGR_709CSC 
  *  YCbCr420_709CSC to BGR color conversion.
  * @{
  */
@@ -1648,9 +1648,9 @@ NppStatus nppiYCbCr420ToBGR_8u_P3C4R(const Npp8u * const pSrc[3], int rSrcStep[3
  */
 NppStatus nppiYCbCr420ToBGR_709CSC_8u_P3C3R(const Npp8u * const pSrc[3], int rSrcStep[3], Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
 
-/** @} */
+/** @} ycbcr420tobgr709csc */
 
-/** @name YCbCr420ToBGR_709HDTV 
+/** @defgroup ycbcr420tobgr709hdtv YCbCr420ToBGR_709HDTV 
  *  YCbCr420_709HDTV to BGR color conversion.
  * @{
  */
@@ -1667,9 +1667,9 @@ NppStatus nppiYCbCr420ToBGR_709CSC_8u_P3C3R(const Npp8u * const pSrc[3], int rSr
  */
 NppStatus nppiYCbCr420ToBGR_709HDTV_8u_P3C4R(const Npp8u * const pSrc[3], int rSrcStep[3], Npp8u * pDst, int nDstStep, NppiSize oSizeROI, Npp8u nAval);
 
-/** @} */
+/** @} ycbcr420tobgr709hdtv */
 
-/** @name BGRToYCrCb420 
+/** @defgroup bgrtoycrcb420 BGRToYCrCb420 
  *  BGR to YCrCb420 color conversion.
  * @{
  */
@@ -1699,9 +1699,9 @@ NppStatus nppiBGRToYCrCb420_8u_C3P3R(const Npp8u * pSrc, int nSrcStep, Npp8u * p
  */
 NppStatus nppiBGRToYCrCb420_8u_AC4P3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst[3], int rDstStep[3], NppiSize oSizeROI);
 
-/** @} */
+/** @} bgrtoycrcb420 */
 
-/** @name BGRToYCbCr411 
+/** @defgroup bgrtoycbcr411 BGRToYCbCr411 
  *  BGR to YCbCr411 color conversion.
  * @{
  */
@@ -1731,9 +1731,9 @@ NppStatus nppiBGRToYCbCr411_8u_C3P3R(const Npp8u * pSrc, int nSrcStep, Npp8u * p
  */
 NppStatus nppiBGRToYCbCr411_8u_AC4P3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst[3], int rDstStep[3], NppiSize oSizeROI);
 
-/** @} */
+/** @} bgrtoycbcr411 */
 
-/** @name RGBToYCbCr411 
+/** @defgroup rgbtoycbcr411 RGBToYCbCr411 
  *  RGB to YCbCr411 color conversion.
  * @{
  */
@@ -1763,9 +1763,9 @@ NppStatus nppiRGBToYCbCr411_8u_C3P3R(const Npp8u * pSrc, int nSrcStep, Npp8u * p
  */
 NppStatus nppiRGBToYCbCr411_8u_AC4P3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst[3], int rDstStep[3], NppiSize oSizeROI);
 
-/** @} */
+/** @} rgbtoycbcr411 */
 
-/** @name BGRToYCbCr 
+/** @defgroup bgrtoycbcr BGRToYCbCr 
  *  BGR to YCbCr color conversion.
  * @{
  */
@@ -1808,9 +1808,9 @@ NppStatus nppiBGRToYCbCr_8u_AC4P3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDs
  */
 NppStatus nppiBGRToYCbCr_8u_AC4P4R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst[4], int nDstStep, NppiSize oSizeROI);
 
-/** @} */
+/** @} bgrtoycbcr */
 
-/** @name YCbCr411ToBGR 
+/** @defgroup ycbcr411tobgr YCbCr411ToBGR 
  *  YCbCr411 to BGR color conversion.
  * @{
  */
@@ -1839,9 +1839,9 @@ NppStatus nppiYCbCr411ToBGR_8u_P3C3R(const Npp8u * const pSrc[3], int rSrcStep[3
  */
 NppStatus nppiYCbCr411ToBGR_8u_P3C4R(const Npp8u * const pSrc[3], int rSrcStep[3], Npp8u * pDst, int nDstStep, NppiSize oSizeROI, Npp8u nAval);
 
-/** @} */
+/** @} ycbcr411tobgr */
 
-/** @name YCbCr411ToRGB 
+/** @defgroup ycbcr411torgb YCbCr411ToRGB 
  *  YCbCr411 to RGB color conversion.
  * @{
  */
@@ -1870,9 +1870,9 @@ NppStatus nppiYCbCr411ToRGB_8u_P3C3R(const Npp8u * const pSrc[3], int rSrcStep[3
  */
 NppStatus nppiYCbCr411ToRGB_8u_P3C4R(const Npp8u * const pSrc[3], int rSrcStep[3], Npp8u * pDst, int nDstStep, NppiSize oSizeROI, Npp8u nAval);
 
-/** @} */
+/** @} ycbcr411torgb */
 
-/** @name RGBToXYZ 
+/** @defgroup rgbtoxyz RGBToXYZ 
  *  RGB to XYZ color conversion.
  *
  *  Here is how NPP converts gamma corrected RGB or BGR to XYZ.
@@ -1921,9 +1921,9 @@ NppStatus nppiRGBToXYZ_8u_C3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst, in
  */
 NppStatus nppiRGBToXYZ_8u_AC4R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
 
-/** @} */
+/** @} rgbtoxyz */
 
-/** @name XYZToRGB 
+/** @defgroup xyztorgb XYZToRGB 
  *  XYZ to RGB color conversion.
  *
  *  Here is how NPP converts XYZ to gamma corrected RGB or BGR.  The code assumes that X,Y, and Z values are in the range [0..1].
@@ -1972,9 +1972,9 @@ NppStatus nppiXYZToRGB_8u_C3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst, in
  */
 NppStatus nppiXYZToRGB_8u_AC4R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
 
-/** @} */
+/** @} xyztorgb */
 
-/** @name RGBToLUV 
+/** @defgroup rgbtoluv RGBToLUV 
  *  RGB to LUV color conversion.
  *
  *  Here is how NPP converts gamma corrected RGB or BGR to CIE LUV using the CIE XYZ D65 white point with a Y luminance of 1.0.
@@ -2047,9 +2047,9 @@ NppStatus nppiRGBToLUV_8u_C3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst, in
  */
 NppStatus nppiRGBToLUV_8u_AC4R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
 
-/** @} */
+/** @} rgbtoluv */
 
-/** @name LUVToRGB 
+/** @defgroup luvtorgb LUVToRGB 
  *  LUV to RGB color conversion.
  *
  *  Here is how NPP converts CIE LUV to gamma corrected RGB or BGR using the CIE XYZ D65 white point with a Y luminance of 1.0.
@@ -2129,9 +2129,9 @@ NppStatus nppiLUVToRGB_8u_C3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst, in
  */
 NppStatus nppiLUVToRGB_8u_AC4R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
 
-/** @} */
+/** @} luvtorgb */
 
-/** @name BGRToLab 
+/** @defgroup bgrtolab BGRToLab 
  *  BGR to Lab color conversion.
  *
  *  This is how NPP converts gamma corrected BGR or RGB to Lab using the CIE Lab D65 white point with a Y luminance of 1.0.
@@ -2185,9 +2185,9 @@ NppStatus nppiLUVToRGB_8u_AC4R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst, i
  */
 NppStatus nppiBGRToLab_8u_C3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
 
-/** @} */
+/** @} bgrtolab */
 
-/** @name LabToBGR 
+/** @defgroup labtobgr LabToBGR 
  *  Lab to BGR color conversion.
  *
  *  This is how NPP converts Lab to gamma corrected BGR or RGB using the CIE Lab D65 white point with a Y luminance of 1.0.
@@ -2234,9 +2234,9 @@ NppStatus nppiBGRToLab_8u_C3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst, in
  */
 NppStatus nppiLabToBGR_8u_C3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
 
-/** @} */
+/** @} labtobgr */
 
-/** @name RGBToYCC 
+/** @defgroup rgbtoycc RGBToYCC 
  *  RGB to PhotoYCC color conversion.
  *
  *  This is how NPP converts gamma corrected BGR or RGB to PhotoYCC.
@@ -2283,9 +2283,9 @@ NppStatus nppiRGBToYCC_8u_C3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst, in
  */
 NppStatus nppiRGBToYCC_8u_AC4R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
 
-/** @} */
+/** @} rgbtoycc */
 
-/** @name YCCToRGB 
+/** @defgroup ycctorgb YCCToRGB 
  *  PhotoYCC to RGB color conversion.
  *
  *  This is how NPP converts PhotoYCC to gamma corrected RGB or BGR.
@@ -2334,9 +2334,9 @@ NppStatus nppiYCCToRGB_8u_C3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst, in
  */
 NppStatus nppiYCCToRGB_8u_AC4R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
 
-/** @} */
+/** @} ycctorgb */
 
-/** @name RGBToHLS 
+/** @defgroup rgbtohls RGBToHLS 
  *  RGB to HLS color conversion.
  *
  *  This is how NPP converts gamma corrected RGB or BGR to HLS.
@@ -2412,9 +2412,9 @@ NppStatus nppiRGBToHLS_8u_C3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst, in
  */
 NppStatus nppiRGBToHLS_8u_AC4R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
 
-/** @} */
+/** @} rgbtohls */
 
-/** @name HLSToRGB 
+/** @defgroup hlstorgb HLSToRGB 
  *  HLS to RGB color conversion.
  *
  *  This is how NPP converts HLS to gamma corrected RGB or BGR.
@@ -2517,9 +2517,9 @@ NppStatus nppiHLSToRGB_8u_C3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst, in
  */
 NppStatus nppiHLSToRGB_8u_AC4R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
 
-/** @} */
+/** @} hlstorgb */
 
-/** @name BGRToHLS 
+/** @defgroup bgrtohls BGRToHLS 
  *  BGR to HLS color conversion.
  * @{
  */
@@ -2607,9 +2607,9 @@ NppStatus nppiBGRToHLS_8u_P3R(const Npp8u * const pSrc[3], int nSrcStep, Npp8u *
  */
 NppStatus nppiBGRToHLS_8u_AP4R(const Npp8u * const pSrc[4], int nSrcStep, Npp8u * pDst[4], int nDstStep, NppiSize oSizeROI);
 
-/** @} */
+/** @} bgrtohls */
 
-/** @name HLSToBGR 
+/** @defgroup hlstobgr HLSToBGR 
  *  HLS to BGR color conversion.
  * @{
  */
@@ -2685,9 +2685,9 @@ NppStatus nppiHLSToBGR_8u_P3C3R(const Npp8u * const pSrc[3], int nSrcStep, Npp8u
  */
 NppStatus nppiHLSToBGR_8u_AP4C4R(const Npp8u * const pSrc[4], int nSrcStep, Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
 
-/** @} */
+/** @} hlstobgr */
 
-/** @name RGBToHSV 
+/** @defgroup rgbtohsv RGBToHSV 
  *  RGB to HSV color conversion.
  *
  *  This is how NPP converts gamma corrected RGB or BGR to HSV.
@@ -2757,9 +2757,9 @@ NppStatus nppiRGBToHSV_8u_C3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst, in
  */
 NppStatus nppiRGBToHSV_8u_AC4R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
 
-/** @} */
+/** @} rgbtohsv */
 
-/** @name HSVToRGB 
+/** @defgroup hsvtorgb HSVToRGB 
  *  HSV to RGB color conversion.
  *
  *  This is how NPP converts HSV to gamma corrected RGB or BGR.
@@ -2831,7 +2831,427 @@ NppStatus nppiHSVToRGB_8u_C3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst, in
  */
 NppStatus nppiHSVToRGB_8u_AC4R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
 
+/** @} hsvtorgb */
+
+/** @defgroup image_JPEG_color_conversion JPEG Color Conversion
+ *
+ * @{
+ *
+ */
+
+/** @name RGBToYCbCr_JPEG Planar to planar.
+ *  JPEG RGB to YCbCr color conversion.
+ *
+ * @{
+ *
+ */
+
+/**
+ * 3 channel 8-bit unsigned planar RGB to 3 channel 8-bit unsigned planar YCbCr420 color conversion.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param aDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus nppiRGBToYCbCr420_JPEG_8u_P3R(const Npp8u * const pSrc[3], int nSrcStep, Npp8u * pDst[3], int aDstStep[3], NppiSize oSizeROI);
+
+/**
+ * 3 channel 8-bit unsigned planar RGB to 3 channel 8-bit unsigned planar YCbCr422 color conversion.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param aDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus nppiRGBToYCbCr422_JPEG_8u_P3R(const Npp8u * const pSrc[3], int nSrcStep, Npp8u * pDst[3], int aDstStep[3], NppiSize oSizeROI);
+
+/**
+ * 3 channel 8-bit unsigned planar RGB to 3 channel 8-bit unsigned planar YCbCr411 color conversion.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param aDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus nppiRGBToYCbCr411_JPEG_8u_P3R(const Npp8u * const pSrc[3], int nSrcStep, Npp8u * pDst[3], int aDstStep[3], NppiSize oSizeROI);
+
+/**
+ * 3 channel 8-bit unsigned planar RGB to 3 channel 8-bit unsigned planar YCbCr444 color conversion.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus nppiRGBToYCbCr444_JPEG_8u_P3R(const Npp8u * const pSrc[3], int nSrcStep, Npp8u * pDst[3], int nDstStep, NppiSize oSizeROI);
+
+/**
+ * 3 channel 8-bit unsigned planar BGR to 3 channel 8-bit unsigned planar YCbCr420 color conversion.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param aDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus nppiBGRToYCbCr420_JPEG_8u_P3R(const Npp8u * const pSrc[3], int nSrcStep, Npp8u * pDst[3], int aDstStep[3], NppiSize oSizeROI);
+
+/**
+ * 3 channel 8-bit unsigned planar BGR to 3 channel 8-bit unsigned planar YCbCr422 color conversion.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param aDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus nppiBGRToYCbCr422_JPEG_8u_P3R(const Npp8u * const pSrc[3], int nSrcStep, Npp8u * pDst[3], int aDstStep[3], NppiSize oSizeROI);
+
+/**
+ * 3 channel 8-bit unsigned planar BGR to 3 channel 8-bit unsigned planar YCbCr411 color conversion.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param aDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus nppiBGRToYCbCr411_JPEG_8u_P3R(const Npp8u * const pSrc[3], int nSrcStep, Npp8u * pDst[3], int aDstStep[3], NppiSize oSizeROI);
+
+/**
+ * 3 channel 8-bit unsigned planar BGR to 3 channel 8-bit unsigned planar YCbCr444 color conversion.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus nppiBGRToYCbCr444_JPEG_8u_P3R(const Npp8u * const pSrc[3], int nSrcStep, Npp8u * pDst[3], int nDstStep, NppiSize oSizeROI);
+
+/**
+ * 3 channel 8-bit unsigned planar YCbCr420 to 3 channel 8-bit unsigned planar RGB color conversion.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param aSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus nppiYCbCr420ToRGB_JPEG_8u_P3R(const Npp8u * const pSrc[3], int aSrcStep[3], Npp8u * pDst[3], int nDstStep, NppiSize oSizeROI);
+
+/**
+ * 3 channel 8-bit unsigned planar YCbCr422 to 3 channel 8-bit unsigned planar RGB color conversion.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param aSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus nppiYCbCr422ToRGB_JPEG_8u_P3R(const Npp8u * const pSrc[3], int aSrcStep[3], Npp8u * pDst[3], int nDstStep, NppiSize oSizeROI);
+
+/**
+ * 3 channel 8-bit unsigned planar YCbCr411 to 3 channel 8-bit unsigned planar RGB color conversion.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param aSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus nppiYCbCr411ToRGB_JPEG_8u_P3R(const Npp8u * const pSrc[3], int aSrcStep[3], Npp8u * pDst[3], int nDstStep, NppiSize oSizeROI);
+
+/**
+ * 3 channel 8-bit unsigned planar YCbCr444 to 3 channel 8-bit unsigned planar RGB color conversion.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus nppiYCbCr444ToRGB_JPEG_8u_P3R(const Npp8u * const pSrc[3], int nSrcStep, Npp8u * pDst[3], int nDstStep, NppiSize oSizeROI);
+
+/**
+ * 3 channel 8-bit unsigned planar YCbCr420 to 3 channel 8-bit unsigned planar BGR color conversion.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param aSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus nppiYCbCr420ToBGR_JPEG_8u_P3R(const Npp8u * const pSrc[3], int aSrcStep[3], Npp8u * pDst[3], int nDstStep, NppiSize oSizeROI);
+
+/**
+ * 3 channel 8-bit unsigned planar YCbCr422 to 3 channel 8-bit unsigned planar BGR color conversion.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param aSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus nppiYCbCr422ToBGR_JPEG_8u_P3R(const Npp8u * const pSrc[3], int aSrcStep[3], Npp8u * pDst[3], int nDstStep, NppiSize oSizeROI);
+
+/**
+ * 3 channel 8-bit unsigned planar YCbCr411 to 3 channel 8-bit unsigned planar BGR color conversion.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param aSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus nppiYCbCr411ToBGR_JPEG_8u_P3R(const Npp8u * const pSrc[3], int aSrcStep[3], Npp8u * pDst[3], int nDstStep, NppiSize oSizeROI);
+
+/**
+ * 3 channel 8-bit unsigned planar YCbCr444 to 3 channel 8-bit unsigned planar BGR color conversion.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus nppiYCbCr444ToBGR_JPEG_8u_P3R(const Npp8u * const pSrc[3], int nSrcStep, Npp8u * pDst[3], int nDstStep, NppiSize oSizeROI);
+
 /** @} */
+
+/** @name RGBToYCbCr_JPEG Planar to packed.
+ *  JPEG RGB to YCbCr color conversion.
+ *
+ * @{
+ *
+ */
+
+
+/**
+ * 3 channel 8-bit unsigned packed RGB to 3 channel 8-bit unsigned planar YCbCr420 color conversion.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param aDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus nppiRGBToYCbCr420_JPEG_8u_C3P3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst[3], int aDstStep[3], NppiSize oSizeROI);
+
+/**
+ * 3 channel 8-bit unsigned packed RGB to 3 channel 8-bit unsigned planar YCbCr422 color conversion.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param aDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus nppiRGBToYCbCr422_JPEG_8u_C3P3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst[3], int aDstStep[3], NppiSize oSizeROI);
+
+/**
+ * 3 channel 8-bit unsigned packed RGB to 3 channel 8-bit unsigned planar YCbCr411 color conversion.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param aDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus nppiRGBToYCbCr411_JPEG_8u_C3P3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst[3], int aDstStep[3], NppiSize oSizeROI);
+
+/**
+ * 3 channel 8-bit unsigned packed RGB to 3 channel 8-bit unsigned planar YCbCr444 color conversion.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus nppiRGBToYCbCr444_JPEG_8u_C3P3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst[3], int nDstStep, NppiSize oSizeROI);
+
+/**
+ * 3 channel 8-bit unsigned packed BGR to 3 channel 8-bit unsigned planar YCbCr420 color conversion.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param aDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus nppiBGRToYCbCr420_JPEG_8u_C3P3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst[3], int aDstStep[3], NppiSize oSizeROI);
+
+/**
+ * 3 channel 8-bit unsigned packed BGR to 3 channel 8-bit unsigned planar YCbCr422 color conversion.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param aDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus nppiBGRToYCbCr422_JPEG_8u_C3P3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst[3], int aDstStep[3], NppiSize oSizeROI);
+
+/**
+ * 3 channel 8-bit unsigned packed BGR to 3 channel 8-bit unsigned planar YCbCr411 color conversion.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param aDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus nppiBGRToYCbCr411_JPEG_8u_C3P3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst[3], int aDstStep[3], NppiSize oSizeROI);
+
+/**
+ * 3 channel 8-bit unsigned packed BGR to 3 channel 8-bit unsigned planar YCbCr444 color conversion.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus nppiBGRToYCbCr444_JPEG_8u_C3P3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst[3], int nDstStep, NppiSize oSizeROI);
+
+/**
+ * 3 channel 8-bit unsigned packed YCbCr420 to 3 channel 8-bit unsigned planar RGB color conversion.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param aSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus nppiYCbCr420ToRGB_JPEG_8u_P3C3R(const Npp8u * const pSrc[3], int aSrcStep[3], Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
+
+/**
+ * 3 channel 8-bit unsigned packed YCbCr422 to 3 channel 8-bit unsigned planar RGB color conversion.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param aSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus nppiYCbCr422ToRGB_JPEG_8u_P3C3R(const Npp8u * const pSrc[3], int aSrcStep[3], Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
+
+/**
+ * 3 channel 8-bit unsigned packed YCbCr411 to 3 channel 8-bit unsigned planar RGB color conversion.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param aSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus nppiYCbCr411ToRGB_JPEG_8u_P3C3R(const Npp8u * const pSrc[3], int aSrcStep[3], Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
+
+/**
+ * 3 channel 8-bit unsigned planar YCbCr444 to 3 channel 8-bit unsigned packed RGB color conversion.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus nppiYCbCr444ToRGB_JPEG_8u_P3C3R(const Npp8u * const pSrc[3], int nSrcStep, Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
+
+/**
+ * 3 channel 8-bit unsigned planar YCbCr420 to 3 channel 8-bit unsigned packed BGR color conversion.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param aSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus nppiYCbCr420ToBGR_JPEG_8u_P3C3R(const Npp8u * const pSrc[3], int aSrcStep[3], Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
+
+/**
+ * 3 channel 8-bit unsigned planar YCbCr422 to 3 channel 8-bit unsigned packed BGR color conversion.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param aSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus nppiYCbCr422ToBGR_JPEG_8u_P3C3R(const Npp8u * const pSrc[3], int aSrcStep[3], Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
+
+/**
+ * 3 channel 8-bit unsigned planar YCbCr411 to 3 channel 8-bit unsigned packed BGR color conversion.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param aSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus nppiYCbCr411ToBGR_JPEG_8u_P3C3R(const Npp8u * const pSrc[3], int aSrcStep[3], Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
+
+/**
+ * 3 channel 8-bit unsigned planar YCbCr444 to 3 channel 8-bit unsigned packed BGR color conversion.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus nppiYCbCr444ToBGR_JPEG_8u_P3C3R(const Npp8u * const pSrc[3], int nSrcStep, Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
+
+/** @} */
+
+/** @} image_JPEG_color_conversion */
+
+/** @} image_color_model_conversion */ 
+
+/** @defgroup image_color_to_gray ColorToGray Conversion
+ * Routines for converting color images to grayscale.
+ *
+ * @{ 
+ *
+ */
 
 /** @name RGBToGray 
  *  RGB to CCIR601 Gray conversion.
@@ -3184,8 +3604,12 @@ NppStatus nppiGradientColorToGray_32f_C3C1R(const Npp32f * pSrc, int nSrcStep, N
 
 /** @} */
 
-/** @name ColorDebayer 
- *  Grayscale Color Filter Array to RGB Color Debayer conversion. Generates one RGB color pixel for every grayscale source pixel.
+/** @} image_color_to_gray */
+
+/** @defgroup image_color_debayer ColorDebayer 
+ *  Grayscale Color Filter Array to RGB Color Debayer conversion. 
+ *
+ *  Generates one RGB color pixel for every grayscale source pixel.
  *  Source and destination images must have even width and height.  Missing pixel colors are generated using bilinear interpolation
  *  with chroma correlation of generated green values (eInterpolation MUST be set to 0). eGrid allows the user to specify the Bayer grid 
  *  registration position at source image location oSrcROI.x, oSrcROI.y relative to pSrc. Possible registration positions are:
@@ -3286,9 +3710,8 @@ NppStatus
 nppiCFAToRGBA_16u_C1AC4R(const Npp16u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiRect oSrcROI, 
                                Npp16u * pDst, int nDstStep, NppiBayerGridPosition eGrid, NppiInterpolationMode eInterpolation, Npp16u nAlpha);
 
-/** @} */
+/** @} image_color_debayer */
 
-/** @} image_color_model_conversion */ 
 
 /** @defgroup image_color_sampling_format_conversion Color Sampling Format Conversion
  *
@@ -4129,6 +4552,27 @@ NppStatus nppiYCbCr411ToYCrCb420_8u_P2P3R(const Npp8u * pSrcY, int nSrcYStep, co
 
 /** @} */
 
+/** @name NV12ToYUV420
+ *  NV12 to YUV420 color conversion.
+ *
+ * @{
+ *
+ */
+
+/**
+ *  2 channel 8-bit unsigned planar NV12 to 3 channel 8-bit unsigned planar YUV420 color conversion.
+ *
+ * \param pSrc \ref source_planar_image_pointer_array (one for Y plane, one for UV plane).
+ * \param nSrcStep \ref source_planar_image_line_step_array.
+ * \param pDst \ref destination_image_pointer.
+ * \param aDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus nppiNV12ToYUV420_8u_P2P3R(const Npp8u * const pSrc[2], int nSrcStep, Npp8u * pDst[3], int aDstStep[3], NppiSize oSizeROI);
+
+/** @} */
+
 /** @} image_color_sampling_format_conversion */ 
 
 /** @defgroup image_color_gamma_correction Color Gamma Correction
@@ -4369,6 +4813,14 @@ NppStatus nppiAlphaCompColorKey_8u_AC4R(const Npp8u * pSrc1, int nSrc1Step, Npp8
  * Routines for performing image color manipulation.
  *
  * @{                                         
+ *
+ */
+
+/** @defgroup image_color_twist ColorTwist
+ *
+ * Routines for converting between various image color models using user supplied matrix coefficients.
+ *
+ * @{ 
  *
  */
 
@@ -5458,8 +5910,18 @@ NppStatus
 nppiColorTwist_32f_IP3R(Npp32f * const pSrcDst[3], int nSrcDstStep, 
                         NppiSize oSizeROI, const Npp32f aTwist[3][4]);
 
-/** @} */
+/** @} color_twist */
 
+/** @} image_color_twist */
+
+/** @defgroup image_color_twist_batch ColorTwistBatch
+ *
+ * Routines for converting between various image color models using user supplied matrix coefficients on batches of images.
+ *
+ * @{ 
+ *
+ */
+ 
 /** @name ColorTwistBatch
  * 
  * Perform color twist pixel batch processing.  Color twist consists of applying the following formula to each
@@ -5673,11 +6135,13 @@ nppiColorTwistBatch_32fC_C4R(Npp32f nMin, Npp32f nMax, NppiSize oSizeROI, NppiCo
 NppStatus 
 nppiColorTwistBatch_32fC_C4IR(Npp32f nMin, Npp32f nMax, NppiSize oSizeROI, NppiColorTwistBatchCXR * pBatchList, int nBatchSize);
 
-/** @} */
+/** @} color_twist_batch */
 
-/** @name ColorLUT
- * 
+/** @} image_color_twist_batch */
+
+/** @defgroup image_color_LUT ColorLUT
  *  Perform image color processing using members of various types of color look up tables.
+ * 
  * @{
  */
 
@@ -6300,13 +6764,14 @@ NppStatus
 nppiLUT_32f_AC4IR(      Npp32f * pSrcDst, int nSrcDstStep, NppiSize oSizeROI, 
                   const Npp32f * pValues[3], const Npp32f * pLevels[3], int nLevels[3]);
 
-/** @} */
+/** @} image_color_LUT */
 
-/** @name ColorLUT_Linear
- * 
+/** @defgroup image_color_LUT_Linear ColorLUTLinear
  * Perform image color processing using linear interpolation between members of various types of color look up tables.
+ * 
  * @{
  */
+
 /**
  * 8-bit unsigned linear interpolated look-up-table color conversion.
  *
@@ -6949,11 +7414,11 @@ NppStatus
 nppiLUT_Linear_32f_AC4IR(      Npp32f * pSrcDst, int nSrcDstStep, NppiSize oSizeROI, 
                          const Npp32f * pValues[3], const Npp32f * pLevels[3], int nLevels[3]);
 
-/** @} */
+/** @} image_color_LUT_linear */
 
-/** @name ColorLUT_Cubic
- * 
+/** @defgroup image_color_LUT_cubic ColorLUTCubic
  *  Perform image color processing using linear interpolation between members of various types of color look up tables.
+ * 
  * @{
  */
 /**
@@ -7574,11 +8039,11 @@ NppStatus
 nppiLUT_Cubic_32f_AC4IR(      Npp32f * pSrcDst, int nSrcDstStep, NppiSize oSizeROI, 
                         const Npp32f * pValues[3], const Npp32f * pLevels[3], int nLevels[3]);
 
-/** @} */
+/** @} image_color_LUT_cubic */
 
-/** @name ColorLUT_Trilinear
- * 
+/** @defgroup image_color_LUT_Trilinear ColorLUTTrilinear
  *  Perform image color processing using 3D trilinear interpolation between members of various types of color look up tables.
+ * 
  * @{
  */
 
@@ -7655,11 +8120,11 @@ NppStatus
 nppiLUT_Trilinear_8u_AC4IR(      Npp8u * pSrcDst, int nSrcDstStep, NppiSize oSizeROI, 
                            Npp32u * pValues, Npp8u * pLevels[3], int aLevels[3]);
 
-/** @} */
+/** @} image_color_LUT_Trilinear */
 
-/** @name ColorLUTPalette
- * 
+/** @defgroup image_color_LUT_palette ColorLUTPalette
  *  Perform image color processing using various types of bit range restricted palette color look up tables.
+ * 
  * @{
  */
 
@@ -7971,431 +8436,9 @@ NppStatus
 nppiLUTPaletteSwap_16u_C3A0C4R(const Npp16u * pSrc, int nSrcStep, int nAlphaValue, Npp16u * pDst, int nDstStep, NppiSize oSizeROI, 
                                const Npp16u * pTables[3], int nBitSize);
 
-/** @} */
-
-/** @name RGBToYCbCr_JPEG Planar to planar.
- *  JPEG RGB to YCbCr color conversion.
- *
- * @{
- *
- */
-
-/**
- * 3 channel 8-bit unsigned planar RGB to 3 channel 8-bit unsigned planar YCbCr420 color conversion.
- *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param aDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus nppiRGBToYCbCr420_JPEG_8u_P3R(const Npp8u * const pSrc[3], int nSrcStep, Npp8u * pDst[3], int aDstStep[3], NppiSize oSizeROI);
-
-/**
- * 3 channel 8-bit unsigned planar RGB to 3 channel 8-bit unsigned planar YCbCr422 color conversion.
- *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param aDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus nppiRGBToYCbCr422_JPEG_8u_P3R(const Npp8u * const pSrc[3], int nSrcStep, Npp8u * pDst[3], int aDstStep[3], NppiSize oSizeROI);
-
-/**
- * 3 channel 8-bit unsigned planar RGB to 3 channel 8-bit unsigned planar YCbCr411 color conversion.
- *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param aDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus nppiRGBToYCbCr411_JPEG_8u_P3R(const Npp8u * const pSrc[3], int nSrcStep, Npp8u * pDst[3], int aDstStep[3], NppiSize oSizeROI);
-
-/**
- * 3 channel 8-bit unsigned planar RGB to 3 channel 8-bit unsigned planar YCbCr444 color conversion.
- *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param aDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus nppiRGBToYCbCr444_JPEG_8u_P3R(const Npp8u * const pSrc[3], int nSrcStep, Npp8u * pDst[3], int nDstStep, NppiSize oSizeROI);
-
-/**
- * 3 channel 8-bit unsigned planar BGR to 3 channel 8-bit unsigned planar YCbCr420 color conversion.
- *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param aDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus nppiBGRToYCbCr420_JPEG_8u_P3R(const Npp8u * const pSrc[3], int nSrcStep, Npp8u * pDst[3], int aDstStep[3], NppiSize oSizeROI);
-
-/**
- * 3 channel 8-bit unsigned planar BGR to 3 channel 8-bit unsigned planar YCbCr422 color conversion.
- *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param aDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus nppiBGRToYCbCr422_JPEG_8u_P3R(const Npp8u * const pSrc[3], int nSrcStep, Npp8u * pDst[3], int aDstStep[3], NppiSize oSizeROI);
-
-/**
- * 3 channel 8-bit unsigned planar BGR to 3 channel 8-bit unsigned planar YCbCr411 color conversion.
- *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param aDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus nppiBGRToYCbCr411_JPEG_8u_P3R(const Npp8u * const pSrc[3], int nSrcStep, Npp8u * pDst[3], int aDstStep[3], NppiSize oSizeROI);
-
-/**
- * 3 channel 8-bit unsigned planar BGR to 3 channel 8-bit unsigned planar YCbCr444 color conversion.
- *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param aDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus nppiBGRToYCbCr444_JPEG_8u_P3R(const Npp8u * const pSrc[3], int nSrcStep, Npp8u * pDst[3], int nDstStep, NppiSize oSizeROI);
-
-/**
- * 3 channel 8-bit unsigned planar YCbCr420 to 3 channel 8-bit unsigned planar RGB color conversion.
- *
- * \param pSrc \ref source_image_pointer.
- * \param aSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus nppiYCbCr420ToRGB_JPEG_8u_P3R(const Npp8u * const pSrc[3], int aSrcStep[3], Npp8u * pDst[3], int nDstStep, NppiSize oSizeROI);
-
-/**
- * 3 channel 8-bit unsigned planar YCbCr422 to 3 channel 8-bit unsigned planar RGB color conversion.
- *
- * \param pSrc \ref source_image_pointer.
- * \param aSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus nppiYCbCr422ToRGB_JPEG_8u_P3R(const Npp8u * const pSrc[3], int aSrcStep[3], Npp8u * pDst[3], int nDstStep, NppiSize oSizeROI);
-
-/**
- * 3 channel 8-bit unsigned planar YCbCr411 to 3 channel 8-bit unsigned planar RGB color conversion.
- *
- * \param pSrc \ref source_image_pointer.
- * \param aSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus nppiYCbCr411ToRGB_JPEG_8u_P3R(const Npp8u * const pSrc[3], int aSrcStep[3], Npp8u * pDst[3], int nDstStep, NppiSize oSizeROI);
-
-/**
- * 3 channel 8-bit unsigned planar YCbCr444 to 3 channel 8-bit unsigned planar RGB color conversion.
- *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus nppiYCbCr444ToRGB_JPEG_8u_P3R(const Npp8u * const pSrc[3], int nSrcStep, Npp8u * pDst[3], int nDstStep, NppiSize oSizeROI);
-
-/**
- * 3 channel 8-bit unsigned planar YCbCr420 to 3 channel 8-bit unsigned planar BGR color conversion.
- *
- * \param pSrc \ref source_image_pointer.
- * \param aSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus nppiYCbCr420ToBGR_JPEG_8u_P3R(const Npp8u * const pSrc[3], int aSrcStep[3], Npp8u * pDst[3], int nDstStep, NppiSize oSizeROI);
-
-/**
- * 3 channel 8-bit unsigned planar YCbCr422 to 3 channel 8-bit unsigned planar BGR color conversion.
- *
- * \param pSrc \ref source_image_pointer.
- * \param aSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus nppiYCbCr422ToBGR_JPEG_8u_P3R(const Npp8u * const pSrc[3], int aSrcStep[3], Npp8u * pDst[3], int nDstStep, NppiSize oSizeROI);
-
-/**
- * 3 channel 8-bit unsigned planar YCbCr411 to 3 channel 8-bit unsigned planar BGR color conversion.
- *
- * \param pSrc \ref source_image_pointer.
- * \param aSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus nppiYCbCr411ToBGR_JPEG_8u_P3R(const Npp8u * const pSrc[3], int aSrcStep[3], Npp8u * pDst[3], int nDstStep, NppiSize oSizeROI);
-
-/**
- * 3 channel 8-bit unsigned planar YCbCr444 to 3 channel 8-bit unsigned planar BGR color conversion.
- *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus nppiYCbCr444ToBGR_JPEG_8u_P3R(const Npp8u * const pSrc[3], int nSrcStep, Npp8u * pDst[3], int nDstStep, NppiSize oSizeROI);
-
-/** @} */
-
-/** @name RGBToYCbCr_JPEG Planar to packed.
- *  JPEG RGB to YCbCr color conversion.
- *
- * @{
- *
- */
+/** @} image_color_LUT_palette */
 
 
-/**
- * 3 channel 8-bit unsigned packed RGB to 3 channel 8-bit unsigned planar YCbCr420 color conversion.
- *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param aDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus nppiRGBToYCbCr420_JPEG_8u_C3P3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst[3], int aDstStep[3], NppiSize oSizeROI);
-
-/**
- * 3 channel 8-bit unsigned packed RGB to 3 channel 8-bit unsigned planar YCbCr422 color conversion.
- *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param aDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus nppiRGBToYCbCr422_JPEG_8u_C3P3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst[3], int aDstStep[3], NppiSize oSizeROI);
-
-/**
- * 3 channel 8-bit unsigned packed RGB to 3 channel 8-bit unsigned planar YCbCr411 color conversion.
- *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param aDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus nppiRGBToYCbCr411_JPEG_8u_C3P3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst[3], int aDstStep[3], NppiSize oSizeROI);
-
-/**
- * 3 channel 8-bit unsigned packed RGB to 3 channel 8-bit unsigned planar YCbCr444 color conversion.
- *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param aDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus nppiRGBToYCbCr444_JPEG_8u_C3P3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst[3], int nDstStep, NppiSize oSizeROI);
-
-/**
- * 3 channel 8-bit unsigned packed BGR to 3 channel 8-bit unsigned planar YCbCr420 color conversion.
- *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param aDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus nppiBGRToYCbCr420_JPEG_8u_C3P3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst[3], int aDstStep[3], NppiSize oSizeROI);
-
-/**
- * 3 channel 8-bit unsigned packed BGR to 3 channel 8-bit unsigned planar YCbCr422 color conversion.
- *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param aDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus nppiBGRToYCbCr422_JPEG_8u_C3P3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst[3], int aDstStep[3], NppiSize oSizeROI);
-
-/**
- * 3 channel 8-bit unsigned packed BGR to 3 channel 8-bit unsigned planar YCbCr411 color conversion.
- *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param aDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus nppiBGRToYCbCr411_JPEG_8u_C3P3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst[3], int aDstStep[3], NppiSize oSizeROI);
-
-/**
- * 3 channel 8-bit unsigned packed BGR to 3 channel 8-bit unsigned planar YCbCr444 color conversion.
- *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param aDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus nppiBGRToYCbCr444_JPEG_8u_C3P3R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst[3], int nDstStep, NppiSize oSizeROI);
-
-/**
- * 3 channel 8-bit unsigned packed YCbCr420 to 3 channel 8-bit unsigned planar RGB color conversion.
- *
- * \param pSrc \ref source_image_pointer.
- * \param aSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus nppiYCbCr420ToRGB_JPEG_8u_P3C3R(const Npp8u * const pSrc[3], int aSrcStep[3], Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
-
-/**
- * 3 channel 8-bit unsigned packed YCbCr422 to 3 channel 8-bit unsigned planar RGB color conversion.
- *
- * \param pSrc \ref source_image_pointer.
- * \param aSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus nppiYCbCr422ToRGB_JPEG_8u_P3C3R(const Npp8u * const pSrc[3], int aSrcStep[3], Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
-
-/**
- * 3 channel 8-bit unsigned packed YCbCr411 to 3 channel 8-bit unsigned planar RGB color conversion.
- *
- * \param pSrc \ref source_image_pointer.
- * \param aSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus nppiYCbCr411ToRGB_JPEG_8u_P3C3R(const Npp8u * const pSrc[3], int aSrcStep[3], Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
-
-/**
- * 3 channel 8-bit unsigned planar YCbCr444 to 3 channel 8-bit unsigned packed RGB color conversion.
- *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus nppiYCbCr444ToRGB_JPEG_8u_P3C3R(const Npp8u * const pSrc[3], int nSrcStep, Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
-
-/**
- * 3 channel 8-bit unsigned planar YCbCr420 to 3 channel 8-bit unsigned packed BGR color conversion.
- *
- * \param pSrc \ref source_image_pointer.
- * \param aSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus nppiYCbCr420ToBGR_JPEG_8u_P3C3R(const Npp8u * const pSrc[3], int aSrcStep[3], Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
-
-/**
- * 3 channel 8-bit unsigned planar YCbCr422 to 3 channel 8-bit unsigned packed BGR color conversion.
- *
- * \param pSrc \ref source_image_pointer.
- * \param aSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus nppiYCbCr422ToBGR_JPEG_8u_P3C3R(const Npp8u * const pSrc[3], int aSrcStep[3], Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
-
-/**
- * 3 channel 8-bit unsigned planar YCbCr411 to 3 channel 8-bit unsigned packed BGR color conversion.
- *
- * \param pSrc \ref source_image_pointer.
- * \param aSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus nppiYCbCr411ToBGR_JPEG_8u_P3C3R(const Npp8u * const pSrc[3], int aSrcStep[3], Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
-
-/**
- * 3 channel 8-bit unsigned planar YCbCr444 to 3 channel 8-bit unsigned packed BGR color conversion.
- *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus nppiYCbCr444ToBGR_JPEG_8u_P3C3R(const Npp8u * const pSrc[3], int nSrcStep, Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
-
-/** @} */
-
-/** @name NV12ToYUV420
- *  NV12 to YUV420 color conversion.
- *
- * @{
- *
- */
-
-/**
- *  2 channel 8-bit unsigned planar NV12 to 3 channel 8-bit unsigned planar YUV420 color conversion.
- *
- * \param pSrc \ref source_planar_image_pointer_array (one for Y plane, one for UV plane).
- * \param nSrcStep \ref source_planar_image_line_step_array.
- * \param pDst \ref destination_image_pointer.
- * \param aDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus nppiNV12ToYUV420_8u_P2P3R(const Npp8u * const pSrc[2], int nSrcStep, Npp8u * pDst[3], int aDstStep[3], NppiSize oSizeROI);
-
-/** @} */
 /** @} image_color_processing */ 
 
 /** @} image_color_conversion */ 

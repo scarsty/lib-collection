@@ -749,6 +749,8 @@ QUALIFIERS void _curand_init_scratch(unsigned long long seed,
     _skipahead_scratch<curandStateXORWOW_t, 5>(offset, state, scratch);
     state->boxmuller_flag = 0;
     state->boxmuller_flag_double = 0;
+    state->boxmuller_extra = 0.f;
+    state->boxmuller_extra_double = 0.;
 }
 
 /**
@@ -944,6 +946,8 @@ QUALIFIERS void curand_init(unsigned long long seed,
     state->STATE = 0;
     state->boxmuller_flag = 0;
     state->boxmuller_flag_double = 0;
+    state->boxmuller_extra = 0.f;
+    state->boxmuller_extra_double = 0.;
     skipahead_sequence(subsequence, state);
     skipahead(offset, state);
 }
@@ -1157,6 +1161,8 @@ QUALIFIERS void curand_init(unsigned long long seed,
     skipahead( offset, state );
     state->boxmuller_flag = 0;
     state->boxmuller_flag_double = 0;
+    state->boxmuller_extra = 0.f;
+    state->boxmuller_extra_double = 0.;
 }
 
 /**

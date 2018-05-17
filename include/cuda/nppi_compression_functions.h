@@ -941,6 +941,8 @@ size_t nppiJpegDecodeGetScanDeadzoneSize(void);
  */
 size_t nppiJpegDecodeGetDCTBufferSize(NppiSize oBlocks);
 
+/*@}*/
+
 /**
  * Inverse DCT in WebP decoding. Input is the bitstream that contains the coefficients of 16x16 blocks.
  * These coefficients are based on a 4x4 sub-block unit, e.g., 
@@ -962,7 +964,6 @@ size_t nppiJpegDecodeGetDCTBufferSize(NppiSize oBlocks);
  */
 NppStatus nppiDCTInv4x4_WebP_16s_C1R(const Npp16s * pSrc, int nSrcStep, Npp16s * pDst, int nDstStep, NppiSize oSizeROI);
 
-/*@}*/
 /** @} image_compression */
 
 

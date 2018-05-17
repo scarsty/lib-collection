@@ -1,4 +1,4 @@
- /* Copyright 2009-2016 NVIDIA Corporation.  All rights reserved. 
+ /* Copyright 2009-2017 NVIDIA Corporation.  All rights reserved. 
   * 
   * NOTICE TO LICENSEE: 
   * 
@@ -311,7 +311,8 @@ nppiDilate_32f_AC4R(const Npp32f * pSrc, int nSrcStep, Npp32f * pDst, int nDstSt
  *
  * Dilation computes the output pixel as the maximum pixel value of the pixels
  * under the mask. Pixels who's corresponding mask values are zero do not 
- * participate in the maximum search.
+ * participate in the maximum search. For gray scale dilation the mask contains signed mask values
+ * which are added to the corresponding source image sample value before determining the maximun value after clamping.
  *
  * If any portion of the mask overlaps the source image boundary the requested border type 
  * operation is applied to all mask pixels which fall outside of the source image.
@@ -576,6 +577,47 @@ NppStatus
 nppiDilateBorder_32f_AC4R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, int nDstStep, NppiSize oSizeROI,
                           const Npp8u * pMask, NppiSize oMaskSize, NppiPoint oAnchor, NppiBorderType eBorderType);
 
+/**
+ * Single-channel 8-bit unsigned integer gray scale dilation with border control.
+ * 
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Source image width and height in pixels relative to pSrc.
+ * \param oSrcOffset Source image starting point relative to pSrc. 
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param pMask Pointer to the start address of the mask array in device memory.
+ * \param oMaskSize Width and Height mask array.
+ * \param oAnchor X and Y offsets of the mask origin frame of reference
+ *        w.r.t the source pixel.
+ * \param eBorderType The border type operation to be applied at source image border boundaries.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiGrayDilateBorder_8u_C1R(const Npp8u * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp8u * pDst, Npp32s nDstStep, NppiSize oSizeROI, 
+                            const Npp32s * pMask, NppiSize oMaskSize, NppiPoint oAnchor, NppiBorderType eBorderType);
+
+/**
+ * Single-channel 32-bit floating point gray scale dilation with border control.
+ * 
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Source image width and height in pixels relative to pSrc.
+ * \param oSrcOffset Source image starting point relative to pSrc. 
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param pMask Pointer to the start address of the mask array in device memory.
+ * \param oMaskSize Width and Height mask array.
+ * \param oAnchor X and Y offsets of the mask origin frame of reference
+ *        w.r.t the source pixel.
+ * \param eBorderType The border type operation to be applied at source image border boundaries.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiGrayDilateBorder_32f_C1R(const Npp32f * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI, 
+                             const Npp32f * pMask, NppiSize oMaskSize, NppiPoint oAnchor, NppiBorderType eBorderType);
 
 /** @} image_dilate_border */
 
@@ -1209,7 +1251,8 @@ nppiErode_32f_AC4R(const Npp32f * pSrc, int nSrcStep, Npp32f * pDst, int nDstSte
  *
  * Erosion computes the output pixel as the minimum pixel value of the pixels
  * under the mask. Pixels who's corresponding mask values are zero do not 
- * participate in the minimum search.
+ * participate in the minimum search. For gray scale erosion the mask contains signed mask values
+ * which are added to the corresponding source image sample value before determining the minimum value after clamping.
  *
  * If any portion of the mask overlaps the source image boundary the requested border type 
  * operation is applied to all mask pixels which fall outside of the source image.
@@ -1474,6 +1517,47 @@ NppStatus
 nppiErodeBorder_32f_AC4R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, int nDstStep, NppiSize oSizeROI,
                          const Npp8u * pMask, NppiSize oMaskSize, NppiPoint oAnchor, NppiBorderType eBorderType);
 
+/**
+ * Single-channel 8-bit unsigned integer gray scale erosion with border control.
+ * 
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Source image width and height in pixels relative to pSrc.
+ * \param oSrcOffset Source image starting point relative to pSrc. 
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param pMask Pointer to the start address of the mask array in device memory.
+ * \param oMaskSize Width and Height mask array.
+ * \param oAnchor X and Y offsets of the mask origin frame of reference
+ *        w.r.t the source pixel.
+ * \param eBorderType The border type operation to be applied at source image border boundaries.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiGrayErodeBorder_8u_C1R(const Npp8u * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp8u * pDst, Npp32s nDstStep, NppiSize oSizeROI, 
+                           const Npp32s * pMask, NppiSize oMaskSize, NppiPoint oAnchor, NppiBorderType eBorderType);
+
+/**
+ * Single-channel 32-bit floating point gray scale erosion with border control.
+ * 
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Source image width and height in pixels relative to pSrc.
+ * \param oSrcOffset Source image starting point relative to pSrc. 
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param pMask Pointer to the start address of the mask array in device memory.
+ * \param oMaskSize Width and Height mask array.
+ * \param oAnchor X and Y offsets of the mask origin frame of reference
+ *        w.r.t the source pixel.
+ * \param eBorderType The border type operation to be applied at source image border boundaries.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiGrayErodeBorder_32f_C1R(const Npp32f * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI, 
+                            const Npp32f * pMask, NppiSize oMaskSize, NppiPoint oAnchor, NppiBorderType eBorderType);
 
 /** @} image_erode_border */
 
@@ -1881,6 +1965,1115 @@ nppiErode3x3Border_32f_AC4R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize
                                   Npp32f * pDst, int nDstStep, NppiSize oSizeROI, NppiBorderType eBorderType);
 
 /** @} image_erode_3x3_border */
+
+/** @defgroup image_morph ComplexImageMorphology
+ * Complex image morphological operations.
+ *
+ * @{
+ *
+ */
+
+/** @defgroup image_morph_get_buffer_size MorphGetBufferSize
+ *
+ * Before calling any of the MorphCloseBorder, MorphOpenBorder, MorphTopHatBorder, MorphBlackHatBorder, or MorphGradientBorder
+ * functions the application first needs to call the corresponding
+ * MorphGetBufferSize to determine the amount of device memory to allocate as a working buffer.  The application allocated device memory
+ * is then passed as the pBuffer parameter to the corresponding MorphXXXBorder function.
+ *
+ * @{
+ *
+ */
+
+/**
+ * Calculate scratch buffer size needed for 1 channel 8-bit unsigned integer MorphCloseBorder, MorphOpenBorder, MorphTopHatBorder, 
+ * MorphBlackHatBorder, or MorphGradientBorder function based on destination image oSizeROI width and height.
+ *
+ * \param oSizeROI \ref roi_specification.
+ * \param hpBufferSize Required buffer size in bytes.
+ */
+NppStatus 
+nppiMorphGetBufferSize_8u_C1R(NppiSize oSizeROI, int * hpBufferSize);
+
+/**
+ * Calculate scratch buffer size needed for 3 channel 8-bit unsigned integer MorphCloseBorder, MorphOpenBorder, MorphTopHatBorder, 
+ * MorphBlackHatBorder or MorphGradientBorder function based on destination image oSizeROI width and height.
+ *
+ * \param oSizeROI \ref roi_specification.
+ * \param hpBufferSize Required buffer size in bytes.
+ */
+NppStatus 
+nppiMorphGetBufferSize_8u_C3R(NppiSize oSizeROI, int * hpBufferSize);
+
+/**
+ * Calculate scratch buffer size needed for 4 channel 8-bit unsigned integer MorphCloseBorder, MorphOpenBorder, MorphTopHatBorder,
+ * MorphBlackHatBorder, or MorphGradientBorder function based on destination image oSizeROI width and height.
+ *
+ * \param oSizeROI \ref roi_specification.
+ * \param hpBufferSize Required buffer size in bytes.
+ */
+NppStatus 
+nppiMorphGetBufferSize_8u_C4R(NppiSize oSizeROI, int * hpBufferSize);
+
+/**
+ * Calculate scratch buffer size needed for 1 channel 16-bit unsigned integer MorphCloseBorder, MorphOpenBorder, MorphTopHatBorder,
+ * MorphBlackHatBorder, or MorphGradientBorder function based on destination image oSizeROI width and height.
+ *
+ * \param oSizeROI \ref roi_specification.
+ * \param hpBufferSize Required buffer size in bytes.
+ */
+NppStatus 
+nppiMorphGetBufferSize_16u_C1R(NppiSize oSizeROI, int * hpBufferSize);
+
+/**
+ * Calculate scratch buffer size needed for 1 channel 16-bit signed integer MorphCloseBorder, MorphOpenBorder, MorphTopHatBorder,
+ * MorphBlackHatBorder, or MorphGradientBorder function based on destination image oSizeROI width and height.
+ *
+ * \param oSizeROI \ref roi_specification.
+ * \param hpBufferSize Required buffer size in bytes.
+ */
+NppStatus 
+nppiMorphGetBufferSize_16s_C1R(NppiSize oSizeROI, int * hpBufferSize);
+
+/**
+ * Calculate scratch buffer size needed for 1 channel 32-bit floating point MorphCloseBorder, MorphOpenBorder, MorphTopHatBorder,
+ * MorphBlackHatBorder, or MorphGradientBorder function based on destination image oSizeROI width and height.
+ *
+ * \param oSizeROI \ref roi_specification.
+ * \param hpBufferSize Required buffer size in bytes.
+ */
+NppStatus 
+nppiMorphGetBufferSize_32f_C1R(NppiSize oSizeROI, int * hpBufferSize);
+
+/**
+ * Calculate scratch buffer size needed for 3 channel 32-bit floating point MorphCloseBorder, MorphOpenBorder, MorphTopHatBorder,
+ * MorphBlackHatBorder, or MorphGradientBorder function based on destination image oSizeROI width and height.
+ *
+ * \param oSizeROI \ref roi_specification.
+ * \param hpBufferSize Required buffer size in bytes.
+ */
+NppStatus 
+nppiMorphGetBufferSize_32f_C3R(NppiSize oSizeROI, int * hpBufferSize);
+
+/**
+ * Calculate scratch buffer size needed for 4 channel 32-bit floating point MorphCloseBorder, MorphOpenBorder, MorphTopHatBorder,
+ * MorphBlackHatBorder, or MorphGradientBorder function based on destination image oSizeROI width and height.
+ *
+ * \param oSizeROI \ref roi_specification.
+ * \param hpBufferSize Required buffer size in bytes.
+ */
+NppStatus 
+nppiMorphGetBufferSize_32f_C4R(NppiSize oSizeROI, int * hpBufferSize);
+
+/** @} image_morph_get_buffer_size */
+
+/** @defgroup image_morph_close_border MorphCloseBorder
+ * Dilation followed by Erosion with border control.
+ *
+ * Morphological close computes the output pixel as the maximum pixel value of the pixels
+ * under the mask followed by a second pass using the result of the first pass as input which outputs 
+ * the minimum pixel value of the pixels under the same mask. 
+ * Pixels who's corresponding mask values are zero do not participate in the maximum or minimum search.
+ *
+ * If any portion of the mask overlaps the source image boundary the requested border type 
+ * operation is applied to all mask pixels which fall outside of the source image. 
+ * The mask is centered over the source image pixel being tested.
+ *
+ * Before calling any of the MorphCloseBorder functions the application first needs to call the corresponding
+ * MorphGetBufferSize to determine the amount of device memory to allocate as a working buffer.  The allocated device memory
+ * is then passed as the pBuffer parameter to the corresponding MorphCloseBorder function.
+ *
+ * Use the oSrcOffset and oSrcSize parameters to control where the border control operation is applied to the source image ROI borders.  
+ *
+ * Currently only the NPP_BORDER_REPLICATE border type operation is supported.
+ *
+ * @{
+ *
+ */
+
+/**
+ * 1 channel 8-bit unsigned integer morphological close with border control.
+ * 
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Source image width and height in pixels relative to pSrc.
+ * \param oSrcOffset Source image starting point relative to pSrc. 
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param pMask Pointer to the start address of the mask array
+ * \param oMaskSize Width and Height mask array.
+ * \param oAnchor X and Y offsets of the mask origin frame of reference
+ *        w.r.t the source pixel.
+ * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
+ * \param eBorderType The border type operation to be applied at source image border boundaries.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiMorphCloseBorder_8u_C1R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp8u * pDst, int nDstStep, 
+                            NppiSize oSizeROI, const Npp8u * pMask, NppiSize oMaskSize, NppiPoint oAnchor, Npp8u * pBuffer, NppiBorderType eBorderType);
+
+/**
+ * 3 channel 8-bit unsigned integer morphological close with border control.
+ * 
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Source image width and height in pixels relative to pSrc.
+ * \param oSrcOffset Source image starting point relative to pSrc. 
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param pMask Pointer to the start address of the mask array
+ * \param oMaskSize Width and Height mask array.
+ * \param oAnchor X and Y offsets of the mask origin frame of reference
+ *        w.r.t the source pixel.
+ * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
+ * \param eBorderType The border type operation to be applied at source image border boundaries.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiMorphCloseBorder_8u_C3R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp8u * pDst, int nDstStep, 
+                            NppiSize oSizeROI, const Npp8u * pMask, NppiSize oMaskSize, NppiPoint oAnchor, Npp8u * pBuffer, NppiBorderType eBorderType);
+
+/**
+ * 4 channel 8-bit unsigned integer morphological close with border control.
+ * 
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Source image width and height in pixels relative to pSrc.
+ * \param oSrcOffset Source image starting point relative to pSrc. 
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param pMask Pointer to the start address of the mask array
+ * \param oMaskSize Width and Height mask array.
+ * \param oAnchor X and Y offsets of the mask origin frame of reference
+ *        w.r.t the source pixel.
+ * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
+ * \param eBorderType The border type operation to be applied at source image border boundaries.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiMorphCloseBorder_8u_C4R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp8u * pDst, int nDstStep, 
+                            NppiSize oSizeROI, const Npp8u * pMask, NppiSize oMaskSize, NppiPoint oAnchor, Npp8u * pBuffer, NppiBorderType eBorderType);
+
+/**
+ * 1 channel 16-bit unsigned integer morphological close with border control.
+ * 
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Source image width and height in pixels relative to pSrc.
+ * \param oSrcOffset Source image starting point relative to pSrc. 
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param pMask Pointer to the start address of the mask array
+ * \param oMaskSize Width and Height mask array.
+ * \param oAnchor X and Y offsets of the mask origin frame of reference
+ *        w.r.t the source pixel.
+ * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
+ * \param eBorderType The border type operation to be applied at source image border boundaries.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiMorphCloseBorder_16u_C1R(const Npp16u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp16u * pDst, int nDstStep, 
+                             NppiSize oSizeROI, const Npp8u * pMask, NppiSize oMaskSize, NppiPoint oAnchor, Npp8u * pBuffer, NppiBorderType eBorderType);
+
+/**
+ * 1 channel 16-bit signed integer morphological close with border control.
+ * 
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Source image width and height in pixels relative to pSrc.
+ * \param oSrcOffset Source image starting point relative to pSrc. 
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param pMask Pointer to the start address of the mask array
+ * \param oMaskSize Width and Height mask array.
+ * \param oAnchor X and Y offsets of the mask origin frame of reference
+ *        w.r.t the source pixel.
+ * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
+ * \param eBorderType The border type operation to be applied at source image border boundaries.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiMorphCloseBorder_16s_C1R(const Npp16s * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp16s * pDst, int nDstStep, 
+                             NppiSize oSizeROI, const Npp8u * pMask, NppiSize oMaskSize, NppiPoint oAnchor, Npp8u * pBuffer, NppiBorderType eBorderType);
+
+/**
+ * 1 channel 32-bit floating point morphological close with border control.
+ * 
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Source image width and height in pixels relative to pSrc.
+ * \param oSrcOffset Source image starting point relative to pSrc. 
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param pMask Pointer to the start address of the mask array
+ * \param oMaskSize Width and Height mask array.
+ * \param oAnchor X and Y offsets of the mask origin frame of reference
+ *        w.r.t the source pixel.
+ * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
+ * \param eBorderType The border type operation to be applied at source image border boundaries.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiMorphCloseBorder_32f_C1R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, int nDstStep, 
+                             NppiSize oSizeROI, const Npp8u * pMask, NppiSize oMaskSize, NppiPoint oAnchor, Npp8u * pBuffer, NppiBorderType eBorderType);
+
+/**
+ * 3 channel 32-bit floating point morphological close with border control.
+ * 
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Source image width and height in pixels relative to pSrc.
+ * \param oSrcOffset Source image starting point relative to pSrc. 
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param pMask Pointer to the start address of the mask array
+ * \param oMaskSize Width and Height mask array.
+ * \param oAnchor X and Y offsets of the mask origin frame of reference
+ *        w.r.t the source pixel.
+ * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
+ * \param eBorderType The border type operation to be applied at source image border boundaries.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiMorphCloseBorder_32f_C3R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, int nDstStep, 
+                             NppiSize oSizeROI, const Npp8u * pMask, NppiSize oMaskSize, NppiPoint oAnchor, Npp8u * pBuffer, NppiBorderType eBorderType);
+
+/**
+ * 4 channel 32-bit floating point morphological close with border control.
+ * 
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Source image width and height in pixels relative to pSrc.
+ * \param oSrcOffset Source image starting point relative to pSrc. 
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param pMask Pointer to the start address of the mask array
+ * \param oMaskSize Width and Height mask array.
+ * \param oAnchor X and Y offsets of the mask origin frame of reference
+ *        w.r.t the source pixel.
+ * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
+ * \param eBorderType The border type operation to be applied at source image border boundaries.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiMorphCloseBorder_32f_C4R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, int nDstStep, 
+                             NppiSize oSizeROI, const Npp8u * pMask, NppiSize oMaskSize, NppiPoint oAnchor, Npp8u * pBuffer, NppiBorderType eBorderType);
+
+/** @} image_morph_close_border */
+
+/** @defgroup image_morph_open_border MorphOpenBorder
+ * Erosion followed by Dilation with border control.
+ *
+ * Morphological open computes the output pixel as the minimum pixel value of the pixels
+ * under the mask followed by a second pass using the result of the first pass as input which outputs 
+ * the maximum pixel value of the pixels under the same mask. 
+ * Pixels who's corresponding mask values are zero do not participate in the minimum or maximum search.
+ *
+ * If any portion of the mask overlaps the source image boundary the requested border type 
+ * operation is applied to all mask pixels which fall outside of the source image. 
+ * The mask is centered over the source image pixel being tested.
+ *
+ * Before calling any of the MorphOpenBorder functions the application first needs to call the corresponding
+ * MorphGetBufferSize to determine the amount of device memory to allocate as a working buffer.  The allocated device memory
+ * is then passed as the pBuffer parameter to the corresponding MorphOpenBorder function. 
+ *
+ * Use the oSrcOffset and oSrcSize parameters to control where the border control operation is applied to the source image ROI borders.  
+ *
+ * Currently only the NPP_BORDER_REPLICATE border type operation is supported.
+ *
+ * @{
+ *
+ */
+
+/**
+ * 1 channel 8-bit unsigned integer morphological open with border control.
+ * 
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Source image width and height in pixels relative to pSrc.
+ * \param oSrcOffset Source image starting point relative to pSrc. 
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param pMask Pointer to the start address of the mask array
+ * \param oMaskSize Width and Height mask array.
+ * \param oAnchor X and Y offsets of the mask origin frame of reference
+ *        w.r.t the source pixel.
+ * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
+ * \param eBorderType The border type operation to be applied at source image border boundaries.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiMorphOpenBorder_8u_C1R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp8u * pDst, int nDstStep, 
+                           NppiSize oSizeROI, const Npp8u * pMask, NppiSize oMaskSize, NppiPoint oAnchor, Npp8u * pBuffer, NppiBorderType eBorderType);
+
+/**
+ * 3 channel 8-bit unsigned integer morphological open with border control.
+ * 
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Source image width and height in pixels relative to pSrc.
+ * \param oSrcOffset Source image starting point relative to pSrc. 
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param pMask Pointer to the start address of the mask array
+ * \param oMaskSize Width and Height mask array.
+ * \param oAnchor X and Y offsets of the mask origin frame of reference
+ *        w.r.t the source pixel.
+ * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
+ * \param eBorderType The border type operation to be applied at source image border boundaries.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiMorphOpenBorder_8u_C3R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp8u * pDst, int nDstStep, 
+                           NppiSize oSizeROI, const Npp8u * pMask, NppiSize oMaskSize, NppiPoint oAnchor, Npp8u * pBuffer, NppiBorderType eBorderType);
+
+/**
+ * 4 channel 8-bit unsigned integer morphological open with border control.
+ * 
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Source image width and height in pixels relative to pSrc.
+ * \param oSrcOffset Source image starting point relative to pSrc. 
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param pMask Pointer to the start address of the mask array
+ * \param oMaskSize Width and Height mask array.
+ * \param oAnchor X and Y offsets of the mask origin frame of reference
+ *        w.r.t the source pixel.
+ * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
+ * \param eBorderType The border type operation to be applied at source image border boundaries.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiMorphOpenBorder_8u_C4R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp8u * pDst, int nDstStep, 
+                           NppiSize oSizeROI, const Npp8u * pMask, NppiSize oMaskSize, NppiPoint oAnchor, Npp8u * pBuffer, NppiBorderType eBorderType);
+
+/**
+ * 1 channel 16-bit unsigned integer morphological open with border control.
+ * 
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Source image width and height in pixels relative to pSrc.
+ * \param oSrcOffset Source image starting point relative to pSrc. 
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param pMask Pointer to the start address of the mask array
+ * \param oMaskSize Width and Height mask array.
+ * \param oAnchor X and Y offsets of the mask origin frame of reference
+ *        w.r.t the source pixel.
+ * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
+ * \param eBorderType The border type operation to be applied at source image border boundaries.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiMorphOpenBorder_16u_C1R(const Npp16u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp16u * pDst, int nDstStep, 
+                            NppiSize oSizeROI, const Npp8u * pMask, NppiSize oMaskSize, NppiPoint oAnchor, Npp8u * pBuffer, NppiBorderType eBorderType);
+
+/**
+ * 1 channel 16-bit signed integer morphological open with border control.
+ * 
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Source image width and height in pixels relative to pSrc.
+ * \param oSrcOffset Source image starting point relative to pSrc. 
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param pMask Pointer to the start address of the mask array
+ * \param oMaskSize Width and Height mask array.
+ * \param oAnchor X and Y offsets of the mask origin frame of reference
+ *        w.r.t the source pixel.
+ * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
+ * \param eBorderType The border type operation to be applied at source image border boundaries.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiMorphOpenBorder_16s_C1R(const Npp16s * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp16s * pDst, int nDstStep, 
+                            NppiSize oSizeROI, const Npp8u * pMask, NppiSize oMaskSize, NppiPoint oAnchor, Npp8u * pBuffer, NppiBorderType eBorderType);
+
+/**
+ * 1 channel 32-bit floating point morphological open with border control.
+ * 
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Source image width and height in pixels relative to pSrc.
+ * \param oSrcOffset Source image starting point relative to pSrc. 
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param pMask Pointer to the start address of the mask array
+ * \param oMaskSize Width and Height mask array.
+ * \param oAnchor X and Y offsets of the mask origin frame of reference
+ *        w.r.t the source pixel.
+ * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
+ * \param eBorderType The border type operation to be applied at source image border boundaries.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiMorphOpenBorder_32f_C1R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, int nDstStep, 
+                            NppiSize oSizeROI, const Npp8u * pMask, NppiSize oMaskSize, NppiPoint oAnchor, Npp8u * pBuffer, NppiBorderType eBorderType);
+
+/**
+ * 3 channel 32-bit floating point morphological open with border control.
+ * 
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Source image width and height in pixels relative to pSrc.
+ * \param oSrcOffset Source image starting point relative to pSrc. 
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param pMask Pointer to the start address of the mask array
+ * \param oMaskSize Width and Height mask array.
+ * \param oAnchor X and Y offsets of the mask origin frame of reference
+ *        w.r.t the source pixel.
+ * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
+ * \param eBorderType The border type operation to be applied at source image border boundaries.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiMorphOpenBorder_32f_C3R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, int nDstStep, 
+                            NppiSize oSizeROI, const Npp8u * pMask, NppiSize oMaskSize, NppiPoint oAnchor, Npp8u * pBuffer, NppiBorderType eBorderType);
+
+/**
+ * 4 channel 32-bit floating point morphological open with border control.
+ * 
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Source image width and height in pixels relative to pSrc.
+ * \param oSrcOffset Source image starting point relative to pSrc. 
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param pMask Pointer to the start address of the mask array
+ * \param oMaskSize Width and Height mask array.
+ * \param oAnchor X and Y offsets of the mask origin frame of reference
+ *        w.r.t the source pixel.
+ * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
+ * \param eBorderType The border type operation to be applied at source image border boundaries.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiMorphOpenBorder_32f_C4R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, int nDstStep, 
+                            NppiSize oSizeROI, const Npp8u * pMask, NppiSize oMaskSize, NppiPoint oAnchor, Npp8u * pBuffer, NppiBorderType eBorderType);
+
+/** @} image_morph_open_border */
+
+/** @defgroup image_morph_top_hat_border MorphToHatBorder
+ * Source pixel minus the morphological open pixel result with border control.
+ *
+ * Morphological top hat computes the output pixel as the source pixel minus the morphological open result of the pixels
+ * under the mask. 
+ * Pixels who's corresponding mask values are zero do not participate in the maximum or minimum search.
+ *
+ * If any portion of the mask overlaps the source image boundary the requested border type 
+ * operation is applied to all mask pixels which fall outside of the source image. 
+ * The mask is centered over the source image pixel being tested.
+ *
+ * Before calling any of the MorphTopHatBorder functions the application first needs to call the corresponding
+ * MorphGetBufferSize to determine the amount of device memory to allocate as a working buffer.  The allocated device memory
+ * is then passed as the pBuffer parameter to the corresponding MorphTopHatBorder function.
+ *
+ * Use the oSrcOffset and oSrcSize parameters to control where the border control operation is applied to the source image ROI borders.  
+ *
+ * Currently only the NPP_BORDER_REPLICATE border type operation is supported.
+ *
+ * @{
+ *
+ */
+
+/**
+ * 1 channel 8-bit unsigned integer morphological top hat with border control.
+ * 
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Source image width and height in pixels relative to pSrc.
+ * \param oSrcOffset Source image starting point relative to pSrc. 
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param pMask Pointer to the start address of the mask array
+ * \param oMaskSize Width and Height mask array.
+ * \param oAnchor X and Y offsets of the mask origin frame of reference
+ *        w.r.t the source pixel.
+ * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
+ * \param eBorderType The border type operation to be applied at source image border boundaries.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiMorphTopHatBorder_8u_C1R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp8u * pDst, int nDstStep, 
+                             NppiSize oSizeROI, const Npp8u * pMask, NppiSize oMaskSize, NppiPoint oAnchor, Npp8u * pBuffer, NppiBorderType eBorderType);
+
+/**
+ * 3 channel 8-bit unsigned integer morphological top hat with border control.
+ * 
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Source image width and height in pixels relative to pSrc.
+ * \param oSrcOffset Source image starting point relative to pSrc. 
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param pMask Pointer to the start address of the mask array
+ * \param oMaskSize Width and Height mask array.
+ * \param oAnchor X and Y offsets of the mask origin frame of reference
+ *        w.r.t the source pixel.
+ * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
+ * \param eBorderType The border type operation to be applied at source image border boundaries.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiMorphTopHatBorder_8u_C3R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp8u * pDst, int nDstStep, 
+                             NppiSize oSizeROI, const Npp8u * pMask, NppiSize oMaskSize, NppiPoint oAnchor, Npp8u * pBuffer, NppiBorderType eBorderType);
+
+/**
+ * 4 channel 8-bit unsigned integer morphological top hat with border control.
+ * 
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Source image width and height in pixels relative to pSrc.
+ * \param oSrcOffset Source image starting point relative to pSrc. 
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param pMask Pointer to the start address of the mask array
+ * \param oMaskSize Width and Height mask array.
+ * \param oAnchor X and Y offsets of the mask origin frame of reference
+ *        w.r.t the source pixel.
+ * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
+ * \param eBorderType The border type operation to be applied at source image border boundaries.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiMorphTopHatBorder_8u_C4R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp8u * pDst, int nDstStep, 
+                             NppiSize oSizeROI, const Npp8u * pMask, NppiSize oMaskSize, NppiPoint oAnchor, Npp8u * pBuffer, NppiBorderType eBorderType);
+
+/**
+ * 1 channel 16-bit unsigned integer morphological top hat with border control.
+ * 
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Source image width and height in pixels relative to pSrc.
+ * \param oSrcOffset Source image starting point relative to pSrc. 
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param pMask Pointer to the start address of the mask array
+ * \param oMaskSize Width and Height mask array.
+ * \param oAnchor X and Y offsets of the mask origin frame of reference
+ *        w.r.t the source pixel.
+ * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
+ * \param eBorderType The border type operation to be applied at source image border boundaries.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiMorphTopHatBorder_16u_C1R(const Npp16u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp16u * pDst, int nDstStep, 
+                              NppiSize oSizeROI, const Npp8u * pMask, NppiSize oMaskSize, NppiPoint oAnchor, Npp8u * pBuffer, NppiBorderType eBorderType);
+
+/**
+ * 1 channel 16-bit signed integer morphological top hat with border control.
+ * 
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Source image width and height in pixels relative to pSrc.
+ * \param oSrcOffset Source image starting point relative to pSrc. 
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param pMask Pointer to the start address of the mask array
+ * \param oMaskSize Width and Height mask array.
+ * \param oAnchor X and Y offsets of the mask origin frame of reference
+ *        w.r.t the source pixel.
+ * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
+ * \param eBorderType The border type operation to be applied at source image border boundaries.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiMorphTopHatBorder_16s_C1R(const Npp16s * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp16s * pDst, int nDstStep, 
+                              NppiSize oSizeROI, const Npp8u * pMask, NppiSize oMaskSize, NppiPoint oAnchor, Npp8u * pBuffer, NppiBorderType eBorderType);
+
+/**
+ * 1 channel 32-bit floating point morphological top hat with border control.
+ * 
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Source image width and height in pixels relative to pSrc.
+ * \param oSrcOffset Source image starting point relative to pSrc. 
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param pMask Pointer to the start address of the mask array
+ * \param oMaskSize Width and Height mask array.
+ * \param oAnchor X and Y offsets of the mask origin frame of reference
+ *        w.r.t the source pixel.
+ * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
+ * \param eBorderType The border type operation to be applied at source image border boundaries.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiMorphTopHatBorder_32f_C1R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, int nDstStep, 
+                              NppiSize oSizeROI, const Npp8u * pMask, NppiSize oMaskSize, NppiPoint oAnchor, Npp8u * pBuffer, NppiBorderType eBorderType);
+
+/**
+ * 3 channel 32-bit floating point morphological top hat with border control.
+ * 
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Source image width and height in pixels relative to pSrc.
+ * \param oSrcOffset Source image starting point relative to pSrc. 
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param pMask Pointer to the start address of the mask array
+ * \param oMaskSize Width and Height mask array.
+ * \param oAnchor X and Y offsets of the mask origin frame of reference
+ *        w.r.t the source pixel.
+ * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
+ * \param eBorderType The border type operation to be applied at source image border boundaries.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiMorphTopHatBorder_32f_C3R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, int nDstStep, 
+                              NppiSize oSizeROI, const Npp8u * pMask, NppiSize oMaskSize, NppiPoint oAnchor, Npp8u * pBuffer, NppiBorderType eBorderType);
+
+/**
+ * 4 channel 32-bit floating point morphological top hat with border control.
+ * 
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Source image width and height in pixels relative to pSrc.
+ * \param oSrcOffset Source image starting point relative to pSrc. 
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param pMask Pointer to the start address of the mask array
+ * \param oMaskSize Width and Height mask array.
+ * \param oAnchor X and Y offsets of the mask origin frame of reference
+ *        w.r.t the source pixel.
+ * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
+ * \param eBorderType The border type operation to be applied at source image border boundaries.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiMorphTopHatBorder_32f_C4R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, int nDstStep, 
+                              NppiSize oSizeROI, const Npp8u * pMask, NppiSize oMaskSize, NppiPoint oAnchor, Npp8u * pBuffer, NppiBorderType eBorderType);
+
+/** @} image_morph_top_hat_border */
+
+/** @defgroup image_morph_black_hat_border MorphBlackHatBorder
+ * Morphological close pixel result minus source pixel with border control.
+ *
+ * Morphological black hat computes the output pixel as the morphological close pixel value of the pixels
+ * under the mask minus the source pixel value. 
+ * Pixels who's corresponding mask values are zero do not participate in the maximum or minimum search.
+ *
+ * If any portion of the mask overlaps the source image boundary the requested border type 
+ * operation is applied to all mask pixels which fall outside of the source image. 
+ * The mask is centered over the source image pixel being tested.
+ *
+ * Before calling any of the MorphBlackHatBorder functions the application first needs to call the corresponding
+ * MorphGetBufferSize to determine the amount of device memory to allocate as a working buffer.  The allocated device memory
+ * is then passed as the pBuffer parameter to the corresponding MorphBlackHatBorder function.
+ *
+ * Use the oSrcOffset and oSrcSize parameters to control where the border control operation is applied to the source image ROI borders.  
+ *
+ * Currently only the NPP_BORDER_REPLICATE border type operation is supported.
+ *
+ * @{
+ *
+ */
+
+/**
+ * 1 channel 8-bit unsigned integer morphological black hat with border control.
+ * 
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Source image width and height in pixels relative to pSrc.
+ * \param oSrcOffset Source image starting point relative to pSrc. 
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param pMask Pointer to the start address of the mask array
+ * \param oMaskSize Width and Height mask array.
+ * \param oAnchor X and Y offsets of the mask origin frame of reference
+ *        w.r.t the source pixel.
+ * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
+ * \param eBorderType The border type operation to be applied at source image border boundaries.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiMorphBlackHatBorder_8u_C1R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp8u * pDst, int nDstStep, 
+                             NppiSize oSizeROI, const Npp8u * pMask, NppiSize oMaskSize, NppiPoint oAnchor, Npp8u * pBuffer, NppiBorderType eBorderType);
+
+/**
+ * 3 channel 8-bit unsigned integer morphological black hat with border control.
+ * 
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Source image width and height in pixels relative to pSrc.
+ * \param oSrcOffset Source image starting point relative to pSrc. 
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param pMask Pointer to the start address of the mask array
+ * \param oMaskSize Width and Height mask array.
+ * \param oAnchor X and Y offsets of the mask origin frame of reference
+ *        w.r.t the source pixel.
+ * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
+ * \param eBorderType The border type operation to be applied at source image border boundaries.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiMorphBlackHatBorder_8u_C3R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp8u * pDst, int nDstStep, 
+                             NppiSize oSizeROI, const Npp8u * pMask, NppiSize oMaskSize, NppiPoint oAnchor, Npp8u * pBuffer, NppiBorderType eBorderType);
+
+/**
+ * 4 channel 8-bit unsigned integer morphological black hat with border control.
+ * 
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Source image width and height in pixels relative to pSrc.
+ * \param oSrcOffset Source image starting point relative to pSrc. 
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param pMask Pointer to the start address of the mask array
+ * \param oMaskSize Width and Height mask array.
+ * \param oAnchor X and Y offsets of the mask origin frame of reference
+ *        w.r.t the source pixel.
+ * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
+ * \param eBorderType The border type operation to be applied at source image border boundaries.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiMorphBlackHatBorder_8u_C4R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp8u * pDst, int nDstStep, 
+                             NppiSize oSizeROI, const Npp8u * pMask, NppiSize oMaskSize, NppiPoint oAnchor, Npp8u * pBuffer, NppiBorderType eBorderType);
+
+/**
+ * 1 channel 16-bit unsigned integer morphological black hat with border control.
+ * 
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Source image width and height in pixels relative to pSrc.
+ * \param oSrcOffset Source image starting point relative to pSrc. 
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param pMask Pointer to the start address of the mask array
+ * \param oMaskSize Width and Height mask array.
+ * \param oAnchor X and Y offsets of the mask origin frame of reference
+ *        w.r.t the source pixel.
+ * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
+ * \param eBorderType The border type operation to be applied at source image border boundaries.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiMorphBlackHatBorder_16u_C1R(const Npp16u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp16u * pDst, int nDstStep, 
+                              NppiSize oSizeROI, const Npp8u * pMask, NppiSize oMaskSize, NppiPoint oAnchor, Npp8u * pBuffer, NppiBorderType eBorderType);
+
+/**
+ * 1 channel 16-bit signed integer morphological black hat with border control.
+ * 
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Source image width and height in pixels relative to pSrc.
+ * \param oSrcOffset Source image starting point relative to pSrc. 
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param pMask Pointer to the start address of the mask array
+ * \param oMaskSize Width and Height mask array.
+ * \param oAnchor X and Y offsets of the mask origin frame of reference
+ *        w.r.t the source pixel.
+ * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
+ * \param eBorderType The border type operation to be applied at source image border boundaries.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiMorphBlackHatBorder_16s_C1R(const Npp16s * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp16s * pDst, int nDstStep, 
+                              NppiSize oSizeROI, const Npp8u * pMask, NppiSize oMaskSize, NppiPoint oAnchor, Npp8u * pBuffer, NppiBorderType eBorderType);
+
+/**
+ * 1 channel 32-bit floating point morphological black hat with border control.
+ * 
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Source image width and height in pixels relative to pSrc.
+ * \param oSrcOffset Source image starting point relative to pSrc. 
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param pMask Pointer to the start address of the mask array
+ * \param oMaskSize Width and Height mask array.
+ * \param oAnchor X and Y offsets of the mask origin frame of reference
+ *        w.r.t the source pixel.
+ * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
+ * \param eBorderType The border type operation to be applied at source image border boundaries.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiMorphBlackHatBorder_32f_C1R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, int nDstStep, 
+                              NppiSize oSizeROI, const Npp8u * pMask, NppiSize oMaskSize, NppiPoint oAnchor, Npp8u * pBuffer, NppiBorderType eBorderType);
+
+/**
+ * 3 channel 32-bit floating point morphological black hat with border control.
+ * 
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Source image width and height in pixels relative to pSrc.
+ * \param oSrcOffset Source image starting point relative to pSrc. 
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param pMask Pointer to the start address of the mask array
+ * \param oMaskSize Width and Height mask array.
+ * \param oAnchor X and Y offsets of the mask origin frame of reference
+ *        w.r.t the source pixel.
+ * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
+ * \param eBorderType The border type operation to be applied at source image border boundaries.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiMorphBlackHatBorder_32f_C3R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, int nDstStep, 
+                              NppiSize oSizeROI, const Npp8u * pMask, NppiSize oMaskSize, NppiPoint oAnchor, Npp8u * pBuffer, NppiBorderType eBorderType);
+
+/**
+ * 4 channel 32-bit floating point morphological black hat with border control.
+ * 
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Source image width and height in pixels relative to pSrc.
+ * \param oSrcOffset Source image starting point relative to pSrc. 
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param pMask Pointer to the start address of the mask array
+ * \param oMaskSize Width and Height mask array.
+ * \param oAnchor X and Y offsets of the mask origin frame of reference
+ *        w.r.t the source pixel.
+ * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
+ * \param eBorderType The border type operation to be applied at source image border boundaries.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiMorphBlackHatBorder_32f_C4R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, int nDstStep, 
+                              NppiSize oSizeROI, const Npp8u * pMask, NppiSize oMaskSize, NppiPoint oAnchor, Npp8u * pBuffer, NppiBorderType eBorderType);
+
+/** @} image_morph_black_hat_border */
+
+/** @defgroup image_morph_gradient_border MorphGradientBorder
+ * Morphological dilated pixel result minus morphological eroded pixel result with border control.
+ *
+ * Morphological gradient computes the output pixel as the morphological dilated pixel value of the pixels
+ * under the mask minus the morphological eroded pixel value of the pixels under the mask. 
+ * Pixels who's corresponding mask values are zero do not participate in the maximum or minimum search.
+ *
+ * If any portion of the mask overlaps the source image boundary the requested border type 
+ * operation is applied to all mask pixels which fall outside of the source image. 
+ * The mask is centered over the source image pixel being tested.
+ *
+ * Before calling any of the MorphGradientBorder functions the application first needs to call the corresponding
+ * MorphGetBufferSize to determine the amount of device memory to allocate as a working buffer.  The allocated device memory
+ * is then passed as the pBuffer parameter to the corresponding MorphGradientBorder function.
+ *
+ * Use the oSrcOffset and oSrcSize parameters to control where the border control operation is applied to the source image ROI borders.  
+ *
+ * Currently only the NPP_BORDER_REPLICATE border type operation is supported.
+ *
+ * @{
+ *
+ */
+
+/**
+ * 1 channel 8-bit unsigned integer morphological gradient with border control.
+ * 
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Source image width and height in pixels relative to pSrc.
+ * \param oSrcOffset Source image starting point relative to pSrc. 
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param pMask Pointer to the start address of the mask array
+ * \param oMaskSize Width and Height mask array.
+ * \param oAnchor X and Y offsets of the mask origin frame of reference
+ *        w.r.t the source pixel.
+ * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
+ * \param eBorderType The border type operation to be applied at source image border boundaries.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiMorphGradientBorder_8u_C1R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp8u * pDst, int nDstStep, 
+                               NppiSize oSizeROI, const Npp8u * pMask, NppiSize oMaskSize, NppiPoint oAnchor, Npp8u * pBuffer, NppiBorderType eBorderType);
+
+/**
+ * 3 channel 8-bit unsigned integer morphological gradient with border control.
+ * 
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Source image width and height in pixels relative to pSrc.
+ * \param oSrcOffset Source image starting point relative to pSrc. 
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param pMask Pointer to the start address of the mask array
+ * \param oMaskSize Width and Height mask array.
+ * \param oAnchor X and Y offsets of the mask origin frame of reference
+ *        w.r.t the source pixel.
+ * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
+ * \param eBorderType The border type operation to be applied at source image border boundaries.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiMorphGradientBorder_8u_C3R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp8u * pDst, int nDstStep, 
+                               NppiSize oSizeROI, const Npp8u * pMask, NppiSize oMaskSize, NppiPoint oAnchor, Npp8u * pBuffer, NppiBorderType eBorderType);
+
+/**
+ * 4 channel 8-bit unsigned integer morphological gradient with border control.
+ * 
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Source image width and height in pixels relative to pSrc.
+ * \param oSrcOffset Source image starting point relative to pSrc. 
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param pMask Pointer to the start address of the mask array
+ * \param oMaskSize Width and Height mask array.
+ * \param oAnchor X and Y offsets of the mask origin frame of reference
+ *        w.r.t the source pixel.
+ * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
+ * \param eBorderType The border type operation to be applied at source image border boundaries.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiMorphGradientBorder_8u_C4R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp8u * pDst, int nDstStep, 
+                               NppiSize oSizeROI, const Npp8u * pMask, NppiSize oMaskSize, NppiPoint oAnchor, Npp8u * pBuffer, NppiBorderType eBorderType);
+
+/**
+ * 1 channel 16-bit unsigned integer morphological gradient with border control.
+ * 
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Source image width and height in pixels relative to pSrc.
+ * \param oSrcOffset Source image starting point relative to pSrc. 
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param pMask Pointer to the start address of the mask array
+ * \param oMaskSize Width and Height mask array.
+ * \param oAnchor X and Y offsets of the mask origin frame of reference
+ *        w.r.t the source pixel.
+ * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
+ * \param eBorderType The border type operation to be applied at source image border boundaries.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiMorphGradientBorder_16u_C1R(const Npp16u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp16u * pDst, int nDstStep, 
+                                NppiSize oSizeROI, const Npp8u * pMask, NppiSize oMaskSize, NppiPoint oAnchor, Npp8u * pBuffer, NppiBorderType eBorderType);
+
+/**
+ * 1 channel 16-bit signed integer morphological gradient with border control.
+ * 
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Source image width and height in pixels relative to pSrc.
+ * \param oSrcOffset Source image starting point relative to pSrc. 
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param pMask Pointer to the start address of the mask array
+ * \param oMaskSize Width and Height mask array.
+ * \param oAnchor X and Y offsets of the mask origin frame of reference
+ *        w.r.t the source pixel.
+ * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
+ * \param eBorderType The border type operation to be applied at source image border boundaries.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiMorphGradientBorder_16s_C1R(const Npp16s * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp16s * pDst, int nDstStep, 
+                                NppiSize oSizeROI, const Npp8u * pMask, NppiSize oMaskSize, NppiPoint oAnchor, Npp8u * pBuffer, NppiBorderType eBorderType);
+
+/**
+ * 1 channel 32-bit floating point morphological gradient with border control.
+ * 
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Source image width and height in pixels relative to pSrc.
+ * \param oSrcOffset Source image starting point relative to pSrc. 
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param pMask Pointer to the start address of the mask array
+ * \param oMaskSize Width and Height mask array.
+ * \param oAnchor X and Y offsets of the mask origin frame of reference
+ *        w.r.t the source pixel.
+ * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
+ * \param eBorderType The border type operation to be applied at source image border boundaries.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiMorphGradientBorder_32f_C1R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, int nDstStep, 
+                                NppiSize oSizeROI, const Npp8u * pMask, NppiSize oMaskSize, NppiPoint oAnchor, Npp8u * pBuffer, NppiBorderType eBorderType);
+
+/**
+ * 3 channel 32-bit floating point morphological gradient with border control.
+ * 
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Source image width and height in pixels relative to pSrc.
+ * \param oSrcOffset Source image starting point relative to pSrc. 
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param pMask Pointer to the start address of the mask array
+ * \param oMaskSize Width and Height mask array.
+ * \param oAnchor X and Y offsets of the mask origin frame of reference
+ *        w.r.t the source pixel.
+ * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
+ * \param eBorderType The border type operation to be applied at source image border boundaries.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiMorphGradientBorder_32f_C3R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, int nDstStep, 
+                                NppiSize oSizeROI, const Npp8u * pMask, NppiSize oMaskSize, NppiPoint oAnchor, Npp8u * pBuffer, NppiBorderType eBorderType);
+
+/**
+ * 4 channel 32-bit floating point morphological gradient with border control.
+ * 
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Source image width and height in pixels relative to pSrc.
+ * \param oSrcOffset Source image starting point relative to pSrc. 
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param pMask Pointer to the start address of the mask array
+ * \param oMaskSize Width and Height mask array.
+ * \param oAnchor X and Y offsets of the mask origin frame of reference
+ *        w.r.t the source pixel.
+ * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
+ * \param eBorderType The border type operation to be applied at source image border boundaries.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiMorphGradientBorder_32f_C4R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, int nDstStep, 
+                                NppiSize oSizeROI, const Npp8u * pMask, NppiSize oMaskSize, NppiPoint oAnchor, Npp8u * pBuffer, NppiBorderType eBorderType);
+
+/** @} image_morph_gradient_border */
+
+/** @} image_morph */
 
 /** @} image_morphological_operations */
 

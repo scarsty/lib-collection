@@ -1157,7 +1157,7 @@ struct __device_builtin__ cudaFuncAttributes
 
    /**
     * On devices where the L1 cache and shared memory use the same hardware resources, 
-    * this sets the shared memory carveout preference, in percent of the maximum shared memory. 
+    * this sets the shared memory carveout preference, in percent of the total resources. 
     * This is only a hint, and the driver can choose a different ratio if required to execute the function.
     */
    int preferredShmemCarveout;
@@ -1360,7 +1360,7 @@ enum __device_builtin__ cudaDeviceAttr
     cudaDevAttrReserved94                     = 94,
     cudaDevAttrCooperativeLaunch              = 95, /**< Device supports launching cooperative kernels via ::cudaLaunchCooperativeKernel*/
     cudaDevAttrCooperativeMultiDeviceLaunch   = 96, /**< Device can participate in cooperative kernels launched via ::cudaLaunchCooperativeKernelMultiDevice */
-    cudaDevAttrMaxSharedMemoryPerBlockOptin   = 97  /**< The maximum optin shared memory per block. This value may vary by chip. See ::cudaFuncSetAttribute */
+    cudaDevAttrMaxSharedMemoryPerBlockOptin   = 97 /**< The maximum optin shared memory per block. This value may vary by chip. See ::cudaFuncSetAttribute */
 };
 
 /**

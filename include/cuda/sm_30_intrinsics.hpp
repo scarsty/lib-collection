@@ -415,75 +415,75 @@ __SM_30_INTRINSICS_DECL__ unsigned long long __shfl_xor_sync(unsigned mask, unsi
 }
 
 __SM_30_INTRINSICS_DECL__ double __shfl(double var, int srcLane, int width) {
-	float lo, hi;
-	asm volatile("mov.b64 {%0,%1}, %2;" : "=f"(lo), "=f"(hi) : "d"(var));
+	unsigned lo, hi;
+	asm volatile("mov.b64 {%0,%1}, %2;" : "=r"(lo), "=r"(hi) : "d"(var));
 	hi = __shfl(hi, srcLane, width);
 	lo = __shfl(lo, srcLane, width);
-	asm volatile("mov.b64 %0, {%1,%2};" : "=d"(var) : "f"(lo), "f"(hi));
+	asm volatile("mov.b64 %0, {%1,%2};" : "=d"(var) : "r"(lo), "r"(hi));
 	return var;
 }
 
 __SM_30_INTRINSICS_DECL__ double __shfl_sync(unsigned mask, double var, int srcLane, int width) {
-	float lo, hi;
-	asm volatile("mov.b64 {%0,%1}, %2;" : "=f"(lo), "=f"(hi) : "d"(var));
+	unsigned lo, hi;
+	asm volatile("mov.b64 {%0,%1}, %2;" : "=r"(lo), "=r"(hi) : "d"(var));
 	hi = __shfl_sync(mask, hi, srcLane, width);
 	lo = __shfl_sync(mask, lo, srcLane, width);
-	asm volatile("mov.b64 %0, {%1,%2};" : "=d"(var) : "f"(lo), "f"(hi));
+	asm volatile("mov.b64 %0, {%1,%2};" : "=d"(var) : "r"(lo), "r"(hi));
 	return var;
 }
 
 
 __SM_30_INTRINSICS_DECL__ double __shfl_up(double var, unsigned int delta, int width) {
-	float lo, hi;
-	asm volatile("mov.b64 {%0,%1}, %2;" : "=f"(lo), "=f"(hi) : "d"(var));
+	unsigned lo, hi;
+	asm volatile("mov.b64 {%0,%1}, %2;" : "=r"(lo), "=r"(hi) : "d"(var));
 	hi = __shfl_up(hi, delta, width);
 	lo = __shfl_up(lo, delta, width);
-	asm volatile("mov.b64 %0, {%1,%2};" : "=d"(var) : "f"(lo), "f"(hi));
+	asm volatile("mov.b64 %0, {%1,%2};" : "=d"(var) : "r"(lo), "r"(hi));
 	return var;
 }
 
 __SM_30_INTRINSICS_DECL__ double __shfl_up_sync(unsigned mask, double var, unsigned int delta, int width) {
-	float lo, hi;
-	asm volatile("mov.b64 {%0,%1}, %2;" : "=f"(lo), "=f"(hi) : "d"(var));
+	unsigned lo, hi;
+	asm volatile("mov.b64 {%0,%1}, %2;" : "=r"(lo), "=r"(hi) : "d"(var));
 	hi = __shfl_up_sync(mask, hi, delta, width);
 	lo = __shfl_up_sync(mask, lo, delta, width);
-	asm volatile("mov.b64 %0, {%1,%2};" : "=d"(var) : "f"(lo), "f"(hi));
+	asm volatile("mov.b64 %0, {%1,%2};" : "=d"(var) : "r"(lo), "r"(hi));
 	return var;
 }
 
 __SM_30_INTRINSICS_DECL__ double __shfl_down(double var, unsigned int delta, int width) {
-	float lo, hi;
-	asm volatile("mov.b64 {%0,%1}, %2;" : "=f"(lo), "=f"(hi) : "d"(var));
+	unsigned lo, hi;
+	asm volatile("mov.b64 {%0,%1}, %2;" : "=r"(lo), "=r"(hi) : "d"(var));
 	hi = __shfl_down(hi, delta, width);
 	lo = __shfl_down(lo, delta, width);
-	asm volatile("mov.b64 %0, {%1,%2};" : "=d"(var) : "f"(lo), "f"(hi));
+	asm volatile("mov.b64 %0, {%1,%2};" : "=d"(var) : "r"(lo), "r"(hi));
 	return var;
 }
 
 __SM_30_INTRINSICS_DECL__ double __shfl_down_sync(unsigned mask, double var, unsigned int delta, int width) {
-	float lo, hi;
-	asm volatile("mov.b64 {%0,%1}, %2;" : "=f"(lo), "=f"(hi) : "d"(var));
+	unsigned lo, hi;
+	asm volatile("mov.b64 {%0,%1}, %2;" : "=r"(lo), "=r"(hi) : "d"(var));
 	hi = __shfl_down_sync(mask, hi, delta, width);
 	lo = __shfl_down_sync(mask, lo, delta, width);
-	asm volatile("mov.b64 %0, {%1,%2};" : "=d"(var) : "f"(lo), "f"(hi));
+	asm volatile("mov.b64 %0, {%1,%2};" : "=d"(var) : "r"(lo), "r"(hi));
 	return var;
 }
 
 __SM_30_INTRINSICS_DECL__ double __shfl_xor(double var, int laneMask, int width) {
-	float lo, hi;
-	asm volatile("mov.b64 {%0,%1}, %2;" : "=f"(lo), "=f"(hi) : "d"(var));
+	unsigned lo, hi;
+	asm volatile("mov.b64 {%0,%1}, %2;" : "=r"(lo), "=r"(hi) : "d"(var));
 	hi = __shfl_xor(hi, laneMask, width);
 	lo = __shfl_xor(lo, laneMask, width);
-	asm volatile("mov.b64 %0, {%1,%2};" : "=d"(var) : "f"(lo), "f"(hi));
+	asm volatile("mov.b64 %0, {%1,%2};" : "=d"(var) : "r"(lo), "r"(hi));
 	return var;
 }
 
 __SM_30_INTRINSICS_DECL__ double __shfl_xor_sync(unsigned mask, double var, int laneMask, int width) {
-	float lo, hi;
-	asm volatile("mov.b64 {%0,%1}, %2;" : "=f"(lo), "=f"(hi) : "d"(var));
+	unsigned lo, hi;
+	asm volatile("mov.b64 {%0,%1}, %2;" : "=r"(lo), "=r"(hi) : "d"(var));
 	hi = __shfl_xor_sync(mask, hi, laneMask, width);
 	lo = __shfl_xor_sync(mask, lo, laneMask, width);
-	asm volatile("mov.b64 %0, {%1,%2};" : "=d"(var) : "f"(lo), "f"(hi));
+	asm volatile("mov.b64 %0, {%1,%2};" : "=d"(var) : "r"(lo), "r"(hi));
 	return var;
 }
 

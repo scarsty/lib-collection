@@ -93,23 +93,12 @@
 
 #if defined(__cplusplus) && defined(__CUDACC__)
 
-#if defined(__CUDACC_RTC__)
-#define __CUDA_FP16_DECL__ __host__ __device__
-#define __VECTOR_FUNCTIONS_DECL__ __host__ __device__
-#else /* !__CUDACC_RTC__ */
 #define __CUDA_FP16_DECL__ static __device__ __inline__
-#define __VECTOR_FUNCTIONS_DECL__ static __inline__ __host__ __device__
-#endif /* __CUDACC_RTC__ */
 
 #define __CUDA_FP16_TYPES_EXIST__
 /* Forward-declaration of structures defined in "cuda_fp16.hpp" */
 struct __half;
 struct __half2;
-
-/* Vector type creation functions, match vector_functions.h */
-__VECTOR_FUNCTIONS_DECL__ float2 make_float2(float x, float y);
-
-#undef __VECTOR_FUNCTIONS_DECL__
 
 /**
 * \ingroup CUDA_MATH__HALF_MISC

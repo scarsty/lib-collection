@@ -2383,7 +2383,52 @@ CUBLASAPI cublasStatus_t CUBLASWINAPI cublasZgemmBatched (cublasHandle_t handle,
                                                           const cuDoubleComplex *beta, /* host or device pointer */ 
                                                           cuDoubleComplex *Carray[],
                                                           int ldc,
-                                                          int batchCount); 
+                                                          int batchCount);
+
+CUBLASAPI cublasStatus_t CUBLASWINAPI cublasGemmBatchedEx  (cublasHandle_t handle, 
+                                                      cublasOperation_t transa,
+                                                      cublasOperation_t transb, 
+                                                      int m,
+                                                      int n,
+                                                      int k,
+                                                      const void *alpha, /* host or device pointer */  
+                                                      const void *Aarray[], 
+                                                      cudaDataType Atype,
+                                                      int lda,
+                                                      const void *Barray[],
+                                                      cudaDataType Btype,
+                                                      int ldb, 
+                                                      const void *beta, /* host or device pointer */  
+                                                      void *Carray[],
+                                                      cudaDataType Ctype,
+                                                      int ldc,
+                                                      int batchCount,
+                                                      cudaDataType computeType,
+                                                      cublasGemmAlgo_t algo); 
+ 
+CUBLASAPI cublasStatus_t CUBLASWINAPI cublasGemmStridedBatchedEx (cublasHandle_t handle,
+                                                                 cublasOperation_t transa,
+                                                                 cublasOperation_t transb, 
+                                                                 int m,
+                                                                 int n,
+                                                                 int k,
+                                                                 const void *alpha,  /* host or device pointer */
+                                                                 const void *A,
+                                                                 cudaDataType Atype,
+                                                                 int lda,
+                                                                 long long int strideA,   /* purposely signed */
+                                                                 const void *B,
+                                                                 cudaDataType Btype,
+                                                                 int ldb,
+                                                                 long long int strideB,
+                                                                 const void *beta,   /* host or device pointer */
+                                                                 void *C,
+                                                                 cudaDataType Ctype,
+                                                                 int ldc,
+                                                                 long long int strideC,
+                                                                 int batchCount,
+                                                                 cudaDataType computeType,
+                                                                 cublasGemmAlgo_t algo);
 
 CUBLASAPI cublasStatus_t CUBLASWINAPI cublasSgemmStridedBatched (cublasHandle_t handle,
                                                                  cublasOperation_t transa,

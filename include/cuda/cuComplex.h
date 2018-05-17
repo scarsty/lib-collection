@@ -50,6 +50,14 @@
 #if !defined(CU_COMPLEX_H_)
 #define CU_COMPLEX_H_
 
+#if !defined(__CUDACC_RTC__)
+#if defined(__GNUC__)
+#if defined(__clang__) || (!defined(__PGIC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 2)))
+#pragma GCC diagnostic ignored "-Wunused-function"
+#endif
+#endif
+#endif
+
 /* When trying to include C header file in C++ Code extern "C" is required
  * But the Standard QNX headers already have ifdef extern in them when compiling C++ Code
  * extern "C" cannot be nested

@@ -132,6 +132,8 @@ cusolverStatus_t CUSOLVERAPI cusolverDnDpotrf(
     int Lwork, 
     int *devInfo );
 
+
+
 cusolverStatus_t CUSOLVERAPI cusolverDnCpotrf( 
     cusolverDnHandle_t handle, 
     cublasFillMode_t uplo, 
@@ -196,6 +198,91 @@ cusolverStatus_t CUSOLVERAPI cusolverDnZpotrs(
     cuDoubleComplex *B,
     int ldb,
     int *devInfo);
+
+/* batched Cholesky factorization and its solver */
+cusolverStatus_t CUSOLVERAPI cusolverDnSpotrfBatched(
+    cusolverDnHandle_t handle,
+    cublasFillMode_t uplo,
+    int n,
+    float *Aarray[],
+    int lda,
+    int *infoArray,
+    int batchSize);
+
+cusolverStatus_t CUSOLVERAPI cusolverDnDpotrfBatched(
+    cusolverDnHandle_t handle,
+    cublasFillMode_t uplo,
+    int n,
+    double *Aarray[],
+    int lda,
+    int *infoArray,
+    int batchSize);
+
+cusolverStatus_t CUSOLVERAPI cusolverDnCpotrfBatched(
+    cusolverDnHandle_t handle,
+    cublasFillMode_t uplo,
+    int n,
+    cuComplex *Aarray[],
+    int lda,
+    int *infoArray,
+    int batchSize);
+
+cusolverStatus_t CUSOLVERAPI cusolverDnZpotrfBatched(
+    cusolverDnHandle_t handle,
+    cublasFillMode_t uplo,
+    int n,
+    cuDoubleComplex *Aarray[],
+    int lda,
+    int *infoArray,
+    int batchSize);
+
+cusolverStatus_t CUSOLVERAPI cusolverDnSpotrsBatched(
+    cusolverDnHandle_t handle,
+    cublasFillMode_t uplo,
+    int n,
+    int nrhs, /* only support rhs = 1*/
+    float *A[],
+    int lda,
+    float *B[],
+    int ldb,
+    int *d_info,
+    int batchSize);
+
+cusolverStatus_t CUSOLVERAPI cusolverDnDpotrsBatched(
+    cusolverDnHandle_t handle,
+    cublasFillMode_t uplo,
+    int n,
+    int nrhs, /* only support rhs = 1*/
+    double *A[],
+    int lda,
+    double *B[],
+    int ldb,
+    int *d_info,
+    int batchSize);
+
+cusolverStatus_t CUSOLVERAPI cusolverDnCpotrsBatched(
+    cusolverDnHandle_t handle,
+    cublasFillMode_t uplo,
+    int n,
+    int nrhs, /* only support rhs = 1*/
+    cuComplex *A[],
+    int lda,
+    cuComplex *B[],
+    int ldb,
+    int *d_info,
+    int batchSize);
+
+cusolverStatus_t CUSOLVERAPI cusolverDnZpotrsBatched(
+    cusolverDnHandle_t handle,
+    cublasFillMode_t uplo,
+    int n,
+    int nrhs, /* only support rhs = 1*/
+    cuDoubleComplex *A[],
+    int lda,
+    cuDoubleComplex *B[],
+    int ldb,
+    int *d_info,
+    int batchSize);
 
 
 /* LU Factorization */

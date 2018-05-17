@@ -2219,7 +2219,7 @@ nppiRemap_64f_P4R(const Npp64f * const pSrc[4], NppiSize oSrcSize, int nSrcStep,
  *
  */
 
-/** @name Utility Functions
+/** @defgroup rotate_utility_functions Rotate Utility Functions
  *
  * @{
  *
@@ -2254,9 +2254,9 @@ nppiGetRotateQuad(NppiRect oSrcROI, double aQuad[4][2], double nAngle, double nS
 NppStatus 
 nppiGetRotateBound(NppiRect oSrcROI, double aBoundingBox[2][2], double nAngle, double nShiftX, double nShiftY);
 
-/** @} Utility Functions */
+/** @} rotate_utility_functions */
 
-/** @name Rotate
+/** @defgroup rotate_ Rotate
  *
  * @{
  *
@@ -2513,20 +2513,15 @@ NppStatus
 nppiRotate_32f_AC4R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
                           Npp32f * pDst, int nDstStep, NppiRect oDstROI,
                     double nAngle, double nShiftX, double nShiftY, int eInterpolation);
-/** @} */
+/** @} rotate */
 
 /** @} image_rotate */
 
 /** @defgroup image_mirror Mirror
- * \section mirror_error_codes Mirror Error Codes
- *         - ::NPP_MIRROR_FLIP_ERR if flip has an illegal value.
- *
- * @{
- *
- */
-
-/** @name Mirror
  *  Mirrors images horizontally, vertically or diagonally.
+ *
+ * \section mirror_error_codes Mirror Error Codes
+ *         - ::NPP_MIRROR_FLIP_ERROR if flip has an illegal value.
  *
  * @{
  *
@@ -3124,9 +3119,9 @@ NppStatus
 nppiMirror_32f_AC4IR(Npp32f * pSrcDst, int nSrcDstStep, 
                      NppiSize oROI, NppiAxis flip);
 
-/** @} Mirror */
+/** @} image_mirror */
 
-/** @name MirrorBatch
+/** @defgroup mirror_batch MirrorBatch
  *  Mirrors batches of images horizontally, vertically or diagonally.
  *
  * MirrorBatch generally takes the same parameter list as Mirror except that there is a list of N instances of those parameters (N > 1) 
@@ -3245,22 +3240,20 @@ nppiMirrorBatch_32f_AC4R(NppiSize oSizeROI, NppiAxis flip, NppiMirrorBatchCXR * 
 NppStatus 
 nppiMirrorBatch_32f_AC4IR(NppiSize oSizeROI, NppiAxis flip, NppiMirrorBatchCXR * pBatchList, int nBatchSize);
 
-/** @} MirrorBatch */
-
-/** @} image_mirror */
+/** @} mirror_batch */
 
 /** @defgroup image_affine_transform Affine Transforms
  *
  * \section affine_transform_error_codes Affine Transform Error Codes
  *
- *         - ::NPP_RECT_ERROR Indicates an error condition if width or height of
+ *         - ::NPP_RECTANGLE_ERROR Indicates an error condition if width or height of
  *           the intersection of the oSrcROI and source image is less than or
  *           equal to 1
  *         - ::NPP_WRONG_INTERSECTION_ROI_ERROR Indicates an error condition if
  *           oSrcROI has no intersection with the source image
  *         - ::NPP_INTERPOLATION_ERROR Indicates an error condition if
  *           interpolation has an illegal value
- *         - ::NPP_COEFF_ERROR Indicates an error condition if coefficient values
+ *         - ::NPP_COEFFICIENT_ERROR Indicates an error condition if coefficient values
  *           are invalid
  *         - ::NPP_WRONG_INTERSECTION_QUAD_WARNING Indicates a warning that no
  *           operation is performed if the transformed source ROI has no
@@ -3270,7 +3263,7 @@ nppiMirrorBatch_32f_AC4IR(NppiSize oSizeROI, NppiAxis flip, NppiMirrorBatchCXR *
  *
  */
 
-/** @name Utility Functions
+/** @defgroup affine_transform_utility_functions Affine Transform Utility Functions
  *
  * @{
  *
@@ -3296,16 +3289,16 @@ nppiMirrorBatch_32f_AC4IR(NppiSize oSizeROI, NppiAxis flip, NppiMirrorBatchCXR *
  * ::NPP_AFFINE_QUAD_INCORRECT_WARNING.
  *
  * \param oSrcROI The source ROI. This rectangle needs to be at least one pixel wide and
- *          high. If either width or hight are less than one an ::NPP_RECT_ERROR is returned.
+ *          high. If either width or hight are less than one an ::NPP_RECTANGLE_ERROR is returned.
  * \param aQuad The destination quadrilateral.
  * \param aCoeffs The resulting affine transform coefficients.
  * \return Error codes:
  *         - ::NPP_SIZE_ERROR Indicates an error condition if any image dimension
  *           has zero or negative value
- *         - ::NPP_RECT_ERROR Indicates an error condition if width or height of
+ *         - ::NPP_RECTANGLE_ERROR Indicates an error condition if width or height of
  *           the intersection of the oSrcROI and source image is less than or
  *           equal to 1
- *         - ::NPP_COEFF_ERROR Indicates an error condition if coefficient values
+ *         - ::NPP_COEFFICIENT_ERROR Indicates an error condition if coefficient values
  *           are invalid
  *         - ::NPP_AFFINE_QUAD_INCORRECT_WARNING Indicates a warning when quad
  *           does not conform to the transform properties. Fourth vertex is
@@ -3328,10 +3321,10 @@ nppiGetAffineTransform(NppiRect oSrcROI, const double aQuad[4][2], double aCoeff
  * \return Error codes:
  *         - ::NPP_SIZE_ERROR Indicates an error condition if any image dimension
  *           has zero or negative value
- *         - ::NPP_RECT_ERROR Indicates an error condition if width or height of
+ *         - ::NPP_RECTANGLE_ERROR Indicates an error condition if width or height of
  *           the intersection of the oSrcROI and source image is less than or
  *           equal to 1
- *         - ::NPP_COEFF_ERROR Indicates an error condition if coefficient values
+ *         - ::NPP_COEFFICIENT_ERROR Indicates an error condition if coefficient values
  *           are invalid
  */
 NppStatus 
@@ -3350,20 +3343,21 @@ nppiGetAffineQuad(NppiRect oSrcROI, double aQuad[4][2], const double aCoeffs[2][
  * \return Error codes:
  *         - ::NPP_SIZE_ERROR Indicates an error condition if any image dimension
  *           has zero or negative value
- *         - ::NPP_RECT_ERROR Indicates an error condition if width or height of
+ *         - ::NPP_RECTANGLE_ERROR Indicates an error condition if width or height of
  *           the intersection of the oSrcROI and source image is less than or
  *           equal to 1
- *         - ::NPP_COEFF_ERROR Indicates an error condition if coefficient values
+ *         - ::NPP_COEFFICIENT_ERROR Indicates an error condition if coefficient values
  *           are invalid
  */
 NppStatus 
 nppiGetAffineBound(NppiRect oSrcROI, double aBound[2][2], const double aCoeffs[2][3]);
 
-/** @} Utility Functions Section */
+/** @} affine_transform_utility_functions */
 
-/** @name Affine Transform
- * Transforms (warps) an image based on an affine transform. The affine
- * transform is given as a \f$2\times 3\f$ matrix C. A pixel location \f$(x, y)\f$ in the
+/** @defgroup affine_transform Affine Transform
+ * Transforms (warps) an image based on an affine transform. 
+ *
+ * The affine transform is given as a \f$2\times 3\f$ matrix C. A pixel location \f$(x, y)\f$ in the
  * source image is mapped to the location \f$(x', y')\f$ in the destination image.
  * The destination image coorodinates are computed as follows:
  * \f[
@@ -3997,9 +3991,9 @@ nppiWarpAffine_64f_P4R(const Npp64f * aSrc[4], NppiSize oSrcSize, int nSrcStep, 
                        const double aCoeffs[2][3], int eInterpolation);
 
 
-/** @} Affine Transform Section */
+/** @} affine_transform */
 
-/** @name Affine Transform Batch
+/** @defgroup affine_transform_batch Affine Transform Batch
  *
  * Details of the warp affine operation are described above in the WarpAffine section. WarpAffineBatch generally takes the same parameter list as 
  * WarpAffine except that there is a list of N instances of those parameters (N > 1) and that list is passed in device memory. A convenient
@@ -4120,11 +4114,12 @@ NppStatus
 nppiWarpAffineBatch_32f_AC4R(NppiSize oSmallestSrcSize, NppiRect oSrcRectROI, NppiRect oDstRectROI, 
                              int eInterpolation, NppiWarpAffineBatchCXR * pBatchList, unsigned int nBatchSize);
 
-/** @} Affine Transform Batch Section */
+/** @} affine_transform_batch */
 
-/** @name Backwards Affine Transform
- * Transforms (warps) an image based on an affine transform. The affine
- * transform is given as a \f$2\times 3\f$ matrix C. A pixel location \f$(x, y)\f$ in the
+/** @defgroup backwards_affine_transform Backwards Affine Transform
+ * Transforms (warps) an image based on an affine transform. 
+ *
+ * The affine transform is given as a \f$2\times 3\f$ matrix C. A pixel location \f$(x, y)\f$ in the
  * source image is mapped to the location \f$(x', y')\f$ in the destination image.
  * The destination image coorodinates fullfil the following properties:
  * \f[
@@ -4627,11 +4622,12 @@ nppiWarpAffineBack_32f_P4R(const Npp32f * pSrc[4], NppiSize oSrcSize, int nSrcSt
                            const double aCoeffs[2][3], int eInterpolation);
 
 
-/** @} Backwards Affine Transform Section */
+/** @} backwards_affine_transfrom */
 
-/** @name Quad-Based Affine Transform
- * Transforms (warps) an image based on an affine transform. The affine
- * transform is computed such that it maps a quadrilateral in source image space to a 
+/** @defgroup quad_based_affine_transform Quad-Based Affine Transform
+ * Transforms (warps) an image based on an affine transform. 
+ *
+ * The affine transform is computed such that it maps a quadrilateral in source image space to a 
  * quadrilateral in destination image space. 
  *
  * An affine transform is fully determined by the mapping of 3 discrete points.
@@ -5151,7 +5147,7 @@ nppiWarpAffineQuad_32f_P4R(const Npp32f * pSrc[4], NppiSize oSrcSize, int nSrcSt
                            int eInterpolation);
 
 
-/** @} Quad-Based Affine Transform Section */
+/** @} quad_based_affine_transform */
 
 /** @} image_affine_transforms */
 
@@ -5159,14 +5155,14 @@ nppiWarpAffineQuad_32f_P4R(const Npp32f * pSrc[4], NppiSize oSrcSize, int nSrcSt
  *
  * \section perspective_transform_error_codes Perspective Transform Error Codes
  *
- *         - ::NPP_RECT_ERROR Indicates an error condition if width or height of
+ *         - ::NPP_RECTANGLE_ERROR Indicates an error condition if width or height of
  *           the intersection of the oSrcROI and source image is less than or
  *           equal to 1
  *         - ::NPP_WRONG_INTERSECTION_ROI_ERROR Indicates an error condition if
  *           oSrcROI has no intersection with the source image
  *         - ::NPP_INTERPOLATION_ERROR Indicates an error condition if
  *           interpolation has an illegal value
- *         - ::NPP_COEFF_ERROR Indicates an error condition if coefficient values
+ *         - ::NPP_COEFFICIENT_ERROR Indicates an error condition if coefficient values
  *           are invalid
  *         - ::NPP_WRONG_INTERSECTION_QUAD_WARNING Indicates a warning that no
  *           operation is performed if the transformed source ROI has no
@@ -5176,7 +5172,7 @@ nppiWarpAffineQuad_32f_P4R(const Npp32f * pSrc[4], NppiSize oSrcSize, int nSrcSt
  *
  */
 
-/** @name Utility Functions
+/** @defgroup perspective_transform_utility_functions Perspective Transform Utility Functions
  *
  * @{
  *
@@ -5192,10 +5188,10 @@ nppiWarpAffineQuad_32f_P4R(const Npp32f * pSrc[4], NppiSize oSrcSize, int nSrcSt
  * \return Error codes:
  *         - ::NPP_SIZE_ERROR Indicates an error condition if any image dimension
  *           has zero or negative value
- *         - ::NPP_RECT_ERROR Indicates an error condition if width or height of
+ *         - ::NPP_RECTANGLE_ERROR Indicates an error condition if width or height of
  *           the intersection of the oSrcROI and source image is less than or
  *           equal to 1
- *         - ::NPP_COEFF_ERROR Indicates an error condition if coefficient values
+ *         - ::NPP_COEFFICIENT_ERROR Indicates an error condition if coefficient values
  *           are invalid
  */
 NppStatus 
@@ -5212,10 +5208,10 @@ nppiGetPerspectiveTransform(NppiRect oSrcROI, const double quad[4][2], double aC
  * \return Error codes:
  *         - ::NPP_SIZE_ERROR Indicates an error condition if any image dimension
  *           has zero or negative value
- *         - ::NPP_RECT_ERROR Indicates an error condition if width or height of
+ *         - ::NPP_RECTANGLE_ERROR Indicates an error condition if width or height of
  *           the intersection of the oSrcROI and source image is less than or
  *           equal to 1
- *         - ::NPP_COEFF_ERROR Indicates an error condition if coefficient values
+ *         - ::NPP_COEFFICIENT_ERROR Indicates an error condition if coefficient values
  *           are invalid
  */
 NppStatus 
@@ -5232,20 +5228,21 @@ nppiGetPerspectiveQuad(NppiRect oSrcROI, double quad[4][2], const double aCoeffs
  * \return Error codes:
  *         - ::NPP_SIZE_ERROR Indicates an error condition if any image dimension
  *           has zero or negative value
- *         - ::NPP_RECT_ERROR Indicates an error condition if width or height of
+ *         - ::NPP_RECTANGLE_ERROR Indicates an error condition if width or height of
  *           the intersection of the oSrcROI and source image is less than or
  *           equal to 1
- *         - ::NPP_COEFF_ERROR Indicates an error condition if coefficient values
+ *         - ::NPP_COEFFICIENT_ERROR Indicates an error condition if coefficient values
  *           are invalid
  */
 NppStatus 
 nppiGetPerspectiveBound(NppiRect oSrcROI, double bound[2][2], const double aCoeffs[3][3]);
 
-/** @} Utility Functions Section */
+/** @} perspective_transform_utility_functions */
 
-/** @name Perspective Transform
- * Transforms (warps) an image based on a perspective transform. The perspective
- * transform is given as a \f$3\times 3\f$ matrix C. A pixel location \f$(x, y)\f$ in the
+/** @defgroup perspective_transform Perspective Transform
+ * Transforms (warps) an image based on a perspective transform. 
+ *
+ * The perspective transform is given as a \f$3\times 3\f$ matrix C. A pixel location \f$(x, y)\f$ in the
  * source image is mapped to the location \f$(x', y')\f$ in the destination image.
  * The destination image coorodinates are computed as follows:
  * \f[
@@ -5742,12 +5739,13 @@ nppiWarpPerspective_32f_P4R(const Npp32f * pSrc[4], NppiSize oSrcSize, int nSrcS
                                   Npp32f * pDst[4], int nDstStep, NppiRect oDstROI, 
                             const double aCoeffs[3][3], int eInterpolation);
 
-/** @} Perspective Transform Section */
+/** @} perspective_transform */
 
 
-/** @name Backwards Perspective Transform
- * Transforms (warps) an image based on a perspective transform. The perspective
- * transform is given as a \f$3\times 3\f$ matrix C. A pixel location \f$(x, y)\f$ in the
+/** @defgroup backwards_perspective_transform Backwards Perspective Transform
+ * Transforms (warps) an image based on a perspective transform. 
+ *
+ * The perspective transform is given as a \f$3\times 3\f$ matrix C. A pixel location \f$(x, y)\f$ in the
  * source image is mapped to the location \f$(x', y')\f$ in the destination image.
  * The destination image coorodinates fullfil the following properties:
  * \f[
@@ -6255,11 +6253,12 @@ nppiWarpPerspectiveBack_32f_P4R(const Npp32f * pSrc[4], NppiSize oSrcSize, int n
                                       Npp32f * pDst[4], int nDstStep, NppiRect oDstROI, 
                                 const double aCoeffs[3][3], int eInterpolation);
 
-/** @} Backwards Perspective Transform Section */
+/** @} backward_perspective_transform */
 
-/** @name Quad-Based Perspective Transform
- * Transforms (warps) an image based on an perspective transform. The perspective
- * transform is computed such that it maps a quadrilateral in source image space to a 
+/** @defgroup quad_based_perspective_transform Quad-Based Perspective Transform
+ * Transforms (warps) an image based on an perspective transform. 
+ *
+ * The perspective transform is computed such that it maps a quadrilateral in source image space to a 
  * quadrilateral in destination image space. 
  *
  * @{
@@ -6748,7 +6747,7 @@ nppiWarpPerspectiveQuad_32f_P4R(const Npp32f * pSrc[4], NppiSize oSrcSize, int n
 
 
 
-/** @} Quad-Based Perspective Transform Section */
+/** @} quad_based_perspective_transform */
 
 /** @} image_perspective_transforms */
 

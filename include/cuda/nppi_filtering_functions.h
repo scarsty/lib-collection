@@ -1,4 +1,4 @@
- /* Copyright 2009-2016 NVIDIA Corporation.  All rights reserved. 
+ /* Copyright 2009-2017 NVIDIA Corporation.  All rights reserved. 
   * 
   * NOTICE TO LICENSEE: 
   * 
@@ -81,8 +81,9 @@ extern "C" {
  *
  */
 
-/** @name FilterColumn
- * Apply convolution filter with user specified 1D column of weights.  
+/** @defgroup image_filter_column FilterColumn
+ * Apply convolution filter with user specified 1D column of weights.
+ *  
  * Result pixel is equal to the sum of the products between the kernel
  * coefficients (pKernel array) and corresponding neighboring column pixel
  * values in the source image defined by nKernelDim and nAnchorY, divided by
@@ -464,9 +465,9 @@ nppiFilterColumn_64f_C1R(const Npp64f * pSrc, Npp32s nSrcStep, Npp64f * pDst, Np
                          const Npp64f * pKernel, Npp32s nMaskSize, Npp32s nAnchor);
 
 
-/** @} FilterColumn */
+/** @} image_filter_column */
 
-/** @name FilterColumnBorder
+/** @defgroup image_filter_column_border FilterColumnBorder
  * General purpose 1D convolution column filter with border control.
  *
  * Pixels under the mask are multiplied by the respective weights in the mask
@@ -879,9 +880,9 @@ NppStatus
 nppiFilterColumnBorder_32f_AC4R(const Npp32f * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI, 
                                 const Npp32f * pKernel, Npp32s nMaskSize, Npp32s nAnchor, NppiBorderType eBorderType);
 
-/** @} FilterColumnBorder */
+/** @} image_filter_column_border */
 
-/** @name FilterColumn32f
+/** @defgroup image_filter_column_32f FilterColumn32f
  * 
  * FilterColumn using floating-point weights.
  * 
@@ -1117,9 +1118,9 @@ NppStatus
 nppiFilterColumn32f_16s_AC4R(const Npp16s * pSrc, Npp32s nSrcStep, Npp16s * pDst, Npp32s nDstStep, NppiSize oROI, 
                              const Npp32f * pKernel, Npp32s nMaskSize, Npp32s nAnchor);
 
-/** @} FilterColumn32f */
+/** @} image_filter_column_32f */
 
-/** @name FilterColumnBorder32f
+/** @defgroup image_filter_column_border_32f FilterColumnBorder32f
  * General purpose 1D column convolution filter using floating-point weights with border control.
  *
  * Pixels under the mask are multiplied by the respective weights in the mask
@@ -1398,10 +1399,11 @@ NppStatus
 nppiFilterColumnBorder32f_16s_AC4R(const Npp16s * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp16s * pDst, int nDstStep, NppiSize oSizeROI, 
                                    const Npp32f * pKernel, Npp32s nMaskSize, Npp32s nAnchor, NppiBorderType eBorderType);
 
-/** @} FilterColumnBorder32f */
+/** @} image_filter_column_border_32f */
 
-/** @name FilterRow
- * Apply convolution filter with user specified 1D row of weights.  
+/** @defgroup image_filter_row FilterRow
+ * Apply convolution filter with user specified 1D row of weights.
+ *  
  * Result pixel is equal to the sum of the products between the kernel
  * coefficients (pKernel array) and corresponding neighboring row pixel
  * values in the source image defined by nKernelDim and nAnchorX, divided by
@@ -1784,9 +1786,9 @@ nppiFilterRow_64f_C1R(const Npp64f * pSrc, Npp32s nSrcStep, Npp64f * pDst, Npp32
                       const Npp64f * pKernel, Npp32s nMaskSize, Npp32s nAnchor);
 
 
-/** @} FilterRow */
+/** @} image_filter_row */
 
-/** @name FilterRowBorder
+/** @defgroup image_filter_row_border FilterRowBorder
  * General purpose 1D convolution row filter with border control.
  *
  * Pixels under the mask are multiplied by the respective weights in the mask
@@ -2199,9 +2201,9 @@ NppStatus
 nppiFilterRowBorder_32f_AC4R(const Npp32f * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI, 
                              const Npp32f * pKernel, Npp32s nMaskSize, Npp32s nAnchor, NppiBorderType eBorderType);
 
-/** @} FilterRowBorder */
+/** @} image_filter_row_border */
 
-/** @name FilterRow32f
+/** @defgroup image_filter_row_32f FilterRow32f
  * 
  * FilterRow using floating-point weights.
  * 
@@ -2437,9 +2439,9 @@ NppStatus
 nppiFilterRow32f_16s_AC4R(const Npp16s * pSrc, Npp32s nSrcStep, Npp16s * pDst, Npp32s nDstStep, NppiSize oROI, 
                           const Npp32f * pKernel, Npp32s nMaskSize, Npp32s nAnchor);
 
-/** @} FilterRow32f */
+/** @} image_filter_row_32f */
 
-/** @name FilterRowBorder32f
+/** @defgroup image_filter_row_border_32f FilterRowBorder32f
  * General purpose 1D row convolution filter using floating-point weights with border control.
  *
  * Pixels under the mask are multiplied by the respective weights in the mask
@@ -2718,7 +2720,7 @@ NppStatus
 nppiFilterRowBorder32f_16s_AC4R(const Npp16s * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp16s * pDst, int nDstStep, NppiSize oSizeROI, 
                                 const Npp32f * pKernel, Npp32s nMaskSize, Npp32s nAnchor, NppiBorderType eBorderType);
 
-/** @} FilterRowBorder32f */
+/** @} image_filter_row_border_32f */
 
 /** @} image_1D_linear_filter */
 
@@ -2728,7 +2730,7 @@ nppiFilterRowBorder32f_16s_AC4R(const Npp16s * pSrc, int nSrcStep, NppiSize oSrc
  *
  */
 
-/** @name 1D Window Sum
+/** @defgroup image_1D_window_column_sum 1D Window Column Sum
  *  1D mask Window Sum for 8 and 16 bit images.
  *
  * @{
@@ -2953,6 +2955,14 @@ NppStatus nppiSumWindowColumn_16s32f_C4R(const Npp16s * pSrc, Npp32s nSrcStep,
                                                Npp32f * pDst, Npp32s nDstStep, NppiSize oROI, 
                                          Npp32s nMaskSize, Npp32s nAnchor);
 
+/** @} image_filter_1D_window_column_sum */
+
+/** @defgroup image_filter_1D_window_row_sum 1D Window Row Sum
+ *
+ * @{
+ *
+ */
+
 /**
  * One channel 8-bit unsigned 1D (row) sum to 32f.
  *
@@ -3167,7 +3177,8 @@ NppStatus
 nppiSumWindowRow_16s32f_C4R(const Npp16s * pSrc, Npp32s nSrcStep, 
                                   Npp32f * pDst, Npp32s nDstStep, 
                             NppiSize oROI, Npp32s nMaskSize, Npp32s nAnchor);
-/** @} */
+
+/** @} image_filter_1D_window_row_sum */
 
 /** @} image_1D_window_sum */
 
@@ -3177,8 +3188,9 @@ nppiSumWindowRow_16s32f_C4R(const Npp16s * pSrc, Npp32s nSrcStep,
  *
  */
 
-/** @name 1D Window Sum Border
- * 1D mask Window Sum for 8 and 16 bit images with border control. 
+/** @defgroup image_filter_1D_window_column_sum_border 1D Window Column Sum Border
+ * 1D mask Window Sum for 8 and 16 bit images with border control.
+ * 
  * If any portion of the mask overlaps the source image boundary the requested border type operation 
  * is applied to all mask pixels which fall outside of the source image.
  *
@@ -3433,6 +3445,14 @@ NppStatus nppiSumWindowColumnBorder_16s32f_C4R(const Npp16s * pSrc, Npp32s nSrcS
                                                      Npp32f * pDst, Npp32s nDstStep, NppiSize oROI, 
                                                      Npp32s nMaskSize, Npp32s nAnchor, NppiBorderType eBorderType);
 
+/** @} image_filter_1D_window_column_sum_border */
+
+/** @defgroup image_filter_1D_window_row_sum_border 1D Window Row Sum Border
+ *
+ * @{
+ *
+ */
+
 /**
  * One channel 8-bit unsigned 1D (row) sum to 32f with border control.
  *
@@ -3674,7 +3694,8 @@ NppStatus
 nppiSumWindowRowBorder_16s32f_C4R(const Npp16s * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, 
                                         Npp32f * pDst, Npp32s nDstStep, 
                                         NppiSize oROI, Npp32s nMaskSize, Npp32s nAnchor, NppiBorderType eBorderType);
-/** @} */
+
+/** @} image_filter_1D_window_row_sum_border */
 
 /** @} image_1D_window_sum_border */
 
@@ -3684,7 +3705,7 @@ nppiSumWindowRowBorder_16s32f_C4R(const Npp16s * pSrc, Npp32s nSrcStep, NppiSize
  *
  */
 
-/** @name Filter
+/** @defgroup image_filter Filter
  * General purpose 2D convolution filter.
  *
  * Pixels under the mask are multiplied by the respective weights in the mask
@@ -4086,9 +4107,9 @@ nppiFilter_64f_C1R(const Npp64f * pSrc, Npp32s nSrcStep, Npp64f * pDst, Npp32s n
                    const Npp64f * pKernel, NppiSize oKernelSize, NppiPoint oAnchor);
 
 
-/** @} Filter */
+/** @} image_filter */
 
-/** @name Filter32f
+/** @defgroup image_filter_32f Filter32f
  * General purpose 2D convolution filter using floating-point weights.
  *
  * Pixels under the mask are multiplied by the respective weights in the mask
@@ -4672,9 +4693,9 @@ nppiFilter32f_8s16s_AC4R(const Npp8s * pSrc, int nSrcStep, Npp16s * pDst, int nD
                          const Npp32f * pKernel, NppiSize oKernelSize, NppiPoint oAnchor);
 
 
-/** @} Filter32f */
+/** @} image_filter_32f */
 
-/** @name FilterBorder
+/** @defgroup image_filter_border FilterBorder
  * General purpose 2D convolution filter with border control.
  *
  * Pixels under the mask are multiplied by the respective weights in the mask
@@ -5110,9 +5131,9 @@ NppStatus
 nppiFilterBorder_32f_AC4R(const Npp32f * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI, 
                           const Npp32f * pKernel, NppiSize oKernelSize, NppiPoint oAnchor, NppiBorderType eBorderType);
 
-/** @} FilterBorder */
+/** @} image_filter_border */
 
-/** @name FilterBorder32f
+/** @defgroup image_filter_border_32f FilterBorder32f
  * General purpose 2D convolution filter using floating-point weights with border control.
  *
  * Pixels under the mask are multiplied by the respective weights in the mask
@@ -5791,7 +5812,7 @@ nppiFilterBorder32f_8s16s_AC4R(const Npp8s * pSrc, int nSrcStep, NppiSize oSrcSi
                                const Npp32f * pKernel, NppiSize oKernelSize, NppiPoint oAnchor, NppiBorderType eBorderType);
 
 
-/** @} FilterBorder32f */
+/** @} image_filter_border_32f */
 
 /** @} image_convolution */
 
@@ -5801,7 +5822,7 @@ nppiFilterBorder32f_8s16s_AC4R(const Npp8s * pSrc, int nSrcStep, NppiSize oSrcSi
  *
  */
 
-/** @name FilterBox
+/** @defgroup image_filter_box FilterBox
  *
  * Computes the average pixel values of the pixels under a rectangular mask.
  *
@@ -6115,9 +6136,9 @@ NppStatus
 nppiFilterBox_64f_C1R(const Npp64f * pSrc, Npp32s nSrcStep, Npp64f * pDst, Npp32s nDstStep, NppiSize oSizeROI, 
                       NppiSize oMaskSize, NppiPoint oAnchor);
 
-/** @} FilterBox */
+/** @} image_filter_box */
 
-/** @name FilterBoxBorder
+/** @defgroup image_filter_box_border FilterBoxBorder
  *
  * Computes the average pixel values of the pixels under a rectangular mask with border control.
  * If any portion of the mask overlaps the source image boundary the requested 
@@ -6465,9 +6486,9 @@ NppStatus
 nppiFilterBoxBorder_32f_AC4R(const Npp32f * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI, 
                              NppiSize oMaskSize, NppiPoint oAnchor, NppiBorderType eBorderType);
 
-/** @} FilterBoxBorder */
+/** @} image_filter_box_border */
 
-/** @name FilterThresholdAdaptiveBoxBorder
+/** @defgroup image_filter_threshold_adaptive_box_border FilterThresholdAdaptiveBoxBorder
  *
  * Computes the average pixel values of the pixels under a square mask with border control.
  * If any portion of the mask overlaps the source image boundary the requested 
@@ -6475,7 +6496,7 @@ nppiFilterBoxBorder_32f_AC4R(const Npp32f * pSrc, Npp32s nSrcStep, NppiSize oSrc
  * Once the neighborhood average around a source pixel is determined the souce pixel is compared to the average - nDelta
  * and if the source pixel is greater than that average the corresponding destination pixel is set to nValGT, otherwise nValLE.
  *
- * Currently only the NPP_BORDER_REPLICATE border type operation is supported. *
+ * Currently only the NPP_BORDER_REPLICATE border type operation is supported.
  *
  * @{
  *
@@ -6503,7 +6524,7 @@ NppStatus
 nppiFilterThresholdAdaptiveBoxBorder_8u_C1R(const Npp8u * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp8u * pDst, Npp32s nDstStep, NppiSize oSizeROI, 
                                             NppiSize oMaskSize, Npp32f nDelta, Npp8u nValGT, Npp8u nValLE, NppiBorderType eBorderType);
 
-/** @} FilterThresholdAdaptiveBoxBorder */
+/** @} image_filter_threshold_adaptive_box_border */
 
 /** @} image_2D_fixed_linear_filters */
 
@@ -6513,10 +6534,8 @@ nppiFilterThresholdAdaptiveBoxBorder_8u_C1R(const Npp8u * pSrc, Npp32s nSrcStep,
  *
  */
 
-/** @name ImageMax Filter
- *
- * Result pixel value is the maximum of pixel values under the rectangular
- * mask region.
+/** @defgroup image_filter_max FilterMax
+ * Result pixel value is the maximum of pixel values under the rectangular mask region.
  *
  * @{
  *
@@ -6810,12 +6829,12 @@ NppStatus
 nppiFilterMax_32f_AC4R(const Npp32f * pSrc, Npp32s nSrcStep, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI, 
                        NppiSize oMaskSize, NppiPoint oAnchor);
 
-/** @} FilterMax */
+/** @} image_filter_max */
 
-/** @name ImageMaxBorder Filter
- *
- * Result pixel value is the maximum of pixel values under the rectangular
- * mask region. If any portion of the mask overlaps the source
+/** @defgroup image_filter_max_border FilterMaxBorder
+ * Result pixel value is the maximum of pixel values under the rectangular mask region with border control.
+ * 
+ * If any portion of the mask overlaps the source
  * image boundary the requested border type operation is applied to all mask pixels
  * which fall outside of the source image.
  *
@@ -7161,12 +7180,10 @@ NppStatus
 nppiFilterMaxBorder_32f_AC4R(const Npp32f * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI, 
                              NppiSize oMaskSize, NppiPoint oAnchor, NppiBorderType eBorderType);
 
-/** @} FilterMaxBorder */
+/** @} image_filter_max_border */
 
-/** @name ImageMin Filter
- *
- * Result pixel value is the minimum of pixel values under the rectangular
- * mask region.
+/** @defgroup image_filter_min FilterMin
+ * Result pixel value is the minimum of pixel values under the rectangular mask region.
  *
  *
  * @{
@@ -7462,12 +7479,12 @@ NppStatus
 nppiFilterMin_32f_AC4R(const Npp32f * pSrc, Npp32s nSrcStep, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI, 
                        NppiSize oMaskSize, NppiPoint oAnchor);
 
-/** @} FilterMin */
+/** @} image_filter_min */
 
-/** @name ImageMinBorder Filter
+/** @defgroup image_filter_min_border FilterMinBorder
+ * Result pixel value is the minimum of pixel values under the rectangular mask region with border control. 
  *
- * Result pixel value is the minimum of pixel values under the rectangular
- * mask region. If any portion of the mask overlaps the source
+ * If any portion of the mask overlaps the source
  * image boundary the requested border type operation is applied to all mask pixels
  * which fall outside of the source image.
  *
@@ -7813,12 +7830,10 @@ NppStatus
 nppiFilterMinBorder_32f_AC4R(const Npp32f * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI, 
                              NppiSize oMaskSize, NppiPoint oAnchor, NppiBorderType eBorderType);
 
-/** @} FilterMinBorder */
+/** @} image_filter_min_border */
 
-/** @name ImageMedian Filter
- *
- * Result pixel value is the median of pixel values under the rectangular
- * mask region.
+/** @defgroup image_filter_median FilterMedian
+ * Result pixel value is the median of pixel values under the rectangular mask region.
  *
  *
  * @{
@@ -8132,10 +8147,6 @@ nppiFilterMedian_32f_AC4R(const Npp32f * pSrc, Npp32s nSrcStep, Npp32f * pDst, N
                        
 
 
-
-
-
-
 /**
  * Single channel 8-bit unsigned median filter scratch memory size.
  * \param oSizeROI \ref roi_specification.
@@ -8297,10 +8308,7 @@ nppiFilterMedianGetBufferSize_32f_C4R(NppiSize oSizeROI, NppiSize oMaskSize, Npp
 NppStatus 
 nppiFilterMedianGetBufferSize_32f_AC4R(NppiSize oSizeROI, NppiSize oMaskSize, Npp32u * nBufferSize);
 
-
-/** @} FilterMedian */
-
-
+/** @} image_filter_median */
 
 /** @} image_rank_filters */
 
@@ -8314,6 +8322,13 @@ nppiFilterMedianGetBufferSize_32f_AC4R(NppiSize oSizeROI, NppiSize oMaskSize, Np
  * all mask pixels which fall outside of the source image.
  *
  * Currently only the NPP_BORDER_REPLICATE border type operation is supported for these functions.
+ *
+ * @{
+ *
+ */
+
+/** @defgroup image_filter_prewitt FilterPrewitt 
+ * Filters the image using a Prewitt filter kernel.
  *
  * @{
  *
@@ -8492,6 +8507,190 @@ NppStatus
 nppiFilterPrewittHoriz_32f_AC4R(const Npp32f * pSrc, Npp32s nSrcStep, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI);
 
 /** @} FilterPrewittHoriz */
+
+/** @name FilterPrewittVert 
+ *
+ * Filters the image using a vertical Prewitt filter kernel:
+ *
+ * \f[
+ *  \left( \begin{array}{rrr}
+ *   -1 & 0 & 1 \\
+ *   -1 & 0 & 1 \\
+ *   -1 & 0 & 1 \\
+ *  \end{array} \right)
+ * \f]
+ *
+ * @{
+ *
+ */
+
+/**
+ * Single channel 8-bit unsigned vertical Prewitt filter.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiFilterPrewittVert_8u_C1R(const Npp8u * pSrc, Npp32s nSrcStep, Npp8u * pDst, Npp32s nDstStep, NppiSize oSizeROI);
+
+/**
+ * Three channel 8-bit unsigned vertical Prewitt filter.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiFilterPrewittVert_8u_C3R(const Npp8u * pSrc, Npp32s nSrcStep, Npp8u * pDst, Npp32s nDstStep, NppiSize oSizeROI);
+
+/**
+ * Four channel 8-bit unsigned vertical Prewitt filter.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiFilterPrewittVert_8u_C4R(const Npp8u * pSrc, Npp32s nSrcStep, Npp8u * pDst, Npp32s nDstStep, NppiSize oSizeROI);
+
+/**
+ * Four channel 8-bit unsigned vertical Prewitt filter, ignoring alpha channel.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiFilterPrewittVert_8u_AC4R(const Npp8u * pSrc, Npp32s nSrcStep, Npp8u * pDst, Npp32s nDstStep, NppiSize oSizeROI);
+
+/**
+ * Single channel 16-bit signed vertical Prewitt filter.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiFilterPrewittVert_16s_C1R(const Npp16s * pSrc, Npp32s nSrcStep, Npp16s * pDst, Npp32s nDstStep, NppiSize oSizeROI);
+
+/**
+ * Three channel 16-bit signed vertical Prewitt filter.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiFilterPrewittVert_16s_C3R(const Npp16s * pSrc, Npp32s nSrcStep, Npp16s * pDst, Npp32s nDstStep, NppiSize oSizeROI);
+
+/**
+ * Four channel 16-bit signed vertical Prewitt filter.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiFilterPrewittVert_16s_C4R(const Npp16s * pSrc, Npp32s nSrcStep, Npp16s * pDst, Npp32s nDstStep, NppiSize oSizeROI);
+
+/**
+ * Four channel 16-bit signed vertical Prewitt filter, ignoring alpha channel.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiFilterPrewittVert_16s_AC4R(const Npp16s * pSrc, Npp32s nSrcStep, Npp16s * pDst, Npp32s nDstStep, NppiSize oSizeROI);
+
+/**
+ * Single channel 32-bit floating-point vertical Prewitt filter.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiFilterPrewittVert_32f_C1R(const Npp32f * pSrc, Npp32s nSrcStep, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI);
+
+/**
+ * Three channel 32-bit floating-point vertical Prewitt filter.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiFilterPrewittVert_32f_C3R(const Npp32f * pSrc, Npp32s nSrcStep, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI);
+
+/**
+ * Four channel 32-bit floating-point vertical Prewitt filter.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiFilterPrewittVert_32f_C4R(const Npp32f * pSrc, Npp32s nSrcStep, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI);
+
+/**
+ * Four channel 32-bit floating-point vertical Prewitt filter, ignoring alpha channel.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiFilterPrewittVert_32f_AC4R(const Npp32f * pSrc, Npp32s nSrcStep, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI);
+
+/** @} FilterPrewittVert */
+
+/** @} image_filter_prewitt */
+
+/** @defgroup image_filter_prewitt_border FilterPrewittBorder 
+ * Filters the image using a Prewitt filter kernel with border control.
+ *
+ *
+ * @{
+ *
+ */
 
 /** @name FilterPrewittHorizBorder 
  *
@@ -8707,180 +8906,6 @@ nppiFilterPrewittHorizBorder_32f_AC4R(const Npp32f * pSrc, Npp32s nSrcStep, Nppi
 
 /** @} FilterPrewittHorizBorder */
 
-/** @name FilterPrewittVert 
- *
- * Filters the image using a vertical Prewitt filter kernel:
- *
- * \f[
- *  \left( \begin{array}{rrr}
- *   -1 & 0 & 1 \\
- *   -1 & 0 & 1 \\
- *   -1 & 0 & 1 \\
- *  \end{array} \right)
- * \f]
- *
- * @{
- *
- */
-
-/**
- * Single channel 8-bit unsigned vertical Prewitt filter.
- *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus 
-nppiFilterPrewittVert_8u_C1R(const Npp8u * pSrc, Npp32s nSrcStep, Npp8u * pDst, Npp32s nDstStep, NppiSize oSizeROI);
-
-/**
- * Three channel 8-bit unsigned vertical Prewitt filter.
- *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus 
-nppiFilterPrewittVert_8u_C3R(const Npp8u * pSrc, Npp32s nSrcStep, Npp8u * pDst, Npp32s nDstStep, NppiSize oSizeROI);
-
-/**
- * Four channel 8-bit unsigned vertical Prewitt filter.
- *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus 
-nppiFilterPrewittVert_8u_C4R(const Npp8u * pSrc, Npp32s nSrcStep, Npp8u * pDst, Npp32s nDstStep, NppiSize oSizeROI);
-
-/**
- * Four channel 8-bit unsigned vertical Prewitt filter, ignoring alpha channel.
- *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus 
-nppiFilterPrewittVert_8u_AC4R(const Npp8u * pSrc, Npp32s nSrcStep, Npp8u * pDst, Npp32s nDstStep, NppiSize oSizeROI);
-
-/**
- * Single channel 16-bit signed vertical Prewitt filter.
- *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus 
-nppiFilterPrewittVert_16s_C1R(const Npp16s * pSrc, Npp32s nSrcStep, Npp16s * pDst, Npp32s nDstStep, NppiSize oSizeROI);
-
-/**
- * Three channel 16-bit signed vertical Prewitt filter.
- *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus 
-nppiFilterPrewittVert_16s_C3R(const Npp16s * pSrc, Npp32s nSrcStep, Npp16s * pDst, Npp32s nDstStep, NppiSize oSizeROI);
-
-/**
- * Four channel 16-bit signed vertical Prewitt filter.
- *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus 
-nppiFilterPrewittVert_16s_C4R(const Npp16s * pSrc, Npp32s nSrcStep, Npp16s * pDst, Npp32s nDstStep, NppiSize oSizeROI);
-
-/**
- * Four channel 16-bit signed vertical Prewitt filter, ignoring alpha channel.
- *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus 
-nppiFilterPrewittVert_16s_AC4R(const Npp16s * pSrc, Npp32s nSrcStep, Npp16s * pDst, Npp32s nDstStep, NppiSize oSizeROI);
-
-/**
- * Single channel 32-bit floating-point vertical Prewitt filter.
- *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus 
-nppiFilterPrewittVert_32f_C1R(const Npp32f * pSrc, Npp32s nSrcStep, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI);
-
-/**
- * Three channel 32-bit floating-point vertical Prewitt filter.
- *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus 
-nppiFilterPrewittVert_32f_C3R(const Npp32f * pSrc, Npp32s nSrcStep, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI);
-
-/**
- * Four channel 32-bit floating-point vertical Prewitt filter.
- *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus 
-nppiFilterPrewittVert_32f_C4R(const Npp32f * pSrc, Npp32s nSrcStep, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI);
-
-/**
- * Four channel 32-bit floating-point vertical Prewitt filter, ignoring alpha channel.
- *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus 
-nppiFilterPrewittVert_32f_AC4R(const Npp32f * pSrc, Npp32s nSrcStep, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI);
-
-/** @} FilterPrewittVert */
-
 /** @name FilterPrewittVertBorder 
  *
  * Filters the image using a vertical Prewitt filter kernel with border control. If any portion of the mask overlaps the source
@@ -9095,6 +9120,14 @@ nppiFilterPrewittVertBorder_32f_AC4R(const Npp32f * pSrc, Npp32s nSrcStep, NppiS
 
 /** @} FilterPrewittVertBorder */
 
+/** @} image_filter_prewitt_border */
+
+/** @defgroup image_filter_scharr FilterScharr 
+ * Filters the image using a Scharr filter kernel.
+ *
+ * @{
+ *
+ */
 
 /** @name FilterScharrHoriz 
  *
@@ -9209,6 +9242,15 @@ NppStatus
 nppiFilterScharrVert_32f_C1R(const Npp32f * pSrc, Npp32s nSrcStep, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI);
 
 /** @} FilterScharrVert */
+
+/** @} image_filter_scharr */
+
+/** @defgroup image_filter_scharr_border FilterScharrBorder 
+ * Filters the image using a Scharr filter kernel with border control.
+ *
+ * @{
+ *
+ */
 
 /** @name FilterScharrHorizBorder 
  *
@@ -9342,6 +9384,14 @@ nppiFilterScharrVertBorder_32f_C1R(const Npp32f * pSrc, Npp32s nSrcStep, NppiSiz
 
 /** @} FilterScharrVertBorder */
 
+/** @} image_filter_scharr_border */
+
+/** @defgroup image_filter_sobel FilterSobel 
+ * Filters the image using a Sobel filter kernel.
+ *
+ * @{
+ *
+ */
 
 /** @name FilterSobelHoriz 
  *              
@@ -10004,6 +10054,14 @@ nppiFilterSobelCross_32f_C1R(const Npp32f * pSrc, Npp32s nSrcStep, Npp32f * pDst
 
 /** @} FilterSobelCross */
 
+/** @} image_filter_sobel */
+
+/** @defgroup image_filter_sobel_border FilterSobelBorder 
+ * Filters the image using a Sobel filter kernel with border control.
+ *
+ * @{
+ *
+ */
 
 /** @name FilterSobelHorizBorder 
  *
@@ -10783,6 +10841,15 @@ nppiFilterSobelCrossBorder_32f_C1R(const Npp32f * pSrc, Npp32s nSrcStep, NppiSiz
 
 /** @} FilterSobelCrossBorder */
 
+/** @} image_filter_sobel_border */
+
+/** @defgroup image_filter_roberts FilterRoberts 
+ * Filters the image using a Roberts filter kernel.
+ *
+ * @{
+ *
+ */
+
 /** @name FilterRobertsDown
  *
  * Filters the image using a horizontal Roberts filter kernel:
@@ -10956,6 +11023,189 @@ NppStatus
 nppiFilterRobertsDown_32f_AC4R(const Npp32f * pSrc, Npp32s nSrcStep, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI);
 
 /** @} FilterRobertsDown */
+
+/** @name FilterRobertsUp
+ *
+ * Filters the image using a vertical Roberts filter kernel:
+ *
+ * \f[
+ *  \left( \begin{array}{rrr}
+ *   0 & 0 &  0 \\
+ *   0 & 1 &  0 \\
+ *  -1 & 0 &  0 \\
+ *  \end{array} \right)
+ * \f]
+ *
+ * @{
+ *
+ */
+
+/**
+ * Single channel 8-bit unsigned vertical Roberts filter.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiFilterRobertsUp_8u_C1R(const Npp8u * pSrc, Npp32s nSrcStep, Npp8u * pDst, Npp32s nDstStep, NppiSize oSizeROI);
+
+/**
+ * Three channel 8-bit unsigned vertical Roberts filter.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiFilterRobertsUp_8u_C3R(const Npp8u * pSrc, Npp32s nSrcStep, Npp8u * pDst, Npp32s nDstStep, NppiSize oSizeROI);
+
+/**
+ * Four channel 8-bit unsigned vertical Roberts filter.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiFilterRobertsUp_8u_C4R(const Npp8u * pSrc, Npp32s nSrcStep, Npp8u * pDst, Npp32s nDstStep, NppiSize oSizeROI);
+
+/**
+ * Four channel 8-bit unsigned vertical Roberts filter, ignoring alpha-channel.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiFilterRobertsUp_8u_AC4R(const Npp8u * pSrc, Npp32s nSrcStep, Npp8u * pDst, Npp32s nDstStep, NppiSize oSizeROI);
+
+/**
+ * Single channel 16-bit signed vertical Roberts filter.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiFilterRobertsUp_16s_C1R(const Npp16s * pSrc, Npp32s nSrcStep, Npp16s * pDst, Npp32s nDstStep, NppiSize oSizeROI);
+
+/**
+ * Three channel 16-bit signed vertical Roberts filter.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiFilterRobertsUp_16s_C3R(const Npp16s * pSrc, Npp32s nSrcStep, Npp16s * pDst, Npp32s nDstStep, NppiSize oSizeROI);
+
+/**
+ * Four channel 16-bit signed vertical Roberts filter.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiFilterRobertsUp_16s_C4R(const Npp16s * pSrc, Npp32s nSrcStep, Npp16s * pDst, Npp32s nDstStep, NppiSize oSizeROI);
+
+/**
+ * Four channel 16-bit signed vertical Roberts filter, ignoring alpha-channel.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiFilterRobertsUp_16s_AC4R(const Npp16s * pSrc, Npp32s nSrcStep, Npp16s * pDst, Npp32s nDstStep, NppiSize oSizeROI);
+
+/**
+ * Single channel 32-bit floating-point vertical Roberts filter.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiFilterRobertsUp_32f_C1R(const Npp32f * pSrc, Npp32s nSrcStep, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI);
+
+/**
+ * Three channel 32-bit floating-point vertical Roberts filter.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiFilterRobertsUp_32f_C3R(const Npp32f * pSrc, Npp32s nSrcStep, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI);
+
+/**
+ * Four channel 32-bit floating-point vertical Roberts filter.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiFilterRobertsUp_32f_C4R(const Npp32f * pSrc, Npp32s nSrcStep, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI);
+
+/**
+ * Four channel 32-bit floating-point vertical Roberts filter, ignoring alpha-channel.
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiFilterRobertsUp_32f_AC4R(const Npp32f * pSrc, Npp32s nSrcStep, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI);
+
+/** @} FilterRobertsUp */
+
+/** @} image_filter_roberts */
+
+/** @defgroup image_filter_roberts_border FilterRobertsBorder 
+ * Filters the image using a Roberts filter kernel with border control.
+ *
+ * @{
+ *
+ */
 
 /** @name FilterRobertsDownBorder
  *
@@ -11171,180 +11421,6 @@ nppiFilterRobertsDownBorder_32f_AC4R(const Npp32f * pSrc, Npp32s nSrcStep, NppiS
 
 /** @} FilterRobertsDownBorder */
 
-/** @name FilterRobertsUp
- *
- * Filters the image using a vertical Roberts filter kernel:
- *
- * \f[
- *  \left( \begin{array}{rrr}
- *   0 & 0 &  0 \\
- *   0 & 1 &  0 \\
- *  -1 & 0 &  0 \\
- *  \end{array} \right)
- * \f]
- *
- * @{
- *
- */
-
-/**
- * Single channel 8-bit unsigned vertical Roberts filter.
- *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus 
-nppiFilterRobertsUp_8u_C1R(const Npp8u * pSrc, Npp32s nSrcStep, Npp8u * pDst, Npp32s nDstStep, NppiSize oSizeROI);
-
-/**
- * Three channel 8-bit unsigned vertical Roberts filter.
- *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus 
-nppiFilterRobertsUp_8u_C3R(const Npp8u * pSrc, Npp32s nSrcStep, Npp8u * pDst, Npp32s nDstStep, NppiSize oSizeROI);
-
-/**
- * Four channel 8-bit unsigned vertical Roberts filter.
- *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus 
-nppiFilterRobertsUp_8u_C4R(const Npp8u * pSrc, Npp32s nSrcStep, Npp8u * pDst, Npp32s nDstStep, NppiSize oSizeROI);
-
-/**
- * Four channel 8-bit unsigned vertical Roberts filter, ignoring alpha-channel.
- *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus 
-nppiFilterRobertsUp_8u_AC4R(const Npp8u * pSrc, Npp32s nSrcStep, Npp8u * pDst, Npp32s nDstStep, NppiSize oSizeROI);
-
-/**
- * Single channel 16-bit signed vertical Roberts filter.
- *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus 
-nppiFilterRobertsUp_16s_C1R(const Npp16s * pSrc, Npp32s nSrcStep, Npp16s * pDst, Npp32s nDstStep, NppiSize oSizeROI);
-
-/**
- * Three channel 16-bit signed vertical Roberts filter.
- *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus 
-nppiFilterRobertsUp_16s_C3R(const Npp16s * pSrc, Npp32s nSrcStep, Npp16s * pDst, Npp32s nDstStep, NppiSize oSizeROI);
-
-/**
- * Four channel 16-bit signed vertical Roberts filter.
- *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus 
-nppiFilterRobertsUp_16s_C4R(const Npp16s * pSrc, Npp32s nSrcStep, Npp16s * pDst, Npp32s nDstStep, NppiSize oSizeROI);
-
-/**
- * Four channel 16-bit signed vertical Roberts filter, ignoring alpha-channel.
- *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus 
-nppiFilterRobertsUp_16s_AC4R(const Npp16s * pSrc, Npp32s nSrcStep, Npp16s * pDst, Npp32s nDstStep, NppiSize oSizeROI);
-
-/**
- * Single channel 32-bit floating-point vertical Roberts filter.
- *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus 
-nppiFilterRobertsUp_32f_C1R(const Npp32f * pSrc, Npp32s nSrcStep, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI);
-
-/**
- * Three channel 32-bit floating-point vertical Roberts filter.
- *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus 
-nppiFilterRobertsUp_32f_C3R(const Npp32f * pSrc, Npp32s nSrcStep, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI);
-
-/**
- * Four channel 32-bit floating-point vertical Roberts filter.
- *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus 
-nppiFilterRobertsUp_32f_C4R(const Npp32f * pSrc, Npp32s nSrcStep, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI);
-
-/**
- * Four channel 32-bit floating-point vertical Roberts filter, ignoring alpha-channel.
- *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
- */
-NppStatus 
-nppiFilterRobertsUp_32f_AC4R(const Npp32f * pSrc, Npp32s nSrcStep, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI);
-
-/** @} FilterRobertsUp */
-
 /** @name FilterRobertsUpBorder
  *
  * Filters the image using a vertical Roberts filter kernel with border control.  If any portion of the mask overlaps the source
@@ -11559,10 +11635,10 @@ nppiFilterRobertsUpBorder_32f_AC4R(const Npp32f * pSrc, Npp32s nSrcStep, NppiSiz
 
 /** @} FilterRobertsUpBorder */
 
+/** @} image_filter_roberts_border */
 
-/** @name FilterLaplace
- *
- * Filters the image using a Laplacian filter kernel:
+/** @defgroup image_filter_laplace FilterLaplace 
+ * Filters the image using a Laplacian filter kernel.
  *
  * \f[
  *  \left( \begin{array}{rrr}
@@ -11794,11 +11870,12 @@ NppStatus
 nppiFilterLaplace_8s16s_C1R(const Npp8s * pSrc, Npp32s nSrcStep, Npp16s * pDst, Npp32s nDstStep, NppiSize oSizeROI,
                             NppiMaskSize eMaskSize);
 
-/** @} FilterLaplace */
+/** @} image_filter_laplace */
 
-/** @name FilterLaplaceBorder
+/** @defgroup image_filter_laplace_border FilterLaplaceBorder 
+ * Filters the image using a Laplacian filter kernel with border control.
  *
- * Filters the image using a Laplacian filter kernel with border control. If any portion of the mask overlaps the source
+ * If any portion of the mask overlaps the source
  * image boundary the requested border type operation is applied to all mask pixels
  * which fall outside of the source image.
  *
@@ -12078,9 +12155,8 @@ nppiFilterLaplaceBorder_8s16s_C1R(const Npp8s * pSrc, Npp32s nSrcStep, NppiSize 
 
 /** @} FilterLaplaceBorder */
 
-/** @name FilterGauss
- *
- * Filters the image using a Gaussian filter kernel:
+/** @defgroup image_filter_gauss FilterGauss 
+ * Filters the image using a Gaussian filter kernel.  Use FilterGaussAdvanced if you want to supply your own filter coefficients.
  *
  * Note that all FilterGauss functions currently support mask sizes up to 15x15. Filter kernels for these functions are calculated
  * using a sigma value of 0.4F + (mask width / 2) * 0.6F.
@@ -12329,10 +12405,9 @@ NppStatus
 nppiFilterGauss_32f_AC4R(const Npp32f * pSrc, Npp32s nSrcStep, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI,
                          NppiMaskSize eMaskSize);
 
-/** @} FilterGauss */
+/** @} image_filter_gauss */
 
-/** @name FilterGaussAdvanced
- *
+/** @defgroup image_filter_gauss_advanced FilterGaussAdvanced 
  * Filters the image using a separable Gaussian filter kernel with user supplied floating point coefficients:
  *
  * @{
@@ -12595,9 +12670,10 @@ NppStatus
 nppiFilterGaussAdvanced_32f_AC4R(const Npp32f * pSrc, Npp32s nSrcStep, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI,
                                  const int nFilterTaps, const Npp32f * pKernel);
 
-/** @} FilterGaussAdvanced */
+/** @} image_filter_gauss_advanced */
 
-/** @name FilterGaussBorder
+/** @defgroup image_filter_gauss_border FilterGaussBorder 
+ * Filters the image using a Gaussian filter kernel with border control.  Use FilterGaussAdvancedBorder if you want to supply your own filter coefficients.
  *
  * If any portion of the mask overlaps the source
  * image boundary the requested border type operation is applied to all mask pixels
@@ -12900,11 +12976,11 @@ NppStatus
 nppiFilterGaussBorder_32f_AC4R(const Npp32f * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI,
                                NppiMaskSize eMaskSize, NppiBorderType eBorderType);
 
-/** @} FilterGaussBorder */
+/** @} image_filter_gauss_border */
 
-/** @name FilterGaussAdvancedBorder
+/** @defgroup image_filter_gauss_advanced_border FilterGaussAdvancedBorder 
+ * Filters the image using a separable Gaussian filter kernel with user supplied floating point coefficients with border control.
  *
- * Filters the image using a separable Gaussian filter kernel with user supplied floating point coefficients with border control:
  * If any portion of the mask overlaps the source image boundary the requested border type operation is applied to all mask pixels
  * which fall outside of the source image.
  *
@@ -13218,11 +13294,11 @@ NppStatus
 nppiFilterGaussAdvancedBorder_32f_AC4R(const Npp32f * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI,
                                        const int nFilterTaps, const Npp32f * pKernel, NppiBorderType eBorderType);
 
-/** @} FilterGaussAdvancedBorder */
+/** @} image_filter_gauss_advanced_border */
 
-/** @name FilterGaussPyramidLayerDownBorder
- *
+/** @defgroup image_filter_gauss_pyramid_layer_down_border FilterGaussPyramidLayerDownBorder 
  * Filters the image using a separable Gaussian filter kernel with user supplied floating point coefficients with downsampling and border control.
+ *
  * If the downsampling rate is equivalent to an integer value then unnecessary source pixels are just skipped.
  * If any portion of the mask overlaps the source image boundary the requested border type operation is applied to all mask pixels
  * which fall outside of the source image.
@@ -13374,11 +13450,11 @@ NppStatus
 nppiFilterGaussPyramidLayerDownBorder_32f_C3R(const Npp32f * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI,
                                               Npp32f nRate, const int nFilterTaps, const Npp32f * pKernel, NppiBorderType eBorderType);
 
-/** @} FilterGaussPyramidLayerDownBorder */
+/** @} image_filter_gauss_pyramid_layer_down_border */
 
-/** @name FilterGaussPyramidLayerUpBorder
- *
+/** @defgroup image_filter_gauss_pyramid_layer_up_border FilterGaussPyramidLayerUpBorder 
  * Filters the image using a separable Gaussian filter kernel with user supplied floating point coefficients with upsampling and border control.
+ *
  * If the upsampling rate is equivalent to an integer value then unnecessary source pixels are just skipped.
  * If any portion of the mask overlaps the source image boundary the requested border type operation is applied to all mask pixels
  * which fall outside of the source image.
@@ -13531,11 +13607,11 @@ NppStatus
 nppiFilterGaussPyramidLayerUpBorder_32f_C3R(const Npp32f * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI,
                                             Npp32f nRate, const int nFilterTaps, const Npp32f * pKernel, NppiBorderType eBorderType);
 
-/** @} FilterGaussPyramidLayerUpBorder */
+/** @} image_filter_gauss_pyramid_layer_up_border */
 
-/** @name FilterBilateralGaussBorder
+/** @defgroup image_filter_bilateral_gauss_border FilterBilateralGaussBorder 
+ * Filters the image using a bilateral Gaussian filter kernel with border control.
  *
- * Filters the image using a bilateral Gaussian filter kernel with border control:
  * If any portion of the mask overlaps the source image boundary the requested border type operation is applied to all mask pixels
  * which fall outside of the source image.
  *
@@ -13702,11 +13778,10 @@ NppStatus
 nppiFilterBilateralGaussBorder_32f_C3R(const Npp32f * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI,
                                        const int nRadius, const int nStepBetweenSrcPixels, const Npp32f nValSquareSigma, const Npp32f nPosSquareSigma, NppiBorderType eBorderType);
 
-/** @} FilterBilateralGaussBorder */
+/** @} image_filter_bilateral_gauss_border */
 
-/** @name FilterHighPass
- *
- * Filters the image using a high-pass filter kernel:
+/** @defgroup image_filter_high_pass FilterHighPass 
+ * Filters the image using a high-pass filter kernel.
  *
  * \f[
  *  \left( \begin{array}{rrr}
@@ -13967,11 +14042,11 @@ NppStatus
 nppiFilterHighPass_32f_AC4R(const Npp32f * pSrc, Npp32s nSrcStep, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI,
                             NppiMaskSize eMaskSize);
 
-/** @} FilterHighPass */
+/** @} image_filter_high_pass */
 
-/** @name FilterHighPassBorder
- *
+/** @defgroup image_filter_high_pass_border FilterHighPassBorder 
  * Filters the image using a high-pass filter kernel with border control.
+ *
  * If any portion of the mask overlaps the source image boundary the requested 
  * border type operation is applied to all mask pixels which fall outside of the source image.
  *
@@ -14285,11 +14360,10 @@ NppStatus
 nppiFilterHighPassBorder_32f_AC4R(const Npp32f * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI,
                                   NppiMaskSize eMaskSize, NppiBorderType eBorderType);
 
-/** @} FilterHighPassBorder */
+/** @} image_filter_high_pass_border */
 
-/** @name FilterLowPass
- *
- * Filters the image using a low-pass filter kernel:
+/** @defgroup image_filter_low_pass FilterLowPass 
+ * Filters the image using a low-pass filter kernel.
  *
  * \f[
  *  \left( \begin{array}{rrr}
@@ -14550,11 +14624,11 @@ NppStatus
 nppiFilterLowPass_32f_AC4R(const Npp32f * pSrc, Npp32s nSrcStep, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI,
                            NppiMaskSize eMaskSize);
 
-/** @} FilterLowPass */
+/** @} image_filter_low_pass */
 
-/** @name FilterLowPassBorder
- *
+/** @defgroup image_filter_low_pass_border FilterLowPassBorder 
  * Filters the image using a low-pass filter kernel with border control.
+ *
  * If any portion of the mask overlaps the source image boundary the requested 
  * border type operation is applied to all mask pixels which fall outside of the source image.
  *
@@ -14868,9 +14942,9 @@ NppStatus
 nppiFilterLowPassBorder_32f_AC4R(const Npp32f * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI,
                                   NppiMaskSize eMaskSize, NppiBorderType eBorderType);
 
-/** @} FilterLowPassBorder */
+/** @} image_filter_low_pass_border */
 
-/** @name FilterSharpen
+/** @defgroup image_filter_sharpen FilterSharpen
  *
  * Filters the image using a sharpening filter kernel:
  *
@@ -15094,11 +15168,12 @@ nppiFilterSharpen_32f_C4R(const Npp32f * pSrc, Npp32s nSrcStep, Npp32f * pDst, N
 NppStatus 
 nppiFilterSharpen_32f_AC4R(const Npp32f * pSrc, Npp32s nSrcStep, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI);
 
-/** @} FilterSharpen */
+/** @} image_filter_sharpen */
 
-/** @name FilterSharpenBorder
+/** @defgroup image_filter_sharpen_border FilterSharpenBorder
+ * Filters the image using a sharpening filter kernel with border control.
  *
- * Filters the image using a sharpening filter kernel with border control. If any portion of the 3x3 mask overlaps the source
+ * If any portion of the 3x3 mask overlaps the source
  * image boundary the requested border type operation is applied to all mask pixels
  * which fall outside of the source image.
  *
@@ -15372,10 +15447,9 @@ nppiFilterSharpenBorder_32f_C4R(const Npp32f * pSrc, Npp32s nSrcStep, NppiSize o
 NppStatus 
 nppiFilterSharpenBorder_32f_AC4R(const Npp32f * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI, NppiBorderType eBorderType);
 
-/** @} FilterSharpenBorder */
+/** @} image_filter_sharpen_border */
 
-/** @name FilterUnsharpBorder
- *
+/** @defgroup image_filter_unsharp_border FilterUnsharpBorder
  * Filters the image using a unsharp-mask sharpening filter kernel with border control.
  *
  * The algorithm involves the following steps:
@@ -15878,9 +15952,9 @@ nppiFilterUnsharpGetBufferSize_32f_C4R(const Npp32f nRadius, const Npp32f nSigma
 NppStatus 
 nppiFilterUnsharpGetBufferSize_32f_AC4R(const Npp32f nRadius, const Npp32f nSigma, int * hpBufferSize);
 
-/** @} FilterUnsharp */
+/** @} image_filter_unsharp_border */
 
-/** @name FilterWienerBorder
+/** @defgroup image_filter_wiener_border FilterWienerBorder
  * Noise removal filtering of an image using an adaptive Wiener filter with border control.
  *
  * Pixels under the source mask are used to generate statistics about the local neighborhood 
@@ -16152,9 +16226,9 @@ NppStatus
 nppiFilterWienerBorder_32f_AC4R(const Npp32f * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI, 
                                       NppiSize oMaskSize, NppiPoint oAnchor, Npp32f aNoise[3], NppiBorderType eBorderType);
 
-/** @} FilterWienerBorder */
+/** @} image_filter_wiener_border */
 
-/** @name GradientVectorPrewittBorder
+/** @defgroup image_filter_gradient_vector_prewitt_border GradientVectorPrewittBorder
  * 
  *  RGB Color to Prewitt Gradient Vector conversion using user selected fixed mask size and gradient distance method.
  *  Functions support up to 4 optional single channel output gradient vectors, X (vertical), Y (horizontal), magnitude, and angle
@@ -16420,9 +16494,9 @@ NppStatus nppiGradientVectorPrewittBorder_32f_C3C1R(const Npp32f * pSrc, int nSr
                                                     NppiSize oSizeROI, NppiMaskSize eMaskSize, NppiNorm eNorm, NppiBorderType eBorderType);
 
 
-/** @} GradientVectorPrewittBorder */
+/** @} image_filter_gradient_vector_prewitt_border */
 
-/** @name GradientVectorScharrBorder
+/** @defgroup image_filter_gradient_vector_scharr_border GradientVectorScharrBorder
  * 
  *  RGB Color to Scharr Gradient Vector conversion using user selected fixed mask size and gradient distance method.
  *  Functions support up to 4 optional single channel output gradient vectors, X (vertical), Y (horizontal), magnitude, and angle
@@ -16688,9 +16762,9 @@ NppStatus nppiGradientVectorScharrBorder_32f_C3C1R(const Npp32f * pSrc, int nSrc
                                                    NppiSize oSizeROI, NppiMaskSize eMaskSize, NppiNorm eNorm, NppiBorderType eBorderType);
 
 
-/** @} GradientVectorScharrBorder */
+/** @} image_filter_gradient_vector_scharr_border */
 
-/** @name GradientVectorSobelBorder
+/** @defgroup image_filter_gradient_vector_sobel_border GradientVectorSobelBorder
  * 
  *  RGB Color to Sobel Gradient Vector conversion using user selected fixed mask size and gradient distance method.
  *  Functions support up to 4 optional single channel output gradient vectors, X (vertical), Y (horizontal), magnitude, and angle
@@ -16978,12 +17052,21 @@ NppStatus nppiGradientVectorSobelBorder_32f_C3C1R(const Npp32f * pSrc, int nSrcS
                                                   NppiSize oSizeROI, NppiMaskSize eMaskSize, NppiNorm eNorm, NppiBorderType eBorderType);
 
 
-/** @} GradientVectorSobelBorder */
+/** @} image_filter_gradient_vector_sobel_border */
 
-/** @name FilterCannyBorder
- * 
+/** @} fixed_filters */
+
+/** @defgroup image_computer_vision_filtering_functions Computer Vision
+ *
+ * @{
+ *
+ */
+
+/** @defgroup image_filter_canny_border FilterCannyBorder
  *  Performs Canny edge detection on a single channel 8-bit grayscale image and outputs a single channel 8-bit image consisting of 0x00 and 0xFF
- *  values with 0xFF representing edge pixels.  The algorithm consists of three phases.  The first phase generates two output images consisting
+ *  values with 0xFF representing edge pixels.  
+ *
+ *  The algorithm consists of three phases.  The first phase generates two output images consisting
  *  of a single channel 16-bit signed image containing magnitude values and a single channel 32-bit floating point image containing the angular
  *  direction of those magnitude values.   This phase is accomplished by calling the appropriate GradientVectorBorder filter function based on
  *  the filter type, filter mask size, and norm type requested.  The next phase uses those magnitude and direction images to suppress non-maximum
@@ -17041,12 +17124,13 @@ nppiFilterCannyBorder_8u_C1R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize
                              NppiMaskSize eMaskSize, Npp16s nLowThreshold, Npp16s nHighThreshold, NppiNorm eNorm, 
                              NppiBorderType eBorderType, Npp8u * pDeviceBuffer);
 
-/** @} FilterCannyBorder */
+/** @} image_filter_canny_border */
 
-/** @name FilterHarrisCornersBorder
- * 
+/** @defgroup image_filter_harris_corners_border FilterHarrisCornersBorder
  *  Performs Harris Corner detection on a single channel 8-bit grayscale image and outputs a single channel 32-bit floating point image 
- *  consisting the corner response at each pixel of the image.  The algorithm consists of two phases.  The first phase generates the floating
+ *  consisting the corner response at each pixel of the image.
+ *  
+ *  The algorithm consists of two phases.  The first phase generates the floating
  *  point product of XX, YY, and XY gradients at each pixel in the image.  The type of gradient used is controlled by the eFilterType and eMaskSize parameters.
  *  The second phase averages those products over a window of either 3x3 or 5x5 pixels around the center pixel then generates the Harris corner
  *  response at that pixel which is output in the destination image. The Harris response value is determined as H = ((XX * YY - XY * XY) - 
@@ -17096,11 +17180,12 @@ nppiFilterHarrisCornersBorder_8u32f_C1R(const Npp8u * pSrc, int nSrcStep, NppiSi
                                         NppiMaskSize eMaskSize, NppiMaskSize eAvgWindowSize, Npp32f nK, Npp32f nScale, 
                                         NppiBorderType eBorderType, Npp8u * pDeviceBuffer);
 
-/** @} FilterHarrisCornersBorder */
+/** @} image_filter_harris_corners_border */
 
-/** @name FilterHoughLine
- * 
- *  Extracts Hough lines from a single channel 8-bit binarized (0, 255) source feature (canny edges, etc.) image and outputs a list of lines in point polar format
+/** @defgroup image_filter_hough_line FilterHoughLine
+ *  Extracts Hough lines from a single channel 8-bit binarized (0, 255) source feature (canny edges, etc.) image.
+ *
+ *  Outputs a list of lines in point polar format
  *  representing the length (rho) and angle (theta) of each line from the origin of the normal to the line using the formula rho = x cos(theta) + y sin(theta).
  *  The level of discretization, nDelta, is specified as an input parameter. The performance and effectiveness of this function highly depends on
  *  this parameter with higher performance for larger numbers and more detailed results for lower numbers.  Also, lines are not guaranteed to
@@ -17207,10 +17292,9 @@ NppStatus
 nppiFilterHoughLineRegion_8u32f_C1R(const Npp8u * pSrc, int nSrcStep, NppiSize oSizeROI, NppPointPolar nDelta, int nThreshold, 
                                           NppPointPolar * pDeviceLines, NppPointPolar oDstROI[2], int nMaxLineCount, int * pDeviceLineCount, Npp8u * pDeviceBuffer);
 
-/** @} FilterHoughLine */
+/** @} image_filter_hough_line */
 
-/** @name HistogramOfOrientedGradientsBorder
- * 
+/** @defgroup image_filter_histogram_of_oriented_gradients_border HistogramOfOrientedGradientsBorder
  * Performs Histogram Of Oriented Gradients operation on source image generating separate windows of Histogram Descriptors for each requested location.
  *
  * This function implements the simplest form of functionality described by N. Dalal and B. Triggs. Histograms of Oriented Gradients for Human Detection. INRIA, 2005.
@@ -17498,9 +17582,314 @@ nppiHistogramOfGradientsBorder_32f_C3R(const Npp32f * pSrc, int nSrcStep, NppiSi
                                        const NppiPoint * hpLocations, int nLocations, Npp32f * pDstWindowDescriptorBuffer, 
                                        NppiSize oSizeROI, const NppiHOGConfig oHOGConfig, Npp8u * pScratchBuffer, NppiBorderType eBorderType);
 
-/** @} HistogramOfOrientedGradientsBorder */
+/** @} image_filter_histogram_of_oriented_gradients_border */
 
-/** @} fixed_filters */
+/** @defgroup image_filter_label_markers LabelMarkers
+ * Generate image connected region label markers to be used for later image segmentation.
+ *
+ * @{
+ *
+ */
+
+/** @name LabelMarkersGetBufferSize
+ *
+ * Before calling any of the LabelMarkers functions the application first needs to call the corresponding
+ * LabelMarkersGetBufferSize function to determine the amount of device memory to allocate as a working buffer.  The application allocated device memory
+ * is then passed as the pBuffer parameter to the corresponding LabelMarkers function.
+ *
+ * @{
+ *
+ */
+
+/**
+ * Calculate scratch buffer size needed for 1 channel 8-bit unsigned integer LabelMarkers function based on destination image oSizeROI width and height.
+ *
+ * \param oSizeROI \ref roi_specification.
+ * \param hpBufferSize Required buffer size in bytes.
+ */
+NppStatus 
+nppiLabelMarkersGetBufferSize_8u_C1R(NppiSize oSizeROI, int * hpBufferSize);
+
+/**
+ * Calculate scratch buffer size needed for 1 channel 8-bit to 1 channel 32-bit unsigned integer LabelMarkers function based on destination image oSizeROI width and height.
+ *
+ * \param oSizeROI \ref roi_specification.
+ * \param hpBufferSize Required buffer size in bytes.
+ */
+NppStatus 
+nppiLabelMarkersGetBufferSize_8u32u_C1R(NppiSize oSizeROI, int * hpBufferSize);
+
+/**
+ * Calculate scratch buffer size needed for 1 channel 16-bit unsigned integer LabelMarkers function based on destination image oSizeROI width and height.
+ *
+ * \param oSizeROI \ref roi_specification.
+ * \param hpBufferSize Required buffer size in bytes.
+ */
+NppStatus 
+nppiLabelMarkersGetBufferSize_16u_C1R(NppiSize oSizeROI, int * hpBufferSize);
+
+/** @} label_markers_get_buffer_size */
+
+/** @name LabelMarkers
+ *
+ * Generate image connected region label markers to be used for later image segmentation. A connected region is any 
+ * non-zero pixel region bounded by pixel values less than or equal to nMinVal. 
+ * Pixels outside the ROI are always treated as having values of 0 thus resulting in a connected region segmentation boundary in that direction. 
+ * Note that while marker label IDs start at ID number 1, they are not generated in any particular order and there may 
+ * be numeric gaps between sequential marker IDs. The pNumber parameter returns the value of the maximum label ID 
+ * generated in the first pass.  However during convergence passes higher label ID numbers in connected regions containing
+ * multiple label ID numbers will be replaced with the lowest label ID number in the region. However, connected region label IDs 
+ * will be unique unless the value returned by pNumber exceeds the data type range of a destination pixel in which
+ * case ID values will roll over causing some to be used on multiple connected regions.  If this occurs for 8 bit data 
+ * it is recommended that you use the 8u32u version of the function for 8 bit data. Pixels not connected
+ * to any connected region like those with values less than or equal to nMinVal will be assigned a marker label ID value of 0. 
+ *
+ * Before calling any of the LabelMarkers functions the application first needs to call the corresponding
+ * LabelMarkersGetBufferSize to determine the amount of device memory to allocate as a working buffer.  The allocated device memory
+ * is then passed as the pBuffer parameter to the corresponding LabelMarkers function.
+ *
+ * @{
+ *
+ */
+
+/**
+ * 1 channel 8-bit unsigned integer in place label markers image generation.
+ * 
+ * \param pSrcDst  \ref in_place_image_pointer.
+ * \param nSrcDstStep \ref source_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param nMinVal Pixel values less than or equal to nMinVal will be excluded as members of any connected region and given a label ID of 0..
+ * \param eNorm Type of pixel connectivity test to use, nppiNormInf will use 8 way connectivity and nppiNormL1 will use 4 way connectivity. 
+ * \param pNumber Pointer to host memory integer value where the maximum generated marker label ID will be returned.
+ * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding LabelMarkersGetBufferSize call.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiLabelMarkers_8u_C1IR(Npp8u * pSrcDst, int nSrcDstStep, NppiSize oSizeROI, 
+                         Npp8u nMinVal, NppiNorm eNorm, int * pNumber, Npp8u * pBuffer);
+
+/**
+ * 1 channel 8-bit to 32-bit unsigned integer label markers image generation.
+ * 
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst  \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param nMinVal Pixel values less than or equal to nMinVal will be excluded as members of any connected region and given a label ID of 0..
+ * \param eNorm Type of pixel connectivity test to use, nppiNormInf will use 8 way connectivity and nppiNormL1 will use 4 way connectivity. 
+ * \param pNumber Pointer to host memory integer value where the maximum generated marker label ID will be returned.
+ * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding LabelMarkersGetBufferSize call.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiLabelMarkers_8u32u_C1R(Npp8u * pSrc, int nSrcStep, Npp32u * pDst, int nDstStep, NppiSize oSizeROI, 
+                           Npp8u nMinVal, NppiNorm eNorm, int * pNumber, Npp8u * pBuffer);
+
+/**
+ * 1 channel 16-bit unsigned integer in place label markers image generation.
+ * 
+ * \param pSrcDst  \ref in_place_image_pointer.
+ * \param nSrcDstStep \ref source_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param nMinVal Pixel values less than or equal to nMinVal will be excluded as members of any connected region and given a label ID of 0..
+ * \param eNorm Type of pixel connectivity test to use, nppiNormInf will use 8 way connectivity and nppiNormL1 will use 4 way connectivity. 
+ * \param pNumber Pointer to host memory integer value where the maximum generated marker label ID will be returned.
+ * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding LabelMarkersGetBufferSize call.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiLabelMarkers_16u_C1IR(Npp16u * pSrcDst, int nSrcDstStep, NppiSize oSizeROI, 
+                          Npp16u nMinVal, NppiNorm eNorm, int * pNumber, Npp8u * pBuffer);
+
+/** @} label_markers */
+
+/** @} image_filter_label_markers */
+
+/** @defgroup image_filter_compress_marker_labels CompressMarkerLabels
+ * Removes sparseness between marker label IDs output from LabelMarkers call.
+ *
+ * @{
+ *
+ */
+
+/** @name CompressMarkerLabelsGetBufferSize
+ *
+ * Before calling any of the CompressMarkerLabels functions the application first needs to call the corresponding
+ * CompressMarkerLabelsGetBufferSize function to determine the amount of device memory to allocate as a working buffer.  
+ * The application allocated device memory is then passed as the pBuffer parameter to the corresponding CompressMarkerLabels function.
+ *
+ * @{
+ *
+ */
+
+/**
+ * Calculate scratch buffer size needed for 1 channel 8-bit unsigned integer CompressMarkerLabels function based on the number returned in pNumber from a previous nppiLabelMarkers call.
+ *
+ * \param nStartingNumber The value returned from a previous call to the nppiLabelMarkers_8u function.
+ * \param hpBufferSize Required buffer size in bytes.
+ */
+NppStatus 
+nppiCompressMarkerLabelsGetBufferSize_8u_C1R(int nStartingNumber, int * hpBufferSize);
+
+/**
+ * Calculate scratch buffer size needed for 1 channel 32-bit unsigned integer to 8-bit unsigned integer CompressMarkerLabels function based on the number returned in pNumber from a previous nppiLabelMarkers call.
+ *
+ * \param nStartingNumber The value returned from a previous call to the nppiLabelMarkers_8u32u function.
+ * \param hpBufferSize Required buffer size in bytes.
+ */
+NppStatus 
+nppiCompressMarkerLabelsGetBufferSize_32u8u_C1R(int nStartingNumber, int * hpBufferSize);
+
+/**
+ * Calculate scratch buffer size needed for 1 channel 16-bit unsigned integer CompressMarkerLabels function based on the number returned in pNumber from a previous nppiLabelMarkers call.
+ *
+ * \param nStartingNumber The value returned from a previous call to the nppiLabelMarkers_16u function.
+ * \param hpBufferSize Required buffer size in bytes.
+ */
+NppStatus 
+nppiCompressMarkerLabelsGetBufferSize_16u_C1R(int nStartingNumber, int * hpBufferSize);
+
+/**
+ * Calculate scratch buffer size needed for 1 channel 32-bit unsigned integer CompressMarkerLabels function based on the number returned in pNumber from a previous nppiLabelMarkers call.
+ *
+ * \param nStartingNumber The value returned from a previous call to the nppiLabelMarkers_32u function.
+ * \param hpBufferSize Required buffer size in bytes.
+ */
+NppStatus 
+nppiCompressMarkerLabelsGetBufferSize_32u_C1R(int nStartingNumber, int * hpBufferSize);
+
+/** @} compress_marker_labels_get_buffer_size */
+
+/** @name CompressMarkerLabels
+ *
+ * Renumber connected region marker label IDs from a previous call to nppiLabelMarkers to eliminate label numbering sparseness.
+ * Note that while marker label IDs still start at ID number 1, the value of pNewNumber returned by this function will represent
+ * the minimum number of label IDs to give each connected region in the image a unique label ID. However, if you initially used
+ * nppiLabelMarkers_8u and the pNumber value returned by that function was over 255 then you will still have one or more disjoint
+ * connected regions with the same label ID in the final output from this function. Also, the output of nppiCompressMarkerLabels_32u8u
+ * will only produce correct results if the pNewNumber value returned by this function is less than 256.
+ *
+ * Before calling any of the CompressMarkerLabels functions the application first needs to call the corresponding
+ * CompressMarkerLabelsGetBufferSize to determine the amount of device memory to allocate as a working buffer.  The allocated device memory
+ * is then passed as the pBuffer parameter to the corresponding CompressMarkerLabels function.
+ *
+ * @{
+ *
+ */
+
+/**
+ * 1 channel 8-bit unsigned integer in place connected region marker label renumbering with numbering sparseness elimination.
+ * 
+ * \param pSrcDst  \ref in_place_image_pointer.
+ * \param nSrcDstStep \ref source_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param nStartingNumber The value returned from a previous call to the nppiLabelMarkers_8u function.
+ * \param pNewNumber Pointer to host memory integer value where the maximum renumbered marker label ID will be returned.
+ * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding CompressMarkerLabelsGetBufferSize call.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiCompressMarkerLabels_8u_C1IR(Npp8u * pSrcDst, int nSrcDstStep, NppiSize oSizeROI, int nStartingNumber, int * pNewNumber, Npp8u * pBuffer);
+
+/**
+ * 1 channel 32-bit unsigned integer to 8-bit unsigned integer connected region marker label renumbering with numbering sparseness elimination.
+ * 
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst  \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param nStartingNumber The value returned from a previous call to the nppiLabelMarkers_8u32u function.
+ * \param pNewNumber Pointer to host memory integer value where the maximum renumbered marker label ID will be returned.
+ * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding CompressMarkerLabelsGetBufferSize call.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiCompressMarkerLabels_32u8u_C1R(Npp32u * pSrc, int nSrcStep, Npp8u * pDst, int nDstStep, NppiSize oSizeROI, int nStartingNumber, int * pNewNumber, Npp8u * pBuffer);
+
+/**
+ * 1 channel 16-bit unsigned integer in place connected region marker label renumbering with numbering sparseness elimination.
+ * 
+ * \param pSrcDst  \ref in_place_image_pointer.
+ * \param nSrcDstStep \ref source_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param nStartingNumber The value returned from a previous call to the nppiLabelMarkers_16u function.
+ * \param pNewNumber Pointer to host memory integer value where the maximum renumbered marker label ID will be returned.
+ * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding CompressMarkerLabelsGetBufferSize call.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiCompressMarkerLabels_16u_C1IR(Npp16u * pSrcDst, int nSrcDstStep, NppiSize oSizeROI, int nStartingNumber, int * pNewNumber, Npp8u * pBuffer);
+
+/**
+ * 1 channel 32-bit unsigned integer in place connected region marker label renumbering with numbering sparseness elimination.
+ * 
+ * \param pSrcDst  \ref in_place_image_pointer.
+ * \param nSrcDstStep \ref source_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param nStartingNumber The value returned from a previous call to the nppiLabelMarkers_8u32u function.
+ * \param pNewNumber Pointer to host memory integer value where the maximum renumbered marker label ID will be returned.
+ * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding CompressMarkerLabelsGetBufferSize call.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiCompressMarkerLabels_32u_C1IR(Npp32u * pSrcDst, int nSrcDstStep, NppiSize oSizeROI, int nStartingNumber, int * pNewNumber, Npp8u * pBuffer);
+
+/** @} compress_marker_labels */
+
+/** @} image_filter_compress_marker_labels */
+
+/** @defgroup image_filter_bound_segments BoundSegments
+ * Adds boundary borders around connected regions using a border value of nBorderVal.
+ *
+ * While this function is intended
+ * to be used on images output from nppiLabelMarkers function calls it will work on any image which contains regions
+ * surrounded by pixel values of 0.  This function always uses and 8-way connectivity search.
+ *
+ * @{
+ *
+ */
+
+/**
+ * 1 channel 8-bit unsigned integer in place region boundary border image generation.
+ * 
+ * \param pSrcDst  \ref in_place_image_pointer.
+ * \param nSrcDstStep \ref source_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param nBorderVal Pixel value to be used at connected region boundary borders
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiBoundSegments_8u_C1IR(Npp8u * pSrcDst, int nSrcDstStep, NppiSize oSizeROI, Npp8u nBorderVal);
+
+/**
+ * 1 channel 16-bit unsigned integer in place region boundary border image generation.
+ * 
+ * \param pSrcDst  \ref in_place_image_pointer.
+ * \param nSrcDstStep \ref source_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param nBorderVal Pixel value to be used at connected region boundary borders
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiBoundSegments_16u_C1IR(Npp16u * pSrcDst, int nSrcDstStep, NppiSize oSizeROI, Npp16u nBorderVal);
+
+/**
+ * 1 channel 32-bit unsigned integer in place region boundary border image generation.
+ * 
+ * \param pSrcDst  \ref in_place_image_pointer.
+ * \param nSrcDstStep \ref source_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param nBorderVal Pixel value to be used at connected region boundary borders
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus 
+nppiBoundSegments_32u_C1IR(Npp32u * pSrcDst, int nSrcDstStep, NppiSize oSizeROI, Npp32u nBorderVal);
+
+/** @} image_filter_bound_segments */
+
+/** @} image_computer_vision_filtering_functions */
 
 /** @} image_filtering_functions */
 

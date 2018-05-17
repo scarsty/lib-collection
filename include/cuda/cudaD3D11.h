@@ -60,7 +60,7 @@
         #error "Unsupported value of CUDA_FORCE_API_VERSION"
     #endif
 #else
-    #define __CUDA_API_VERSION 3020
+    #define __CUDA_API_VERSION 9010
 #endif /* CUDA_FORCE_API_VERSION */
 
 #if defined(__CUDA_API_VERSION_INTERNAL) || __CUDA_API_VERSION >= 3020
@@ -193,7 +193,6 @@ CUresult CUDAAPI cuD3D11GetDevices(unsigned int *pCudaDeviceCount, CUdevice *pCu
  * Not all Direct3D resources of the above types may be used for
  * interoperability with CUDA.  The following are some limitations.
  * - The primary rendertarget may not be registered with CUDA.
- * - Resources allocated as shared may not be registered with CUDA.
  * - Textures which are not of a format which is 1, 2, or 4 channels of 8, 16,
  *   or 32-bit integer or floating-point data cannot be shared.
  * - Surfaces of depth or stencil formats cannot be shared.

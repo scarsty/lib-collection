@@ -1,4 +1,4 @@
- /* Copyright 2009-2016 NVIDIA Corporation.  All rights reserved. 
+ /* Copyright 2009-2017 NVIDIA Corporation.  All rights reserved. 
   * 
   * NOTICE TO LICENSEE: 
   * 
@@ -22460,6 +22460,10 @@ nppiSSIMGetBufferHostSize_8u_C1R(NppiSize oSizeROI, int * hpBufferSize/* host po
  */
 NppStatus 
 nppiMSSSIMGetBufferHostSize_8u_C1R(NppiSize oSizeROI, int * hpBufferSize/* host pointer */);
+
+/** @} MSE */
+
+/** @} image_quality_assessment */
 
 /** @} image_statistics_functions */
 

@@ -70,7 +70,7 @@ typedef uint64_t cuuint64_t;
         #error "Unsupported value of CUDA_FORCE_API_VERSION"
     #endif
 #else
-    #define __CUDA_API_VERSION 9000
+    #define __CUDA_API_VERSION 9010
 #endif /* CUDA_FORCE_API_VERSION */
 
 #if defined(__CUDA_API_VERSION_INTERNAL) || defined(CUDA_API_PER_THREAD_DEFAULT_STREAM)
@@ -210,7 +210,7 @@ typedef uint64_t cuuint64_t;
 /**
  * CUDA API version number
  */
-#define CUDA_VERSION 9000
+#define CUDA_VERSION 9010
 
 #ifdef __cplusplus
 extern "C" {
@@ -905,7 +905,9 @@ typedef enum CUjit_target_enum
     CU_TARGET_COMPUTE_60 = 60,       /**< Compute device class 6.0.*/
     CU_TARGET_COMPUTE_61 = 61,       /**< Compute device class 6.1.*/
     CU_TARGET_COMPUTE_62 = 62,       /**< Compute device class 6.2.*/
-    CU_TARGET_COMPUTE_70 = 70        /**< Compute device class 7.0.*/
+    CU_TARGET_COMPUTE_70 = 70,       /**< Compute device class 7.0.*/
+    CU_TARGET_COMPUTE_73 = 73,       /**< Compute device class 7.3.*/
+    CU_TARGET_COMPUTE_75 = 75        /**< Compute device class 7.5.*/
 } CUjit_target;
 
 /**
@@ -8312,20 +8314,10 @@ CUresult CUDAAPI cuStreamGetFlags(CUstream hStream, unsigned int *flags);
 /**
  * \brief Make a compute stream wait on an event
  *
- * Makes all future work submitted to \p hStream wait until \p hEvent
- * reports completion before beginning execution.  This synchronization
- * will be performed efficiently on the device.  The event \p hEvent may
- * be from a different context than \p hStream, in which case this function
- * will perform cross-device synchronization.
- *
- * The stream \p hStream will wait only for the completion of the most recent
- * host call to ::cuEventRecord() on \p hEvent.  Once this call has returned,
- * any functions (including ::cuEventRecord() and ::cuEventDestroy()) may be
- * called on \p hEvent again, and subsequent calls will not have any
- * effect on \p hStream.
- *
- * If ::cuEventRecord() has not been called on \p hEvent, this call acts as if
- * the record has already completed, and so is a functional no-op.
+ * Makes all future work submitted to \p hStream wait for all work captured in
+ * \p hEvent.  See ::cuEventRecord() for details on what is captured by an event.
+ * The synchronization will be performed efficiently on the device when applicable.
+ * \p hEvent may be from a different context or device than \p hStream.
  *
  * \param hStream - Stream to wait
  * \param hEvent  - Event to wait on (may not be NULL)
@@ -8606,8 +8598,8 @@ CUresult CUDAAPI cuStreamDestroy(CUstream hStream);
 /**
  * \brief Creates an event
  *
- * Creates an event *phEvent with the flags specified via \p Flags. Valid flags
- * include:
+ * Creates an event *phEvent for the current context with the flags specified via
+ * \p Flags. Valid flags include:
  * - ::CU_EVENT_DEFAULT: Default event creation flag.
  * - ::CU_EVENT_BLOCKING_SYNC: Specifies that the created event should use blocking
  *   synchronization.  A CPU thread that uses ::cuEventSynchronize() to wait on
@@ -8647,16 +8639,20 @@ CUresult CUDAAPI cuEventCreate(CUevent *phEvent, unsigned int Flags);
 /**
  * \brief Records an event
  *
- * Records an event. See note on NULL stream behavior. Since operation is
- * asynchronous, ::cuEventQuery or ::cuEventSynchronize() must be used
- * to determine when the event has actually been recorded.
+ * Captures in \p hEvent the contents of \p hStream at the time of this call.
+ * \p hEvent and \p hStream must be from the same context.
+ * Calls such as ::cuEventQuery() or ::cuStreamWaitEvent() will then
+ * examine or wait for completion of the work that was captured. Uses of
+ * \p hStream after this call do not modify \p hEvent. See note on default
+ * stream behavior for what is captured in the default case.
  *
- * If ::cuEventRecord() has previously been called on \p hEvent, then this
- * call will overwrite any existing state in \p hEvent.  Any subsequent calls
- * which examine the status of \p hEvent will only examine the completion of
- * this most recent call to ::cuEventRecord().
- *
- * It is necessary that \p hEvent and \p hStream be created on the same context.
+ * ::cuEventRecord() can be called multiple times on the same event and
+ * will overwrite the previously captured state. Other APIs such as
+ * ::cuStreamWaitEvent() use the most recently captured state at the time
+ * of the API call, and are not affected by later calls to
+ * ::cuEventRecord(). Before the first call to ::cuEventRecord(), an
+ * event represents an empty set of work, so for example ::cuEventQuery()
+ * would return ::CUDA_SUCCESS.
  *
  * \param hEvent  - Event to record
  * \param hStream - Stream to record event for
@@ -8684,14 +8680,11 @@ CUresult CUDAAPI cuEventRecord(CUevent hEvent, CUstream hStream);
 /**
  * \brief Queries an event's status
  *
- * Query the status of all device work preceding the most recent
- * call to ::cuEventRecord() (in the appropriate compute streams,
- * as specified by the arguments to ::cuEventRecord()).
+ * Queries the status of all work currently captured by \p hEvent. See
+ * ::cuEventRecord() for details on what is captured by an event.
  *
- * If this work has successfully been completed by the device, or if
- * ::cuEventRecord() has not been called on \p hEvent, then ::CUDA_SUCCESS is
- * returned. If this work has not yet been completed by the device then
- * ::CUDA_ERROR_NOT_READY is returned.
+ * Returns ::CUDA_SUCCESS if all captured work has been completed, or
+ * ::CUDA_ERROR_NOT_READY if any captured work is incomplete.
  *
  * For the purposes of Unified Memory, a return value of ::CUDA_SUCCESS
  * is equivalent to having called ::cuEventSynchronize().
@@ -8719,12 +8712,8 @@ CUresult CUDAAPI cuEventQuery(CUevent hEvent);
 /**
  * \brief Waits for an event to complete
  *
- * Wait until the completion of all device work preceding the most recent
- * call to ::cuEventRecord() (in the appropriate compute streams, as specified
- * by the arguments to ::cuEventRecord()).
- *
- * If ::cuEventRecord() has not been called on \p hEvent, ::CUDA_SUCCESS is
- * returned immediately.
+ * Waits until the completion of all work currently captured in \p hEvent.
+ * See ::cuEventRecord() for details on what is captured by an event.
  *
  * Waiting for an event that was created with the ::CU_EVENT_BLOCKING_SYNC
  * flag will cause the calling CPU thread to block until the event has
@@ -8757,10 +8746,10 @@ CUresult CUDAAPI cuEventSynchronize(CUevent hEvent);
  *
  * Destroys the event specified by \p hEvent.
  *
- * In case \p hEvent has been recorded but has not yet been completed
- * when ::cuEventDestroy() is called, the function will return immediately and 
- * the resources associated with \p hEvent will be released automatically once
- * the device has completed \p hEvent.
+ * An event may be destroyed before it is complete (i.e., while
+ * ::cuEventQuery() would return ::CUDA_ERROR_NOT_READY). In this case, the
+ * call does not block on completion of the event, and any associated
+ * resources will automatically be released asynchronously at completion.
  *
  * \param hEvent - Event to destroy
  *

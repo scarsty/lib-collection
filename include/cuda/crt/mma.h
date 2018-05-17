@@ -52,11 +52,7 @@
 
 #include <cuda_fp16.h>
 
-#if defined(__CUDACC_RTC__)
-#define __CUDA_MMA_DEVICE_DECL__ __host__ __device__
-#else /* !__CUDACC_RTC__ */
 #define __CUDA_MMA_DEVICE_DECL__ static __device__ __inline__
-#endif /* __CUDACC_RTC__ */
 
 #if defined(__cplusplus) && defined(__CUDACC__)
 
@@ -121,20 +117,72 @@ namespace wmma {
   template<> class fragment<accumulator, 16, 16, 16, float> : public __frag_base<float, 8> {};
   
   // 
+  // Fragments for 32x8x16
+  // 
+  template<> class fragment<matrix_a, 32, 8, 16, __half, row_major> : public __frag_base<__half, 16> {};
+  template<> class fragment<matrix_a, 32, 8, 16, __half, col_major> : public __frag_base<__half, 16> {};
+  template<> class fragment<matrix_b, 32, 8, 16, __half, row_major> : public __frag_base<__half, 16> {};
+  template<> class fragment<matrix_b, 32, 8, 16, __half, col_major> : public __frag_base<__half, 16> {};
+  template<> class fragment<accumulator, 32, 8, 16, __half> : public __frag_base<__half, 8> {};
+  template<> class fragment<accumulator, 32, 8, 16, float> : public __frag_base<float, 8> {};
+
+  // 
+  // Fragments for 8x32x16
+  // 
+  template<> class fragment<matrix_a, 8, 32, 16, __half, row_major> : public __frag_base<__half, 16> {};
+  template<> class fragment<matrix_a, 8, 32, 16, __half, col_major> : public __frag_base<__half, 16> {};
+  template<> class fragment<matrix_b, 8, 32, 16, __half, row_major> : public __frag_base<__half, 16> {};
+  template<> class fragment<matrix_b, 8, 32, 16, __half, col_major> : public __frag_base<__half, 16> {};
+  template<> class fragment<accumulator, 8, 32, 16, __half> : public __frag_base<__half, 8> {};
+  template<> class fragment<accumulator, 8, 32, 16, float> : public __frag_base<float, 8> {};
+
+  // 
   // Load functions for frags of shape m16n16k16
   // 
   __CUDA_MMA_DEVICE_DECL__ void load_matrix_sync(fragment<matrix_a, 16, 16, 16, __half, row_major>& a, const __half* p, unsigned ldm) __DEF_IF_HOST
   __CUDA_MMA_DEVICE_DECL__ void load_matrix_sync(fragment<matrix_a, 16, 16, 16, __half, col_major>& a, const __half* p, unsigned ldm) __DEF_IF_HOST
-  __CUDA_MMA_DEVICE_DECL__ void load_matrix_sync(fragment<matrix_b,16, 16, 16, __half, row_major>& a, const __half* p, unsigned ldm) __DEF_IF_HOST
-  __CUDA_MMA_DEVICE_DECL__ void load_matrix_sync(fragment<matrix_b,16, 16, 16, __half, col_major>& a, const __half* p, unsigned ldm) __DEF_IF_HOST
-  __CUDA_MMA_DEVICE_DECL__ void load_matrix_sync(fragment<accumulator,16, 16, 16, __half>& a, const __half* p, unsigned ldm, layout_t layout) __DEF_IF_HOST
-  __CUDA_MMA_DEVICE_DECL__ void load_matrix_sync(fragment<accumulator,16, 16, 16, float>& a, const float* p, unsigned ldm, layout_t layout) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void load_matrix_sync(fragment<matrix_b, 16, 16, 16, __half, row_major>& a, const __half* p, unsigned ldm) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void load_matrix_sync(fragment<matrix_b, 16, 16, 16, __half, col_major>& a, const __half* p, unsigned ldm) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void load_matrix_sync(fragment<accumulator, 16, 16, 16, __half>& a, const __half* p, unsigned ldm, layout_t layout) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void load_matrix_sync(fragment<accumulator, 16, 16, 16, float>& a, const float* p, unsigned ldm, layout_t layout) __DEF_IF_HOST
   
+  //
+  // Load functions for frags of shape m32n8k16
+  // 
+  __CUDA_MMA_DEVICE_DECL__ void load_matrix_sync(fragment<matrix_a, 32, 8, 16, __half, row_major>& a, const __half* p, unsigned ldm) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void load_matrix_sync(fragment<matrix_a, 32, 8, 16, __half, col_major>& a, const __half* p, unsigned ldm) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void load_matrix_sync(fragment<matrix_b, 32, 8, 16, __half, row_major>& a, const __half* p, unsigned ldm) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void load_matrix_sync(fragment<matrix_b, 32, 8, 16, __half, col_major>& a, const __half* p, unsigned ldm) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void load_matrix_sync(fragment<accumulator, 32, 8, 16, __half>& a, const __half* p, unsigned ldm, layout_t layout) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void load_matrix_sync(fragment<accumulator, 32, 8, 16, float>& a, const float* p, unsigned ldm, layout_t layout) __DEF_IF_HOST
+
+  //
+  // Load functions for frags of shape m8n32k16
+  // 
+  __CUDA_MMA_DEVICE_DECL__ void load_matrix_sync(fragment<matrix_a, 8, 32, 16, __half, row_major>& a, const __half* p, unsigned ldm) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void load_matrix_sync(fragment<matrix_a, 8, 32, 16, __half, col_major>& a, const __half* p, unsigned ldm) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void load_matrix_sync(fragment<matrix_b, 8, 32, 16, __half, row_major>& a, const __half* p, unsigned ldm) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void load_matrix_sync(fragment<matrix_b, 8, 32, 16, __half, col_major>& a, const __half* p, unsigned ldm) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void load_matrix_sync(fragment<accumulator, 8, 32, 16, __half>& a, const __half* p, unsigned ldm, layout_t layout) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void load_matrix_sync(fragment<accumulator, 8, 32, 16, float>& a, const float* p, unsigned ldm, layout_t layout) __DEF_IF_HOST
+
   // 
   // Store functions for frags of shape m16n16k16
   // 
-  __CUDA_MMA_DEVICE_DECL__ void store_matrix_sync(__half *p, const fragment<accumulator,16, 16, 16, __half>& a, unsigned ldm, layout_t layout) __DEF_IF_HOST
-  __CUDA_MMA_DEVICE_DECL__ void store_matrix_sync(float *p, const fragment<accumulator,16, 16, 16, float>& a, unsigned ldm, layout_t layout) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void store_matrix_sync(__half *p, const fragment<accumulator, 16, 16, 16, __half>& a, unsigned ldm, layout_t layout) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void store_matrix_sync(float *p, const fragment<accumulator, 16, 16, 16, float>& a, unsigned ldm, layout_t layout) __DEF_IF_HOST
+
+  // 
+  // Store functions for frags of shape m32n8k16
+  // 
+  __CUDA_MMA_DEVICE_DECL__ void store_matrix_sync(__half *p, const fragment<accumulator, 32, 8, 16, __half>& a, unsigned ldm, layout_t layout) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void store_matrix_sync(float *p, const fragment<accumulator, 32, 8, 16, float>& a, unsigned ldm, layout_t layout) __DEF_IF_HOST
+
+  // 
+  // Store functions for frags of shape m8n32k16
+  // 
+  __CUDA_MMA_DEVICE_DECL__ void store_matrix_sync(__half *p, const fragment<accumulator, 8, 32, 16, __half>& a, unsigned ldm, layout_t layout) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void store_matrix_sync(float *p, const fragment<accumulator, 8, 32, 16, float>& a, unsigned ldm, layout_t layout) __DEF_IF_HOST
 
   // 
   // MMA functions for shape m16n16k16
@@ -156,6 +204,46 @@ namespace wmma {
   __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator,16, 16, 16, __half>& d, const fragment<matrix_a, 16, 16, 16, __half, row_major>& a, const fragment<matrix_b,16, 16, 16, __half, row_major>& b, const fragment<accumulator,16, 16, 16, float>& c, bool satf=false) __DEF_IF_HOST
   __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator,16, 16, 16, __half>& d, const fragment<matrix_a, 16, 16, 16, __half, col_major>& a, const fragment<matrix_b,16, 16, 16, __half, row_major>& b, const fragment<accumulator,16, 16, 16, float>& c, bool satf=false) __DEF_IF_HOST
 
+  // 
+  // MMA functions for shape m32n8k16
+  // 
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator, 32, 8, 16, __half>& d, const fragment<matrix_a, 32, 8, 16, __half, row_major>& a, const fragment<matrix_b, 32, 8, 16, __half, col_major>& b, const fragment<accumulator, 32, 8, 16, __half>& c, bool satf=false) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator, 32, 8, 16, __half>& d, const fragment<matrix_a, 32, 8, 16, __half, col_major>& a, const fragment<matrix_b, 32, 8, 16, __half, col_major>& b, const fragment<accumulator, 32, 8, 16, __half>& c, bool satf=false) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator, 32, 8, 16, __half>& d, const fragment<matrix_a, 32, 8, 16, __half, row_major>& a, const fragment<matrix_b, 32, 8, 16, __half, row_major>& b, const fragment<accumulator, 32, 8, 16, __half>& c, bool satf=false) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator, 32, 8, 16, __half>& d, const fragment<matrix_a, 32, 8, 16, __half, col_major>& a, const fragment<matrix_b, 32, 8, 16, __half, row_major>& b, const fragment<accumulator, 32, 8, 16, __half>& c, bool satf=false) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator, 32, 8, 16, float>& d, const fragment<matrix_a, 32, 8, 16, __half, row_major>& a, const fragment<matrix_b, 32, 8, 16, __half, col_major>& b, const fragment<accumulator, 32, 8, 16, __half>& c, bool satf=false) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator, 32, 8, 16, float>& d, const fragment<matrix_a, 32, 8, 16, __half, col_major>& a, const fragment<matrix_b, 32, 8, 16, __half, col_major>& b, const fragment<accumulator, 32, 8, 16, __half>& c, bool satf=false) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator, 32, 8, 16, float>& d, const fragment<matrix_a, 32, 8, 16, __half, row_major>& a, const fragment<matrix_b, 32, 8, 16, __half, row_major>& b, const fragment<accumulator, 32, 8, 16, __half>& c, bool satf=false) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator, 32, 8, 16, float>& d, const fragment<matrix_a, 32, 8, 16, __half, col_major>& a, const fragment<matrix_b, 32, 8, 16, __half, row_major>& b, const fragment<accumulator, 32, 8, 16, __half>& c, bool satf=false) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator, 32, 8, 16, float>& d, const fragment<matrix_a, 32, 8, 16, __half, row_major>& a, const fragment<matrix_b, 32, 8, 16, __half, col_major>& b, const fragment<accumulator, 32, 8, 16, float>& c, bool satf=false) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator, 32, 8, 16, float>& d, const fragment<matrix_a, 32, 8, 16, __half, col_major>& a, const fragment<matrix_b, 32, 8, 16, __half, col_major>& b, const fragment<accumulator, 32, 8, 16, float>& c, bool satf=false) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator, 32, 8, 16, float>& d, const fragment<matrix_a, 32, 8, 16, __half, row_major>& a, const fragment<matrix_b, 32, 8, 16, __half, row_major>& b, const fragment<accumulator, 32, 8, 16, float>& c, bool satf=false) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator, 32, 8, 16, float>& d, const fragment<matrix_a, 32, 8, 16, __half, col_major>& a, const fragment<matrix_b, 32, 8, 16, __half, row_major>& b, const fragment<accumulator, 32, 8, 16, float>& c, bool satf=false) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator, 32, 8, 16, __half>& d, const fragment<matrix_a, 32, 8, 16, __half, row_major>& a, const fragment<matrix_b, 32, 8, 16, __half, col_major>& b, const fragment<accumulator, 32, 8, 16, float>& c, bool satf=false) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator, 32, 8, 16, __half>& d, const fragment<matrix_a, 32, 8, 16, __half, col_major>& a, const fragment<matrix_b, 32, 8, 16, __half, col_major>& b, const fragment<accumulator, 32, 8, 16, float>& c, bool satf=false) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator, 32, 8, 16, __half>& d, const fragment<matrix_a, 32, 8, 16, __half, row_major>& a, const fragment<matrix_b, 32, 8, 16, __half, row_major>& b, const fragment<accumulator, 32, 8, 16, float>& c, bool satf=false) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator, 32, 8, 16, __half>& d, const fragment<matrix_a, 32, 8, 16, __half, col_major>& a, const fragment<matrix_b, 32, 8, 16, __half, row_major>& b, const fragment<accumulator, 32, 8, 16, float>& c, bool satf=false) __DEF_IF_HOST
+
+  // 
+  // MMA functions for shape m8n32k16
+  // 
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator, 8, 32, 16, __half>& d, const fragment<matrix_a, 8, 32, 16, __half, row_major>& a, const fragment<matrix_b, 8, 32, 16, __half, col_major>& b, const fragment<accumulator, 8, 32, 16, __half>& c, bool satf=false) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator, 8, 32, 16, __half>& d, const fragment<matrix_a, 8, 32, 16, __half, col_major>& a, const fragment<matrix_b, 8, 32, 16, __half, col_major>& b, const fragment<accumulator, 8, 32, 16, __half>& c, bool satf=false) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator, 8, 32, 16, __half>& d, const fragment<matrix_a, 8, 32, 16, __half, row_major>& a, const fragment<matrix_b, 8, 32, 16, __half, row_major>& b, const fragment<accumulator, 8, 32, 16, __half>& c, bool satf=false) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator, 8, 32, 16, __half>& d, const fragment<matrix_a, 8, 32, 16, __half, col_major>& a, const fragment<matrix_b, 8, 32, 16, __half, row_major>& b, const fragment<accumulator, 8, 32, 16, __half>& c, bool satf=false) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator, 8, 32, 16, float>& d, const fragment<matrix_a, 8, 32, 16, __half, row_major>& a, const fragment<matrix_b, 8, 32, 16, __half, col_major>& b, const fragment<accumulator, 8, 32, 16, __half>& c, bool satf=false) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator, 8, 32, 16, float>& d, const fragment<matrix_a, 8, 32, 16, __half, col_major>& a, const fragment<matrix_b, 8, 32, 16, __half, col_major>& b, const fragment<accumulator, 8, 32, 16, __half>& c, bool satf=false) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator, 8, 32, 16, float>& d, const fragment<matrix_a, 8, 32, 16, __half, row_major>& a, const fragment<matrix_b, 8, 32, 16, __half, row_major>& b, const fragment<accumulator, 8, 32, 16, __half>& c, bool satf=false) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator, 8, 32, 16, float>& d, const fragment<matrix_a, 8, 32, 16, __half, col_major>& a, const fragment<matrix_b, 8, 32, 16, __half, row_major>& b, const fragment<accumulator, 8, 32, 16, __half>& c, bool satf=false) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator, 8, 32, 16, float>& d, const fragment<matrix_a, 8, 32, 16, __half, row_major>& a, const fragment<matrix_b, 8, 32, 16, __half, col_major>& b, const fragment<accumulator, 8, 32, 16, float>& c, bool satf=false) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator, 8, 32, 16, float>& d, const fragment<matrix_a, 8, 32, 16, __half, col_major>& a, const fragment<matrix_b, 8, 32, 16, __half, col_major>& b, const fragment<accumulator, 8, 32, 16, float>& c, bool satf=false) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator, 8, 32, 16, float>& d, const fragment<matrix_a, 8, 32, 16, __half, row_major>& a, const fragment<matrix_b, 8, 32, 16, __half, row_major>& b, const fragment<accumulator, 8, 32, 16, float>& c, bool satf=false) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator, 8, 32, 16, float>& d, const fragment<matrix_a, 8, 32, 16, __half, col_major>& a, const fragment<matrix_b, 8, 32, 16, __half, row_major>& b, const fragment<accumulator, 8, 32, 16, float>& c, bool satf=false) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator, 8, 32, 16, __half>& d, const fragment<matrix_a, 8, 32, 16, __half, row_major>& a, const fragment<matrix_b, 8, 32, 16, __half, col_major>& b, const fragment<accumulator, 8, 32, 16, float>& c, bool satf=false) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator, 8, 32, 16, __half>& d, const fragment<matrix_a, 8, 32, 16, __half, col_major>& a, const fragment<matrix_b, 8, 32, 16, __half, col_major>& b, const fragment<accumulator, 8, 32, 16, float>& c, bool satf=false) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator, 8, 32, 16, __half>& d, const fragment<matrix_a, 8, 32, 16, __half, row_major>& a, const fragment<matrix_b, 8, 32, 16, __half, row_major>& b, const fragment<accumulator, 8, 32, 16, float>& c, bool satf=false) __DEF_IF_HOST
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator, 8, 32, 16, __half>& d, const fragment<matrix_a, 8, 32, 16, __half, col_major>& a, const fragment<matrix_b, 8, 32, 16, __half, row_major>& b, const fragment<accumulator, 8, 32, 16, float>& c, bool satf=false) __DEF_IF_HOST
+
 };
 };
 
@@ -167,9 +255,9 @@ namespace wmma {
 
 #undef __CUDA_MMA_DEVICE_DECL__
 
-#if !defined(__CUDACC_RTC__) && defined(__CUDA_ARCH__)
+#if defined(__CUDA_ARCH__)
 #include "mma.hpp"
-#endif /* !__CUDACC_RTC__ && defined(__CUDA_ARCH__) */
+#endif /* defined(__CUDA_ARCH__) */
 
 
 #endif /* !__CUDA_MMA_H__ */

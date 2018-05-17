@@ -212,35 +212,43 @@ nvgraphStatus_t NVGRAPH_API nvgraphSrSpmv(nvgraphHandle_t handle,
                                  const size_t y_index,
                                  const nvgraphSemiring_t SR);
 
-
-/* nvGRAPH Traversal
- * Compute a traversal of the graph from a single vertex
+/* Helper struct for Traversal parameters
  */
-
-//List of parameters available
-
 typedef struct {
 	size_t pad[128];
 } nvgraphTraversalParameter_t; 
 
+
+/* Initializes traversal parameters with default values
+ */
 nvgraphStatus_t NVGRAPH_API nvgraphTraversalParameterInit(nvgraphTraversalParameter_t *param);
 
+/* Stores/retrieves index of a vertex data where target distances will be stored 
+ */ 
 nvgraphStatus_t NVGRAPH_API nvgraphTraversalSetDistancesIndex(nvgraphTraversalParameter_t *param, const size_t value);
 
 nvgraphStatus_t NVGRAPH_API nvgraphTraversalGetDistancesIndex(const nvgraphTraversalParameter_t param, size_t *value);
 
+/* Stores/retrieves index of a vertex data where path predecessors will be stored
+ */
 nvgraphStatus_t NVGRAPH_API nvgraphTraversalSetPredecessorsIndex(nvgraphTraversalParameter_t *param, const size_t value);
 
 nvgraphStatus_t NVGRAPH_API nvgraphTraversalGetPredecessorsIndex(const nvgraphTraversalParameter_t param, size_t *value);
 
+/* Stores/retrieves index of an edge data which tells traversal algorithm whether path can go through an edge or not
+ */
 nvgraphStatus_t NVGRAPH_API nvgraphTraversalSetEdgeMaskIndex(nvgraphTraversalParameter_t *param, const size_t value);
 
 nvgraphStatus_t NVGRAPH_API nvgraphTraversalGetEdgeMaskIndex(const nvgraphTraversalParameter_t param, size_t *value);
 
+/* Stores/retrieves flag that tells an algorithm whether the graph is directed or not
+ */
 nvgraphStatus_t NVGRAPH_API nvgraphTraversalSetUndirectedFlag(nvgraphTraversalParameter_t *param, const size_t value);
 
 nvgraphStatus_t NVGRAPH_API nvgraphTraversalGetUndirectedFlag(const nvgraphTraversalParameter_t param, size_t *value);
 
+/* Stores/retrieves 'alpha' and 'beta' parameters for BFS traversal algorithm
+ */
 nvgraphStatus_t NVGRAPH_API nvgraphTraversalSetAlpha(nvgraphTraversalParameter_t *param, const size_t value);
 
 nvgraphStatus_t NVGRAPH_API nvgraphTraversalGetAlpha(const nvgraphTraversalParameter_t param, size_t *value);
@@ -257,7 +265,9 @@ typedef enum {
 } nvgraphTraversal_t;
 
 
-
+/* nvGRAPH Traversal API
+ * Compute a traversal of the graph from a single vertex using algorithm specified by traversalT parameter
+ */
 nvgraphStatus_t NVGRAPH_API nvgraphTraversal(nvgraphHandle_t handle,
                                const nvgraphGraphDescr_t descrG,
                                const nvgraphTraversal_t traversalT,

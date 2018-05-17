@@ -56,11 +56,7 @@
 
 #include <cuda_fp16.h>
 
-#if defined(__CUDACC_RTC__)
-#define __CUDA_MMA_DEVICE_DECL__ __host__ __device__
-#else /* !__CUDACC_RTC__ */
 #define __CUDA_MMA_DEVICE_DECL__ static __device__ __inline__
-#endif /* __CUDACC_RTC__ */
 
 namespace nvcuda {
 namespace wmma {
@@ -98,6 +94,71 @@ namespace wmma {
       __hmma_m16n16k16_ld_c_f32((float*)&a, (const float*)p, ldm, 1);
   }
 
+  // 
+  // Load functions for frags of shape m32n8k16
+  // 
+  __CUDA_MMA_DEVICE_DECL__ void load_matrix_sync(fragment<matrix_a, 32, 8, 16, __half, row_major>& a, const __half* p, unsigned ldm) {
+    __hmma_m32n8k16_ld_a((int*)&a, (const int*)p, ldm, 0);
+  }
+
+  __CUDA_MMA_DEVICE_DECL__ void load_matrix_sync(fragment<matrix_a, 32, 8, 16, __half, col_major>& a, const __half* p, unsigned ldm) {
+    __hmma_m32n8k16_ld_a((int*)&a, (const int*)p, ldm, 1);
+  }
+
+  __CUDA_MMA_DEVICE_DECL__ void load_matrix_sync(fragment<matrix_b, 32, 8, 16, __half, row_major>& a, const __half* p, unsigned ldm) {
+    __hmma_m32n8k16_ld_b((int*)&a, (const int*)p, ldm, 0);
+  }
+
+  __CUDA_MMA_DEVICE_DECL__ void load_matrix_sync(fragment<matrix_b, 32, 8, 16, __half, col_major>& a, const __half* p, unsigned ldm) {
+    __hmma_m32n8k16_ld_b((int*)&a, (const int*)p, ldm, 1);
+  }
+
+  __CUDA_MMA_DEVICE_DECL__ void load_matrix_sync(fragment<accumulator, 32, 8, 16, __half>& a, const __half* p, unsigned ldm, layout_t layout) {
+    if (layout == mem_row_major)
+      __hmma_m32n8k16_ld_c_f16((int*)&a, (const int*)p, ldm, 0);
+    else
+      __hmma_m32n8k16_ld_c_f16((int*)&a, (const int*)p, ldm, 1);
+  }
+
+  __CUDA_MMA_DEVICE_DECL__ void load_matrix_sync(fragment<accumulator, 32, 8, 16, float>& a, const float* p, unsigned ldm, layout_t layout) {
+    if (layout == mem_row_major)
+      __hmma_m32n8k16_ld_c_f32((float*)&a, (const float*)p, ldm, 0);
+    else
+      __hmma_m32n8k16_ld_c_f32((float*)&a, (const float*)p, ldm, 1);
+  }
+
+  // 
+  // Load functions for frags of shape m8n32k16
+  // 
+  __CUDA_MMA_DEVICE_DECL__ void load_matrix_sync(fragment<matrix_a, 8, 32, 16, __half, row_major>& a, const __half* p, unsigned ldm) {
+    __hmma_m8n32k16_ld_a((int*)&a, (const int*)p, ldm, 0);
+  }
+
+  __CUDA_MMA_DEVICE_DECL__ void load_matrix_sync(fragment<matrix_a, 8, 32, 16, __half, col_major>& a, const __half* p, unsigned ldm) {
+    __hmma_m8n32k16_ld_a((int*)&a, (const int*)p, ldm, 1);
+  }
+
+  __CUDA_MMA_DEVICE_DECL__ void load_matrix_sync(fragment<matrix_b, 8, 32, 16, __half, row_major>& a, const __half* p, unsigned ldm) {
+    __hmma_m8n32k16_ld_b((int*)&a, (const int*)p, ldm, 0);
+  }
+
+  __CUDA_MMA_DEVICE_DECL__ void load_matrix_sync(fragment<matrix_b, 8, 32, 16, __half, col_major>& a, const __half* p, unsigned ldm) {
+    __hmma_m8n32k16_ld_b((int*)&a, (const int*)p, ldm, 1);
+  }
+
+  __CUDA_MMA_DEVICE_DECL__ void load_matrix_sync(fragment<accumulator, 8, 32, 16, __half>& a, const __half* p, unsigned ldm, layout_t layout) {
+    if (layout == mem_row_major)
+      __hmma_m8n32k16_ld_c_f16((int*)&a, (const int*)p, ldm, 0);
+    else
+      __hmma_m8n32k16_ld_c_f16((int*)&a, (const int*)p, ldm, 1);
+  }
+
+  __CUDA_MMA_DEVICE_DECL__ void load_matrix_sync(fragment<accumulator, 8, 32, 16, float>& a, const float* p, unsigned ldm, layout_t layout) {
+    if (layout == mem_row_major)
+      __hmma_m8n32k16_ld_c_f32((float*)&a, (const float*)p, ldm, 0);
+    else
+      __hmma_m8n32k16_ld_c_f32((float*)&a, (const float*)p, ldm, 1);
+  }
   
   // 
   // Store functions for frags of shape m16n16k16
@@ -114,6 +175,40 @@ namespace wmma {
       __hmma_m16n16k16_st_c_f32((float*)p, (float*)&a, ldm, 0);
     else
       __hmma_m16n16k16_st_c_f32((float*)p, (float*)&a, ldm, 1);
+  }
+  
+  // 
+  // Store functions for frags of shape m32n8k16
+  // 
+  __CUDA_MMA_DEVICE_DECL__ void store_matrix_sync(__half *p, const fragment<accumulator, 32, 8, 16, __half>& a, unsigned ldm, layout_t layout) {
+    if (layout == mem_row_major)
+      __hmma_m32n8k16_st_c_f16((int*)p, (int*)&a, ldm, 0);
+    else
+      __hmma_m32n8k16_st_c_f16((int*)p, (int*)&a, ldm, 1);
+  }
+
+  __CUDA_MMA_DEVICE_DECL__ void store_matrix_sync(float *p, const fragment<accumulator, 32, 8, 16, float>& a, unsigned ldm, layout_t layout) {
+    if (layout == mem_row_major)
+      __hmma_m32n8k16_st_c_f32((float*)p, (float*)&a, ldm, 0);
+    else
+      __hmma_m32n8k16_st_c_f32((float*)p, (float*)&a, ldm, 1);
+  }
+  
+  // 
+  // Store functions for frags of shape m8n32k16
+  // 
+  __CUDA_MMA_DEVICE_DECL__ void store_matrix_sync(__half *p, const fragment<accumulator, 8, 32, 16, __half>& a, unsigned ldm, layout_t layout) {
+    if (layout == mem_row_major)
+      __hmma_m8n32k16_st_c_f16((int*)p, (int*)&a, ldm, 0);
+    else
+      __hmma_m8n32k16_st_c_f16((int*)p, (int*)&a, ldm, 1);
+  }
+
+  __CUDA_MMA_DEVICE_DECL__ void store_matrix_sync(float *p, const fragment<accumulator, 8, 32, 16, float>& a, unsigned ldm, layout_t layout) {
+    if (layout == mem_row_major)
+      __hmma_m8n32k16_st_c_f32((float*)p, (float*)&a, ldm, 0);
+    else
+      __hmma_m8n32k16_st_c_f32((float*)p, (float*)&a, ldm, 1);
   }
   
   // 
@@ -221,6 +316,220 @@ namespace wmma {
       __hmma_m16n16k16_mma_f16f32((int*)&d, (const int*)&a, (const int*)&b, (const float*)&c, 2, 1);
     else
       __hmma_m16n16k16_mma_f16f32((int*)&d, (const int*)&a, (const int*)&b, (const float*)&c, 2, 0);
+  }
+
+  // 
+  // MMA functions for shape m32n8k16
+  // 
+  // D fp16, C fp16
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator,32, 8, 16, __half>& d, const fragment<matrix_a, 32, 8, 16, __half, row_major>& a, const fragment<matrix_b,32, 8, 16, __half, col_major>& b, const fragment<accumulator,32, 8, 16, __half>& c, bool satf) {
+    if (satf)
+      __hmma_m32n8k16_mma_f16f16((int*)&d, (const int*)&a, (const int*)&b, (const int*)&c, 1, 1);
+    else
+      __hmma_m32n8k16_mma_f16f16((int*)&d, (const int*)&a, (const int*)&b, (const int*)&c, 1, 0);
+  }
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator,32, 8, 16, __half>& d, const fragment<matrix_a, 32, 8, 16, __half, col_major>& a, const fragment<matrix_b,32, 8, 16, __half, col_major>& b, const fragment<accumulator,32, 8, 16, __half>& c, bool satf) {
+    if (satf)
+      __hmma_m32n8k16_mma_f16f16((int*)&d, (const int*)&a, (const int*)&b, (const int*)&c, 3, 1);
+    else
+      __hmma_m32n8k16_mma_f16f16((int*)&d, (const int*)&a, (const int*)&b, (const int*)&c, 3, 0);
+  }
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator,32, 8, 16, __half>& d, const fragment<matrix_a, 32, 8, 16, __half, row_major>& a, const fragment<matrix_b,32, 8, 16, __half, row_major>& b, const fragment<accumulator,32, 8, 16, __half>& c, bool satf) {
+    if (satf)
+      __hmma_m32n8k16_mma_f16f16((int*)&d, (const int*)&a, (const int*)&b, (const int*)&c, 0, 1);
+    else
+      __hmma_m32n8k16_mma_f16f16((int*)&d, (const int*)&a, (const int*)&b, (const int*)&c, 0, 0);
+  }
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator,32, 8, 16, __half>& d, const fragment<matrix_a, 32, 8, 16, __half, col_major>& a, const fragment<matrix_b,32, 8, 16, __half, row_major>& b, const fragment<accumulator,32, 8, 16, __half>& c, bool satf) {
+    if (satf)
+      __hmma_m32n8k16_mma_f16f16((int*)&d, (const int*)&a, (const int*)&b, (const int*)&c, 2, 1);
+    else
+      __hmma_m32n8k16_mma_f16f16((int*)&d, (const int*)&a, (const int*)&b, (const int*)&c, 2, 0);
+  }
+
+  // D fp32, C fp16
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator,32, 8, 16, float>& d, const fragment<matrix_a, 32, 8, 16, __half, row_major>& a, const fragment<matrix_b,32, 8, 16, __half, col_major>& b, const fragment<accumulator,32, 8, 16, __half>& c, bool satf) {
+    if (satf)
+      __hmma_m32n8k16_mma_f32f16((float*)&d, (const int*)&a, (const int*)&b, (const int*)&c, 1, 1);
+    else
+      __hmma_m32n8k16_mma_f32f16((float*)&d, (const int*)&a, (const int*)&b, (const int*)&c, 1, 0);
+  }
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator,32, 8, 16, float>& d, const fragment<matrix_a, 32, 8, 16, __half, col_major>& a, const fragment<matrix_b,32, 8, 16, __half, col_major>& b, const fragment<accumulator,32, 8, 16, __half>& c, bool satf) {
+    if (satf)
+      __hmma_m32n8k16_mma_f32f16((float*)&d, (const int*)&a, (const int*)&b, (const int*)&c, 3, 1);
+    else
+      __hmma_m32n8k16_mma_f32f16((float*)&d, (const int*)&a, (const int*)&b, (const int*)&c, 3, 0);
+  }
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator,32, 8, 16, float>& d, const fragment<matrix_a, 32, 8, 16, __half, row_major>& a, const fragment<matrix_b,32, 8, 16, __half, row_major>& b, const fragment<accumulator,32, 8, 16, __half>& c, bool satf) {
+    if (satf)
+      __hmma_m32n8k16_mma_f32f16((float*)&d, (const int*)&a, (const int*)&b, (const int*)&c, 0, 1);
+    else
+      __hmma_m32n8k16_mma_f32f16((float*)&d, (const int*)&a, (const int*)&b, (const int*)&c, 0, 0);
+  }
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator,32, 8, 16, float>& d, const fragment<matrix_a, 32, 8, 16, __half, col_major>& a, const fragment<matrix_b,32, 8, 16, __half, row_major>& b, const fragment<accumulator,32, 8, 16, __half>& c, bool satf) {
+    if (satf)
+      __hmma_m32n8k16_mma_f32f16((float*)&d, (const int*)&a, (const int*)&b, (const int*)&c, 2, 1);
+    else
+      __hmma_m32n8k16_mma_f32f16((float*)&d, (const int*)&a, (const int*)&b, (const int*)&c, 2, 0);
+  }
+
+  // D fp32, C fp32
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator,32, 8, 16, float>& d, const fragment<matrix_a, 32, 8, 16, __half, row_major>& a, const fragment<matrix_b,32, 8, 16, __half, col_major>& b, const fragment<accumulator,32, 8, 16, float>& c, bool satf) {
+    if (satf)
+      __hmma_m32n8k16_mma_f32f32((float*)&d, (const int*)&a, (const int*)&b, (const float*)&c, 1, 1);
+    else
+      __hmma_m32n8k16_mma_f32f32((float*)&d, (const int*)&a, (const int*)&b, (const float*)&c, 1, 0);
+  }
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator,32, 8, 16, float>& d, const fragment<matrix_a, 32, 8, 16, __half, col_major>& a, const fragment<matrix_b,32, 8, 16, __half, col_major>& b, const fragment<accumulator,32, 8, 16, float>& c, bool satf) {
+    if (satf)
+      __hmma_m32n8k16_mma_f32f32((float*)&d, (const int*)&a, (const int*)&b, (const float*)&c, 3, 1);
+    else
+      __hmma_m32n8k16_mma_f32f32((float*)&d, (const int*)&a, (const int*)&b, (const float*)&c, 3, 0);
+  }
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator,32, 8, 16, float>& d, const fragment<matrix_a, 32, 8, 16, __half, row_major>& a, const fragment<matrix_b,32, 8, 16, __half, row_major>& b, const fragment<accumulator,32, 8, 16, float>& c, bool satf) {
+    if (satf)
+      __hmma_m32n8k16_mma_f32f32((float*)&d, (const int*)&a, (const int*)&b, (const float*)&c, 0, 1);
+    else
+      __hmma_m32n8k16_mma_f32f32((float*)&d, (const int*)&a, (const int*)&b, (const float*)&c, 0, 0);
+  }
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator,32, 8, 16, float>& d, const fragment<matrix_a, 32, 8, 16, __half, col_major>& a, const fragment<matrix_b,32, 8, 16, __half, row_major>& b, const fragment<accumulator,32, 8, 16, float>& c, bool satf) {
+    if (satf)
+      __hmma_m32n8k16_mma_f32f32((float*)&d, (const int*)&a, (const int*)&b, (const float*)&c, 2, 1);
+    else
+      __hmma_m32n8k16_mma_f32f32((float*)&d, (const int*)&a, (const int*)&b, (const float*)&c, 2, 0);
+  }
+
+  // D fp16, C fp32
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator,32, 8, 16, __half>& d, const fragment<matrix_a, 32, 8, 16, __half, row_major>& a, const fragment<matrix_b,32, 8, 16, __half, col_major>& b, const fragment<accumulator,32, 8, 16, float>& c, bool satf) {
+    if (satf)
+      __hmma_m32n8k16_mma_f16f32((int*)&d, (const int*)&a, (const int*)&b, (const float*)&c, 1, 1);
+    else
+      __hmma_m32n8k16_mma_f16f32((int*)&d, (const int*)&a, (const int*)&b, (const float*)&c, 1, 0);
+  }
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator,32, 8, 16, __half>& d, const fragment<matrix_a, 32, 8, 16, __half, col_major>& a, const fragment<matrix_b,32, 8, 16, __half, col_major>& b, const fragment<accumulator,32, 8, 16, float>& c, bool satf) {
+    if (satf)
+      __hmma_m32n8k16_mma_f16f32((int*)&d, (const int*)&a, (const int*)&b, (const float*)&c, 3, 1);
+    else
+      __hmma_m32n8k16_mma_f16f32((int*)&d, (const int*)&a, (const int*)&b, (const float*)&c, 3, 0);
+  }
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator,32, 8, 16, __half>& d, const fragment<matrix_a, 32, 8, 16, __half, row_major>& a, const fragment<matrix_b,32, 8, 16, __half, row_major>& b, const fragment<accumulator,32, 8, 16, float>& c, bool satf) {
+    if (satf)
+      __hmma_m32n8k16_mma_f16f32((int*)&d, (const int*)&a, (const int*)&b, (const float*)&c, 0, 1);
+    else
+      __hmma_m32n8k16_mma_f16f32((int*)&d, (const int*)&a, (const int*)&b, (const float*)&c, 0, 0);
+  }
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator,32, 8, 16, __half>& d, const fragment<matrix_a, 32, 8, 16, __half, col_major>& a, const fragment<matrix_b,32, 8, 16, __half, row_major>& b, const fragment<accumulator,32, 8, 16, float>& c, bool satf) {
+    if (satf)
+      __hmma_m32n8k16_mma_f16f32((int*)&d, (const int*)&a, (const int*)&b, (const float*)&c, 2, 1);
+    else
+      __hmma_m32n8k16_mma_f16f32((int*)&d, (const int*)&a, (const int*)&b, (const float*)&c, 2, 0);
+  }
+
+  // 
+  // MMA functions for shape m8n32k16
+  // 
+  // D fp16, C fp16
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator,8, 32, 16, __half>& d, const fragment<matrix_a, 8, 32, 16, __half, row_major>& a, const fragment<matrix_b,8, 32, 16, __half, col_major>& b, const fragment<accumulator,8, 32, 16, __half>& c, bool satf) {
+    if (satf)
+      __hmma_m8n32k16_mma_f16f16((int*)&d, (const int*)&a, (const int*)&b, (const int*)&c, 1, 1);
+    else
+      __hmma_m8n32k16_mma_f16f16((int*)&d, (const int*)&a, (const int*)&b, (const int*)&c, 1, 0);
+  }
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator,8, 32, 16, __half>& d, const fragment<matrix_a, 8, 32, 16, __half, col_major>& a, const fragment<matrix_b,8, 32, 16, __half, col_major>& b, const fragment<accumulator,8, 32, 16, __half>& c, bool satf) {
+    if (satf)
+      __hmma_m8n32k16_mma_f16f16((int*)&d, (const int*)&a, (const int*)&b, (const int*)&c, 3, 1);
+    else
+      __hmma_m8n32k16_mma_f16f16((int*)&d, (const int*)&a, (const int*)&b, (const int*)&c, 3, 0);
+  }
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator,8, 32, 16, __half>& d, const fragment<matrix_a, 8, 32, 16, __half, row_major>& a, const fragment<matrix_b,8, 32, 16, __half, row_major>& b, const fragment<accumulator,8, 32, 16, __half>& c, bool satf) {
+    if (satf)
+      __hmma_m8n32k16_mma_f16f16((int*)&d, (const int*)&a, (const int*)&b, (const int*)&c, 0, 1);
+    else
+      __hmma_m8n32k16_mma_f16f16((int*)&d, (const int*)&a, (const int*)&b, (const int*)&c, 0, 0);
+  }
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator,8, 32, 16, __half>& d, const fragment<matrix_a, 8, 32, 16, __half, col_major>& a, const fragment<matrix_b,8, 32, 16, __half, row_major>& b, const fragment<accumulator,8, 32, 16, __half>& c, bool satf) {
+    if (satf)
+      __hmma_m8n32k16_mma_f16f16((int*)&d, (const int*)&a, (const int*)&b, (const int*)&c, 2, 1);
+    else
+      __hmma_m8n32k16_mma_f16f16((int*)&d, (const int*)&a, (const int*)&b, (const int*)&c, 2, 0);
+  }
+
+  // D fp32, C fp16
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator,8, 32, 16, float>& d, const fragment<matrix_a, 8, 32, 16, __half, row_major>& a, const fragment<matrix_b,8, 32, 16, __half, col_major>& b, const fragment<accumulator,8, 32, 16, __half>& c, bool satf) {
+    if (satf)
+      __hmma_m8n32k16_mma_f32f16((float*)&d, (const int*)&a, (const int*)&b, (const int*)&c, 1, 1);
+    else
+      __hmma_m8n32k16_mma_f32f16((float*)&d, (const int*)&a, (const int*)&b, (const int*)&c, 1, 0);
+  }
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator,8, 32, 16, float>& d, const fragment<matrix_a, 8, 32, 16, __half, col_major>& a, const fragment<matrix_b,8, 32, 16, __half, col_major>& b, const fragment<accumulator,8, 32, 16, __half>& c, bool satf) {
+    if (satf)
+      __hmma_m8n32k16_mma_f32f16((float*)&d, (const int*)&a, (const int*)&b, (const int*)&c, 3, 1);
+    else
+      __hmma_m8n32k16_mma_f32f16((float*)&d, (const int*)&a, (const int*)&b, (const int*)&c, 3, 0);
+  }
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator,8, 32, 16, float>& d, const fragment<matrix_a, 8, 32, 16, __half, row_major>& a, const fragment<matrix_b,8, 32, 16, __half, row_major>& b, const fragment<accumulator,8, 32, 16, __half>& c, bool satf) {
+    if (satf)
+      __hmma_m8n32k16_mma_f32f16((float*)&d, (const int*)&a, (const int*)&b, (const int*)&c, 0, 1);
+    else
+      __hmma_m8n32k16_mma_f32f16((float*)&d, (const int*)&a, (const int*)&b, (const int*)&c, 0, 0);
+  }
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator,8, 32, 16, float>& d, const fragment<matrix_a, 8, 32, 16, __half, col_major>& a, const fragment<matrix_b,8, 32, 16, __half, row_major>& b, const fragment<accumulator,8, 32, 16, __half>& c, bool satf) {
+    if (satf)
+      __hmma_m8n32k16_mma_f32f16((float*)&d, (const int*)&a, (const int*)&b, (const int*)&c, 2, 1);
+    else
+      __hmma_m8n32k16_mma_f32f16((float*)&d, (const int*)&a, (const int*)&b, (const int*)&c, 2, 0);
+  }
+
+  // D fp32, C fp32
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator,8, 32, 16, float>& d, const fragment<matrix_a, 8, 32, 16, __half, row_major>& a, const fragment<matrix_b,8, 32, 16, __half, col_major>& b, const fragment<accumulator,8, 32, 16, float>& c, bool satf) {
+    if (satf)
+      __hmma_m8n32k16_mma_f32f32((float*)&d, (const int*)&a, (const int*)&b, (const float*)&c, 1, 1);
+    else
+      __hmma_m8n32k16_mma_f32f32((float*)&d, (const int*)&a, (const int*)&b, (const float*)&c, 1, 0);
+  }
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator,8, 32, 16, float>& d, const fragment<matrix_a, 8, 32, 16, __half, col_major>& a, const fragment<matrix_b,8, 32, 16, __half, col_major>& b, const fragment<accumulator,8, 32, 16, float>& c, bool satf) {
+    if (satf)
+      __hmma_m8n32k16_mma_f32f32((float*)&d, (const int*)&a, (const int*)&b, (const float*)&c, 3, 1);
+    else
+      __hmma_m8n32k16_mma_f32f32((float*)&d, (const int*)&a, (const int*)&b, (const float*)&c, 3, 0);
+  }
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator,8, 32, 16, float>& d, const fragment<matrix_a, 8, 32, 16, __half, row_major>& a, const fragment<matrix_b,8, 32, 16, __half, row_major>& b, const fragment<accumulator,8, 32, 16, float>& c, bool satf) {
+    if (satf)
+      __hmma_m8n32k16_mma_f32f32((float*)&d, (const int*)&a, (const int*)&b, (const float*)&c, 0, 1);
+    else
+      __hmma_m8n32k16_mma_f32f32((float*)&d, (const int*)&a, (const int*)&b, (const float*)&c, 0, 0);
+  }
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator,8, 32, 16, float>& d, const fragment<matrix_a, 8, 32, 16, __half, col_major>& a, const fragment<matrix_b,8, 32, 16, __half, row_major>& b, const fragment<accumulator,8, 32, 16, float>& c, bool satf) {
+    if (satf)
+      __hmma_m8n32k16_mma_f32f32((float*)&d, (const int*)&a, (const int*)&b, (const float*)&c, 2, 1);
+    else
+      __hmma_m8n32k16_mma_f32f32((float*)&d, (const int*)&a, (const int*)&b, (const float*)&c, 2, 0);
+  }
+
+  // D fp16, C fp32
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator,8, 32, 16, __half>& d, const fragment<matrix_a, 8, 32, 16, __half, row_major>& a, const fragment<matrix_b,8, 32, 16, __half, col_major>& b, const fragment<accumulator,8, 32, 16, float>& c, bool satf) {
+    if (satf)
+      __hmma_m8n32k16_mma_f16f32((int*)&d, (const int*)&a, (const int*)&b, (const float*)&c, 1, 1);
+    else
+      __hmma_m8n32k16_mma_f16f32((int*)&d, (const int*)&a, (const int*)&b, (const float*)&c, 1, 0);
+  }
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator,8, 32, 16, __half>& d, const fragment<matrix_a, 8, 32, 16, __half, col_major>& a, const fragment<matrix_b,8, 32, 16, __half, col_major>& b, const fragment<accumulator,8, 32, 16, float>& c, bool satf) {
+    if (satf)
+      __hmma_m8n32k16_mma_f16f32((int*)&d, (const int*)&a, (const int*)&b, (const float*)&c, 3, 1);
+    else
+      __hmma_m8n32k16_mma_f16f32((int*)&d, (const int*)&a, (const int*)&b, (const float*)&c, 3, 0);
+  }
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator,8, 32, 16, __half>& d, const fragment<matrix_a, 8, 32, 16, __half, row_major>& a, const fragment<matrix_b,8, 32, 16, __half, row_major>& b, const fragment<accumulator,8, 32, 16, float>& c, bool satf) {
+    if (satf)
+      __hmma_m8n32k16_mma_f16f32((int*)&d, (const int*)&a, (const int*)&b, (const float*)&c, 0, 1);
+    else
+      __hmma_m8n32k16_mma_f16f32((int*)&d, (const int*)&a, (const int*)&b, (const float*)&c, 0, 0);
+  }
+  __CUDA_MMA_DEVICE_DECL__ void mma_sync(fragment<accumulator,8, 32, 16, __half>& d, const fragment<matrix_a, 8, 32, 16, __half, col_major>& a, const fragment<matrix_b,8, 32, 16, __half, row_major>& b, const fragment<accumulator,8, 32, 16, float>& c, bool satf) {
+    if (satf)
+      __hmma_m8n32k16_mma_f16f32((int*)&d, (const int*)&a, (const int*)&b, (const float*)&c, 2, 1);
+    else
+      __hmma_m8n32k16_mma_f16f32((int*)&d, (const int*)&a, (const int*)&b, (const float*)&c, 2, 0);
   }
 
 };

@@ -128,13 +128,26 @@ extern
 #if !defined(_MSC_VER) || _MSC_VER < 1900
 _CRTIMP
 #endif
+            
+#if defined(__GLIBC__) && defined(__GLIBC_MINOR__) && ( (__GLIBC__ < 2) || ( (__GLIBC__ == 2) && (__GLIBC_MINOR__ < 3) ) ) 
+__host__ __device__ __device_builtin__ __cudart_builtin__ int     __cdecl printf(const char*, ...) __THROW;
+#else /* newer glibc */
 __host__ __device__ __device_builtin__ __cudart_builtin__ int     __cdecl printf(const char*, ...);
+#endif /* defined(__GLIBC__) && defined(__GLIBC_MINOR__) && ( (__GLIBC__ < 2) || ( (__GLIBC__ == 2) && (__GLIBC_MINOR__ < 3) ) ) */
+
+
 #if !defined(__CUDACC_RTC__)
 extern
 #if !defined(_MSC_VER) || _MSC_VER < 1900
 _CRTIMP
 #endif
+
+#if defined(__GLIBC__) && defined(__GLIBC_MINOR__) && ( (__GLIBC__ < 2) || ( (__GLIBC__ == 2) && (__GLIBC_MINOR__ < 3) ) ) 
+__host__ __device__ __device_builtin__ __cudart_builtin__ int     __cdecl fprintf(FILE*, const char*, ...) __THROW;
+#else /* newer glibc */
 __host__ __device__ __device_builtin__ __cudart_builtin__ int     __cdecl fprintf(FILE*, const char*, ...);
+#endif /* defined(__GLIBC__) && defined(__GLIBC_MINOR__) && ( (__GLIBC__ < 2) || ( (__GLIBC__ == 2) && (__GLIBC_MINOR__ < 3) ) ) */
+
 #endif /* !__CUDACC_RTC__ */
 
 extern _CRTIMP __host__ __device__ __cudart_builtin__ void*   __cdecl malloc(size_t) __THROW;

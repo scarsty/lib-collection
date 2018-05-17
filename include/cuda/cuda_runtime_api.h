@@ -128,7 +128,7 @@
  */
 
 /** CUDA Runtime API Version */
-#define CUDART_VERSION  9000
+#define CUDART_VERSION  9010
 
 #include "host_defines.h"
 #include "builtin_types.h"
@@ -2081,20 +2081,10 @@ extern __host__ __cudart_builtin__ cudaError_t CUDARTAPI cudaStreamDestroy(cudaS
 /**
  * \brief Make a compute stream wait on an event
  *
- * Makes all future work submitted to \p stream wait until \p event reports
- * completion before beginning execution.  This synchronization will be
- * performed efficiently on the device.  The event \p event may
- * be from a different context than \p stream, in which case this function
- * will perform cross-device synchronization.
- *
- * The stream \p stream will wait only for the completion of the most recent
- * host call to ::cudaEventRecord() on \p event.  Once this call has returned,
- * any functions (including ::cudaEventRecord() and ::cudaEventDestroy()) may be
- * called on \p event again, and the subsequent calls will not have any effect
- * on \p stream.
- *
- * If ::cudaEventRecord() has not been called on \p event, this call acts as if
- * the record has already completed, and so is a functional no-op.
+ * Makes all future work submitted to \p stream wait for all work captured in
+ * \p event.  See ::cudaEventRecord() for details on what is captured by an event.
+ * The synchronization will be performed efficiently on the device when applicable.
+ * \p event may be from a different device than \p stream.
  *
  * \param stream - Stream to wait
  * \param event  - Event to wait on
@@ -2292,7 +2282,7 @@ extern __host__ cudaError_t CUDARTAPI cudaStreamQuery(cudaStream_t stream);
  * \return
  * ::cudaSuccess,
  * ::cudaErrorNotReady,
- * ::cudaErrorInvalidValue
+ * ::cudaErrorInvalidValue,
  * ::cudaErrorInvalidResourceHandle
  * \notefnerr
  *
@@ -2318,7 +2308,7 @@ extern __host__ __cudart_builtin__ cudaError_t CUDARTAPI cudaStreamAttachMemAsyn
 /**
  * \brief Creates an event object
  *
- * Creates an event object using ::cudaEventDefault.
+ * Creates an event object for the current device using ::cudaEventDefault.
  *
  * \param event - Newly created event
  *
@@ -2341,7 +2331,8 @@ extern __host__ cudaError_t CUDARTAPI cudaEventCreate(cudaEvent_t *event);
 /**
  * \brief Creates an event object with the specified flags
  *
- * Creates an event object with the specified flags. Valid flags include:
+ * Creates an event object for the current device with the specified flags. Valid
+ * flags include:
  * - ::cudaEventDefault: Default event creation flag.
  * - ::cudaEventBlockingSync: Specifies that event should use blocking
  *   synchronization. A host thread that uses ::cudaEventSynchronize() to wait
@@ -2376,14 +2367,20 @@ extern __host__ __cudart_builtin__ cudaError_t CUDARTAPI cudaEventCreateWithFlag
 /**
  * \brief Records an event
  *
- * Records an event. See note about NULL stream behavior. Since operation
- * is asynchronous, ::cudaEventQuery() or ::cudaEventSynchronize() must
- * be used to determine when the event has actually been recorded.
+ * Captures in \p event the contents of \p stream at the time of this call.
+ * \p event and \p stream must be on the same device.
+ * Calls such as ::cudaEventQuery() or ::cudaStreamWaitEvent() will then
+ * examine or wait for completion of the work that was captured. Uses of
+ * \p stream after this call do not modify \p event. See note on default
+ * stream behavior for what is captured in the default case.
  *
- * If ::cudaEventRecord() has previously been called on \p event, then this
- * call will overwrite any existing state in \p event.  Any subsequent calls
- * which examine the status of \p event will only examine the completion of
- * this most recent call to ::cudaEventRecord().
+ * ::cudaEventRecord() can be called multiple times on the same event and
+ * will overwrite the previously captured state. Other APIs such as
+ * ::cudaStreamWaitEvent() use the most recently captured state at the time
+ * of the API call, and are not affected by later calls to
+ * ::cudaEventRecord(). Before the first call to ::cudaEventRecord(), an
+ * event represents an empty set of work, so for example ::cudaEventQuery()
+ * would return ::cudaSuccess.
  *
  * \param event  - Event to record
  * \param stream - Stream in which to record event
@@ -2408,14 +2405,11 @@ extern __host__ __cudart_builtin__ cudaError_t CUDARTAPI cudaEventRecord(cudaEve
 /**
  * \brief Queries an event's status
  *
- * Query the status of all device work preceding the most recent call to
- * ::cudaEventRecord() (in the appropriate compute streams, as specified by the
- * arguments to ::cudaEventRecord()).
+ * Queries the status of all work currently captured by \p event. See
+ * ::cudaEventRecord() for details on what is captured by an event.
  *
- * If this work has successfully been completed by the device, or if
- * ::cudaEventRecord() has not been called on \p event, then ::cudaSuccess is
- * returned. If this work has not yet been completed by the device then
- * ::cudaErrorNotReady is returned.
+ * Returns ::cudaSuccess if all captured work has been completed, or
+ * ::cudaErrorNotReady if any captured work is incomplete.
  *
  * For the purposes of Unified Memory, a return value of ::cudaSuccess
  * is equivalent to having called ::cudaEventSynchronize().
@@ -2441,12 +2435,8 @@ extern __host__ cudaError_t CUDARTAPI cudaEventQuery(cudaEvent_t event);
 /**
  * \brief Waits for an event to complete
  *
- * Wait until the completion of all device work preceding the most recent
- * call to ::cudaEventRecord() (in the appropriate compute streams, as specified
- * by the arguments to ::cudaEventRecord()).
- *
- * If ::cudaEventRecord() has not been called on \p event, ::cudaSuccess is
- * returned immediately.
+ * Waits until the completion of all work currently captured in \p event.
+ * See ::cudaEventRecord() for details on what is captured by an event.
  *
  * Waiting for an event that was created with the ::cudaEventBlockingSync
  * flag will cause the calling CPU thread to block until the event has
@@ -2476,10 +2466,10 @@ extern __host__ cudaError_t CUDARTAPI cudaEventSynchronize(cudaEvent_t event);
  *
  * Destroys the event specified by \p event.
  *
- * In case \p event has been recorded but has not yet been completed
- * when ::cudaEventDestroy() is called, the function will return immediately and 
- * the resources associated with \p event will be released automatically once
- * the device has completed \p event.
+ * An event may be destroyed before it is complete (i.e., while
+ * ::cudaEventQuery() would return ::cudaErrorNotReady). In this case, the
+ * call does not block on completion of the event, and any associated
+ * resources will automatically be released asynchronously at completion.
  *
  * \param event - Event to destroy
  *
@@ -2897,19 +2887,19 @@ extern __host__ __cudart_builtin__ cudaError_t CUDARTAPI cudaFuncGetAttributes(s
 /**
  * \brief Set attributes for a given function
  *
- * This function sets the attributes of a function specified via \p func.
- * The parameter \p func must be a pointer to a function that executes
- * on the device. The parameter specified by \p func must be declared as a \p __global__
- * function. The enumeration defined by \p attr is set to the value defined by \p value.
+ * This function sets the attributes of a function specified via \p entry.
+ * The parameter \p entry must be a pointer to a function that executes
+ * on the device. The parameter specified by \p entry must be declared as a \p __global__
+ * function. The enumeration defined by \p attr is set to the value defined by \p value
  * If the specified function does not exist, then ::cudaErrorInvalidDeviceFunction is returned.
  * If the specified attribute cannot be written, or if the value is incorrect, 
  * then ::cudaErrorInvalidValue is returned.
  *
  * Valid values for \p attr are:
- * - ::cudaFuncAttributeMaxDynamicSharedMemorySize - Maximum size of dynamic shared memory per block
- * - ::cudaFuncAttributePreferredSharedMemoryCarveout - Preferred shared memory-L1 cache split ratio in percent of maximum shared memory
+ * ::cuFuncAttrMaxDynamicSharedMem - Maximum size of dynamic shared memory per block
+ * ::cudaFuncAttributePreferredSharedMemoryCarveout - Preferred shared memory-L1 cache split ratio
  *
- * \param func  - Function to get attributes of
+ * \param entry - Function to get attributes of
  * \param attr  - Attribute to set
  * \param value - Value to set
  *
@@ -3589,8 +3579,10 @@ extern __host__ cudaError_t CUDARTAPI cudaFreeMipmappedArray(cudaMipmappedArray_
  * All of these flags are orthogonal to one another: a developer may allocate
  * memory that is portable, mapped and/or write-combined with no restrictions.
  *
- * ::cudaSetDeviceFlags() must have been called with the ::cudaDeviceMapHost
- * flag in order for the ::cudaHostAllocMapped flag to have any effect.
+ * In order for the ::cudaHostAllocMapped flag to have any effect, the CUDA context
+ * must support the ::cudaDeviceMapHost flag, which can be checked via
+ * ::cudaGetDeviceFlags(). The ::cudaDeviceMapHost flag is implicitly set for
+ * contexts created via the runtime API.
  *
  * The ::cudaHostAllocMapped flag may be specified on CUDA contexts for devices
  * that do not support mapped pinned memory. The failure is deferred to
@@ -3612,6 +3604,7 @@ extern __host__ cudaError_t CUDARTAPI cudaFreeMipmappedArray(cudaMipmappedArray_
  * \sa ::cudaSetDeviceFlags,
  * \ref ::cudaMallocHost(void**, size_t) "cudaMallocHost (C API)",
  * ::cudaFreeHost,
+ * ::cudaGetDeviceFlags,
  * ::cuMemHostAlloc
  */
 extern __host__ cudaError_t CUDARTAPI cudaHostAlloc(void **pHost, size_t size, unsigned int flags);

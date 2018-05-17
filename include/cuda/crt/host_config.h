@@ -104,11 +104,13 @@
 
 #endif /* !__powerpc64__ || !__LITTLE_ENDIAN__ */
 
-#if defined(__ibmxl_vrm__) && (__ibmxl_vrm__ < 0x0d010000 && __ibmxl_vrm__ >= 0x0d020000)
+#if defined(__ibmxl_vrm__) && !(__ibmxl_vrm__ >= 0x0d010000 && __ibmxl_vrm__ < 0x0d020000) && \
+                              !(__ibmxl_vrm__ >= 0x0e010000 && __ibmxl_vrm__ < 0x0e020000)
 
-#error -- unsupported xlC version! only xlC 13.1 is supported
+#error -- unsupported xlC version! only xlC 13.1 and 14.1 are supported
 
-#endif /* __ibmxl_vrm__ && (__ibmxl_vrm__ < 0x0d010000 && __ibmxl_vrm__ >= 0x0d020000) */
+#endif /* __ibmxl_vrm__ && !(__ibmxl_vrm__ >= 0x0d010000 && __ibmxl_vrm__ < 0x0d020000) &&
+                           !(__ibmxl_vrm__ >= 0x0e010000 && __ibmxl_vrm__ < 0x0e020000) */
 
 #endif /* __powerpc__ */
 

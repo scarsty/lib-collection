@@ -50,23 +50,21 @@
 #if !defined(__CUDA_FP16_HPP__)
 #define __CUDA_FP16_HPP__
 
-/* C++11 header for std::move */
-#if __cplusplus >= 201103L
+/* C++11 header for std::move. 
+ * In RTC mode, std::move is provided implicitly; don't include the header
+*/
+#if (__cplusplus >= 201103L) && !defined(__CUDACC_RTC__)
 #include <utility>
-#endif /* __cplusplus >= 201103L */
+#endif /* __cplusplus >= 201103L && !defined(__CUDACC_RTC__) */
 
 /* Set up function decorations */
-#if defined(__CUDACC_RTC__)
-#define __CUDA_FP16_DECL__ __host__ __device__
-#define __VECTOR_FUNCTIONS_DECL__ __host__ __device__
-#define __CUDA_HOSTDEVICE__ __host__ __device__
-#elif defined(__CUDACC__) /* !__CUDACC_RTC__ but yes __CUDACC__ */
+#if defined(__CUDACC__)
 #define __CUDA_FP16_DECL__ static __device__ __inline__
 #define __VECTOR_FUNCTIONS_DECL__ static __inline__ __host__ __device__
 #define __CUDA_HOSTDEVICE__ __host__ __device__
-#else /* !__CUDACC_RTC and !__CUDACC__ (i.e. host non-nvcc compiler */
+#else /* !__CUDACC__ */
 #define __CUDA_HOSTDEVICE__
-#endif /* __CUDACC_RTC__ and __CUDACC__ */
+#endif /* __CUDACC_) */
 
 /* Set up structure-alignment attribute */
 #if defined(__CUDACC__)
@@ -823,14 +821,14 @@ __CUDA_FP16_DECL__ __half __ushort_as_half(const unsigned short int i)
    asm("{"#name" %0,%1,%2,%3;\n}" \
        :"=r"(__HALF2_TO_UI(r)): "r"(__HALF2_TO_CUI(var)), "r"(delta), "r"(c)); \
    return r; \
-} while(0);
+} while(0)
 
 #define __SHUFFLE_SYNC_HALF2_MACRO(name) do {\
    __half2 r; \
    asm("{"#name" %0,%1,%2,%3,%4;\n}" \
        :"=r"(__HALF2_TO_UI(r)): "r"(__HALF2_TO_CUI(var)), "r"(delta), "r"(c), "r"(mask)); \
    return r; \
-} while(0);
+} while(0)
 
 __CUDA_FP16_DECL__ __half2 __shfl(__half2 var, int delta, int width)
 {
@@ -1013,7 +1011,7 @@ __CUDA_FP16_DECL__ __half __ldcs(const __half *ptr)
    asm( "{ "#name".f16x2.f16x2 %0,%1,%2;\n}" \
         :"=r"(__HALF2_TO_UI(val)) : "r"(__HALF2_TO_CUI(a)),"r"(__HALF2_TO_CUI(b))); \
    return val; \
-} while(0);
+} while(0)
 __CUDA_FP16_DECL__ __half2 __heq2(const __half2 a, const __half2 b)
 {
     __COMPARISON_OP_HALF2_MACRO(set.eq);
@@ -1071,7 +1069,7 @@ __CUDA_FP16_DECL__ __half2 __hgtu2(const __half2 a, const __half2 b)
       return true; \
    else  \
       return false; \
-} while(0);
+} while(0)
 __CUDA_FP16_DECL__ bool __hbeq2(const __half2 a, const __half2 b)
 {
     __BOOL_COMPARISON_OP_HALF2_MACRO(set.eq);
@@ -1131,7 +1129,7 @@ __CUDA_FP16_DECL__ bool __hbgtu2(const __half2 a, const __half2 b)
         "  selp.u16 %0, 1, 0, __$temp3;}" \
         : "=h"(val) : "h"(__HALF_TO_CUS(a)), "h"(__HALF_TO_CUS(b))); \
    return val ? true : false; \
-} while(0);
+} while(0)
 __CUDA_FP16_DECL__ bool __heq(const __half a, const __half b)
 {
     __COMPARISON_OP_HALF_MACRO(eq);
@@ -1189,7 +1187,7 @@ __CUDA_FP16_DECL__ bool __hgtu(const __half a, const __half b)
    asm( "{"#name".f16x2 %0,%1,%2;\n}" \
         :"=r"(__HALF2_TO_UI(val)) : "r"(__HALF2_TO_CUI(a)),"r"(__HALF2_TO_CUI(b))); \
    return val; \
-} while(0);
+} while(0)
 
 __CUDA_FP16_DECL__ __half2 __hadd2(const __half2 a, const __half2 b)
 {
@@ -1221,7 +1219,7 @@ __CUDA_FP16_DECL__ __half2 __hmul2_sat(const __half2 a, const __half2 b)
    asm( "{"#name".f16x2 %0,%1,%2,%3;\n}" \
         :"=r"(__HALF2_TO_UI(val)) : "r"(__HALF2_TO_CUI(a)),"r"(__HALF2_TO_CUI(b)),"r"(__HALF2_TO_CUI(c))); \
    return val; \
-} while(0);
+} while(0)
 __CUDA_FP16_DECL__ __half2 __hfma2(const __half2 a, const __half2 b, const __half2 c)
 {
     __TERNARY_OP_HALF2_MACRO(fma.rn);
@@ -1254,7 +1252,7 @@ __CUDA_FP16_DECL__ __half2 __h2div(__half2 a, __half2 b) {
    asm( "{"#name".f16 %0,%1,%2;\n}" \
         :"=h"(__HALF_TO_US(val)) : "h"(__HALF_TO_CUS(a)),"h"(__HALF_TO_CUS(b))); \
    return val; \
-} while(0);
+} while(0)
 __CUDA_FP16_DECL__ __half __hadd(const __half a, const __half b)
 {
     __BINARY_OP_HALF_MACRO(add);
@@ -1285,7 +1283,7 @@ __CUDA_FP16_DECL__ __half __hmul_sat(const __half a, const __half b)
    asm( "{"#name".f16 %0,%1,%2,%3;\n}" \
         :"=h"(__HALF_TO_US(val)) : "h"(__HALF_TO_CUS(a)),"h"(__HALF_TO_CUS(b)),"h"(__HALF_TO_CUS(c))); \
    return val; \
-} while(0);
+} while(0)
 __CUDA_FP16_DECL__ __half __hfma(const __half a, const __half b, const __half c)
 {
     __TERNARY_OP_HALF_MACRO(fma.rn);
@@ -1343,7 +1341,7 @@ __CUDA_FP16_DECL__ __half __hdiv(__half a, __half b) {
                 "  mov.b16         %0,r;     \n"\
                 "}": "=h"(__HALF_TO_US(val)) : "h"(__HALF_TO_CUS(a)));\
    return val;\
-} while(0);
+} while(0)
 #define __APPROX_FCAST2(fun) do {\
    __half2 val;\
    asm("{.reg.b16         hl, hu;         \n"\
@@ -1358,7 +1356,7 @@ __CUDA_FP16_DECL__ __half __hdiv(__half a, __half b) {
                 "  mov.b32         %0, {hl, hu};   \n"\
                 "}":"=r"(__HALF2_TO_UI(val)) : "r"(__HALF2_TO_CUI(a)));       \
    return val;\
-} while(0);
+} while(0)
 static __device__ __forceinline__ float __float_simpl_sinf(float);
 static __device__ __forceinline__ float __float_simpl_cosf(float);
 __CUDA_FP16_DECL__ __half __hsin_internal(const __half a) {
