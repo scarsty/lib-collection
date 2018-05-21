@@ -1,5 +1,5 @@
 /*
- * Copyright 1993-2017 NVIDIA Corporation.  All rights reserved.
+ * Copyright 1993-2018 NVIDIA Corporation.  All rights reserved.
  *
  * NOTICE TO LICENSEE:
  *
@@ -104,35 +104,47 @@ extern "C"
 /**
  * \defgroup CUDA_MATH_SINGLE Single Precision Mathematical Functions
  * This section describes single precision mathematical functions.
+ * To use these functions you do not need to include any additional 
+ * header files in your program.
  */
 
 /**
  * \defgroup CUDA_MATH_DOUBLE Double Precision Mathematical Functions
  * This section describes double precision mathematical functions.
+ * To use these functions you do not need to include any additional 
+ * header files in your program.
  */
 
 /**
  * \defgroup CUDA_MATH_INTRINSIC_SINGLE Single Precision Intrinsics
  * This section describes single precision intrinsic functions that are
  * only supported in device code.
+ * To use these functions you do not need to include any additional 
+ * header files in your program.
  */
 
 /**
  * \defgroup CUDA_MATH_INTRINSIC_DOUBLE Double Precision Intrinsics
  * This section describes double precision intrinsic functions that are
  * only supported in device code.
+ * To use these functions you do not need to include any additional 
+ * header files in your program.
  */
 
 /**
  * \defgroup CUDA_MATH_INTRINSIC_INT Integer Intrinsics
  * This section describes integer intrinsic functions that are
  * only supported in device code.
+ * To use these functions you do not need to include any additional 
+ * header files in your program.
  */
 
 /**
  * \defgroup CUDA_MATH_INTRINSIC_CAST Type Casting Intrinsics
  * This section describes type casting intrinsic functions that are
  * only supported in device code.
+ * To use these functions you do not need to include any additional 
+ * header files in your program.
  */
 
 /**
@@ -140,6 +152,8 @@ extern "C"
  * \defgroup CUDA_MATH_INTRINSIC_SIMD SIMD Intrinsics
  * This section describes SIMD intrinsic functions that are
  * only supported in device code.
+ * To use these functions you do not need to include any additional 
+ * header files in your program.
  */
 
 
@@ -2651,7 +2665,7 @@ extern __DEVICE_FUNCTIONS_DECL__ __device_builtin__ __CUDA_MATH_CRTIMP double __
  * \brief Round input to nearest integer value in floating-point.
  *
  * Round \p x to the nearest integer value in floating-point format,
- * with halfway cases rounded towards zero.
+ * with halfway cases rounded to the nearest even integer value.
  *
  * \return 
  * Returns rounded integer value.
@@ -2665,8 +2679,9 @@ extern __DEVICE_FUNCTIONS_DECL__ __device_builtin__ __CUDA_MATH_CRTIMP float  __
  * \ingroup CUDA_MATH_DOUBLE
  * \brief Round input to nearest integer value.
  *
- * Round \p x to the nearest integer value, with halfway cases rounded 
- * towards zero.  If the result is outside the range of the return type,
+ * Round \p x to the nearest integer value, 
+ * with halfway cases rounded to the nearest even integer value.
+ * If the result is outside the range of the return type,
  * the result is undefined.
  *
  * \return 
@@ -2681,8 +2696,9 @@ extern __DEVICE_FUNCTIONS_DECL__ __device_builtin__ __CUDA_MATH_CRTIMP long int 
  * \ingroup CUDA_MATH_SINGLE
  * \brief Round input to nearest integer value.
  *
- * Round \p x to the nearest integer value, with halfway cases rounded 
- * towards zero.  If the result is outside the range of the return type,
+ * Round \p x to the nearest integer value, 
+ * with halfway cases rounded to the nearest even integer value.
+ * If the result is outside the range of the return type,
  * the result is undefined.
  *
  * \return 
@@ -2697,8 +2713,9 @@ extern __DEVICE_FUNCTIONS_DECL__ __device_builtin__ __CUDA_MATH_CRTIMP long int 
  * \ingroup CUDA_MATH_DOUBLE
  * \brief Round input to nearest integer value.
  *
- * Round \p x to the nearest integer value, with halfway cases rounded 
- * towards zero.  If the result is outside the range of the return type,
+ * Round \p x to the nearest integer value, 
+ * with halfway cases rounded to the nearest even integer value.
+ * If the result is outside the range of the return type,
  * the result is undefined.
  *
  * \return 
@@ -2713,8 +2730,9 @@ extern __DEVICE_FUNCTIONS_DECL__ __device_builtin__ __CUDA_MATH_CRTIMP long long
  * \ingroup CUDA_MATH_SINGLE
  * \brief Round input to nearest integer value.
  *
- * Round \p x to the nearest integer value, with halfway cases rounded 
- * towards zero.  If the result is outside the range of the return type,
+ * Round \p x to the nearest integer value, 
+ * with halfway cases rounded to the nearest even integer value.
+ * If the result is outside the range of the return type,
  * the result is undefined.
  *
  * \return 
@@ -8957,7 +8975,10 @@ __forceinline__ __DEVICE_FUNCTIONS_DECL__ __cudart_builtin__ int isfinite(long d
 
 __forceinline__ __DEVICE_FUNCTIONS_DECL__ __cudart_builtin__ int isnan(float x);
 #if defined(__ANDROID__)
-__forceinline__ __DEVICE_FUNCTIONS_DECL__ __cudart_builtin__ int isnan(double x);
+#if !defined(_LIBCPP_VERSION)
+__forceinline__
+#endif  /* !defined(_LIBCPP_VERSION) */
+__DEVICE_FUNCTIONS_DECL__ __cudart_builtin__ int isnan(double x);
 #else /* !__ANDROID__ */
 __forceinline__ __DEVICE_FUNCTIONS_DECL__ __cudart_builtin__ int isnan(double x) throw();
 #endif /* __ANDROID__ */
@@ -8965,7 +8986,10 @@ __forceinline__ __DEVICE_FUNCTIONS_DECL__ __cudart_builtin__ int isnan(long doub
 
 __forceinline__ __DEVICE_FUNCTIONS_DECL__ __cudart_builtin__ int isinf(float x);
 #if defined(__ANDROID__)
-__forceinline__ __DEVICE_FUNCTIONS_DECL__ __cudart_builtin__ int isinf(double x);
+#if !defined(_LIBCPP_VERSION)
+__forceinline__
+#endif  /* !defined(_LIBCPP_VERSION) */
+__DEVICE_FUNCTIONS_DECL__ __cudart_builtin__ int isinf(double x);
 #else /* !__ANDROID__ */
 __forceinline__ __DEVICE_FUNCTIONS_DECL__ __cudart_builtin__ int isinf(double x) throw();
 #endif /* __ANDROID__ */

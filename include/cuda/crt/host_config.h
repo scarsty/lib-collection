@@ -84,15 +84,13 @@
 
 #if defined(__PGIC__)
 
-#if (!(__PGIC__ == 17) && \
-     !(__PGIC__ == 99 && __PGIC_MINOR__ == 99)) || \
-    !defined(__GNUC__) || !defined(__LP64__)
+#if !defined(__GNUC__) || !defined(__LP64__) || !defined(__linux__)
+#error -- unsupported pgc++ configuration! pgc++ is supported only on Linux x86_64!
+#endif /* !defined(__GNUC__) || !defined(__LP64__) || !defined(__linux__) */
 
-#error -- unsupported pgc++ configuration! Only pgc++ 17 on Linux x86_64 is supported!
-
-#endif /* (!(__PGIC__ == 17) &&
-           !(__PGIC__ == 99 && __PGIC_MINOR__ == 99 )) ||
-          !__GNUC__ || !__LP64__ */
+#if (!(__PGIC__ == 17 || __PGIC__ == 18) && !(__PGIC__ == 99 && __PGIC_MINOR__ == 99))
+#error -- unsupported pgc++ configuration! Only pgc++ 17 and 18 on Linux x86_64 are supported!
+#endif
 
 #endif /* __PGIC__ */
 
@@ -105,22 +103,22 @@
 #endif /* !__powerpc64__ || !__LITTLE_ENDIAN__ */
 
 #if defined(__ibmxl_vrm__) && !(__ibmxl_vrm__ >= 0x0d010000 && __ibmxl_vrm__ < 0x0d020000) && \
-                              !(__ibmxl_vrm__ >= 0x0e010000 && __ibmxl_vrm__ < 0x0e020000)
+                              !(__ibmxl_vrm__ >= 0x10010000 && __ibmxl_vrm__ < 0x10020000)
 
-#error -- unsupported xlC version! only xlC 13.1 and 14.1 are supported
+#error -- unsupported xlC version! only xlC 13.1 and 16.1 are supported
 
 #endif /* __ibmxl_vrm__ && !(__ibmxl_vrm__ >= 0x0d010000 && __ibmxl_vrm__ < 0x0d020000) &&
-                           !(__ibmxl_vrm__ >= 0x0e010000 && __ibmxl_vrm__ < 0x0e020000) */
+                           !(__ibmxl_vrm__ >= 0x10010000 && __ibmxl_vrm__ < 0x10020000) */
 
 #endif /* __powerpc__ */
 
 #if defined(__GNUC__)
 
-#if __GNUC__ > 6
+#if __GNUC__ > 7
 
-#error -- unsupported GNU version! gcc versions later than 6 are not supported!
+#error -- unsupported GNU version! gcc versions later than 7 are not supported!
 
-#endif /* __GNUC__ > 6 */
+#endif /* __GNUC__ > 7 */
 
 #if defined(__APPLE__) && defined(__MACH__) && !defined(__clang__)
 #error -- clang and clang++ are the only supported host compilers on Mac OS X!
@@ -130,7 +128,7 @@
 
 #if defined(_WIN32)
 
-#if _MSC_VER < 1600 || _MSC_VER > 1911
+#if _MSC_VER < 1600 || _MSC_VER > 1913
 
 #error -- unsupported Microsoft Visual Studio version! Only the versions 2012, 2013, 2015 and 2017 are supported!
 

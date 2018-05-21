@@ -120,74 +120,77 @@ typedef enum cudaEglResourceLocationFlags_enum {
  */
 typedef enum cudaEglColorFormat_enum {
     cudaEglColorFormatYUV420Planar            = 0,  /**< Y, U, V in three surfaces, each in a separate surface, U/V width = 1/2 Y width, U/V height = 1/2 Y height. */
-    cudaEglColorFormatYUV420SemiPlanar        = 1,  /**< Y, UV in two surfaces (UV as one surface), width, height ratio same as YUV420Planar. */
+    cudaEglColorFormatYUV420SemiPlanar        = 1,  /**< Y, UV in two surfaces (UV as one surface) with VU byte ordering, width, height ratio same as YUV420Planar. */
     cudaEglColorFormatYUV422Planar            = 2,  /**< Y, U, V  each in a separate  surface, U/V width = 1/2 Y width, U/V height = Y height. */
-    cudaEglColorFormatYUV422SemiPlanar        = 3,  /**< Y, UV in two surfaces, width, height ratio same as YUV422Planar. */
-    cudaEglColorFormatRGB                     = 4,  /**< R/G/B three channels in one surface with RGB byte ordering. */
-    cudaEglColorFormatBGR                     = 5,  /**< R/G/B three channels in one surface with BGR byte ordering. */
-    cudaEglColorFormatARGB                    = 6,  /**< R/G/B/A four channels in one surface with ARGB byte ordering. */
-    cudaEglColorFormatRGBA                    = 7,  /**< R/G/B/A four channels in one surface with RGBA byte ordering. */
+    cudaEglColorFormatYUV422SemiPlanar        = 3,  /**< Y, UV in two surfaces with VU byte ordering, width, height ratio same as YUV422Planar. */
+    cudaEglColorFormatRGB                     = 4,  /**< R/G/B three channels in one surface with BGR byte ordering. Only pitch linear format supported. */
+    cudaEglColorFormatBGR                     = 5,  /**< R/G/B three channels in one surface with RGB byte ordering. Only pitch linear format supported. */
+    cudaEglColorFormatARGB                    = 6,  /**< R/G/B/A four channels in one surface with BGRA byte ordering. */
+    cudaEglColorFormatRGBA                    = 7,  /**< R/G/B/A four channels in one surface with ABGR byte ordering. */
     cudaEglColorFormatL                       = 8,  /**< single luminance channel in one surface. */
     cudaEglColorFormatR                       = 9,  /**< single color channel in one surface. */
     cudaEglColorFormatYUV444Planar            = 10, /**< Y, U, V in three surfaces, each in a separate surface, U/V width = Y width, U/V height = Y height. */
-    cudaEglColorFormatYUV444SemiPlanar        = 11, /**< Y, UV in two surfaces (UV as one surface), width, height ratio same as YUV444Planar. */
-    cudaEglColorFormatYUYV422                 = 12, /**< Y, U, V in one surface, interleaved as YUYV. */
-    cudaEglColorFormatUYVY422                 = 13, /**< Y, U, V in one surface, interleaved as UYVY. */
-    cudaEglColorFormatABGR                    = 14, /**< R/G/B/A four channels in one surface with ABGR byte ordering. */
-    cudaEglColorFormatBGRA                    = 15, /**< R/G/B/A four channels in one surface with BGRA byte ordering. */
+    cudaEglColorFormatYUV444SemiPlanar        = 11, /**< Y, UV in two surfaces (UV as one surface) with VU byte ordering, width, height ratio same as YUV444Planar. */
+    cudaEglColorFormatYUYV422                 = 12, /**< Y, U, V in one surface, interleaved as UYVY. */
+    cudaEglColorFormatUYVY422                 = 13, /**< Y, U, V in one surface, interleaved as YUYV. */
+    cudaEglColorFormatABGR                    = 14, /**< R/G/B/A four channels in one surface with RGBA byte ordering. */
+    cudaEglColorFormatBGRA                    = 15, /**< R/G/B/A four channels in one surface with ARGB byte ordering. */
     cudaEglColorFormatA                       = 16, /**< Alpha color format - one channel in one surface. */
-    cudaEglColorFormatRG                      = 17, /**< R/G color format - two channels in one surface with RG byte ordering */
-    cudaEglColorFormatAYUV                    = 18, /**< Y, U, V, A four channels in one surface, interleaved as AYUV. */
-    cudaEglColorFormatYVU444SemiPlanar        = 19, /**< Y, VU in two surfaces (VU as one surface), U/V width = Y width, U/V height = Y height. */
-    cudaEglColorFormatYVU422SemiPlanar        = 20, /**< Y, VU in two surfaces (VU as one surface), U/V width = 1/2 Y width, U/V height = Y height. */
-    cudaEglColorFormatYVU420SemiPlanar        = 21, /**< Y, VU in two surfaces (VU as one surface), U/V width = 1/2 Y width, U/V height = 1/2 Y height. */
-    cudaEglColorFormatY10V10U10_444SemiPlanar = 22, /**< Y10, V10U10 in two surfaces (VU as one surface), U/V width = Y width, U/V height = Y height. */
-    cudaEglColorFormatY10V10U10_420SemiPlanar = 23, /**< Y10, V10U10 in two surfaces (VU as one surface), U/V width = 1/2 Y width, U/V height = 1/2 Y height. */
-    cudaEglColorFormatY12V12U12_444SemiPlanar = 24, /**< Y12, V12U12 in two surfaces (VU as one surface), U/V width = Y width, U/V height = Y height. */
-    cudaEglColorFormatY12V12U12_420SemiPlanar = 25, /**< Y12, V12U12 in two surfaces (VU as one surface), U/V width = 1/2 Y width, U/V height = 1/2 Y height. */
-    cudaEglColorFormatVYUY_ER                 = 26, /**< Extended Range Y, U, V in one surface, interleaved as VYUY. */
-    cudaEglColorFormatUYVY_ER                 = 27, /**< Extended Range Y, U, V in one surface, interleaved as UYVY. */
-    cudaEglColorFormatYUYV_ER                 = 28, /**< Extended Range Y, U, V in one surface, interleaved as YUYV. */
-    cudaEglColorFormatYVYU_ER                 = 29, /**< Extended Range Y, U, V in one surface, interleaved as YVYU. */
-    cudaEglColorFormatYUV_ER                  = 30, /**< Extended Range Y, U, V three channels in one surface, interleaved as YUV. */
-    cudaEglColorFormatYUVA_ER                 = 31, /**< Extended Range Y, U, V, A four channels in one surface, interleaved as YUVA. */
-    cudaEglColorFormatAYUV_ER                 = 32, /**< Extended Range Y, U, V, A four channels in one surface, interleaved as AYUV. */
+    cudaEglColorFormatRG                      = 17, /**< R/G color format - two channels in one surface with GR byte ordering */
+    cudaEglColorFormatAYUV                    = 18, /**< Y, U, V, A four channels in one surface, interleaved as VUYA. */
+    cudaEglColorFormatYVU444SemiPlanar        = 19, /**< Y, VU in two surfaces (VU as one surface) with UV byte ordering, U/V width = Y width, U/V height = Y height. */
+    cudaEglColorFormatYVU422SemiPlanar        = 20, /**< Y, VU in two surfaces (VU as one surface) with UV byte ordering, U/V width = 1/2 Y width, U/V height = Y height. */
+    cudaEglColorFormatYVU420SemiPlanar        = 21, /**< Y, VU in two surfaces (VU as one surface) with UV byte ordering, U/V width = 1/2 Y width, U/V height = 1/2 Y height. */
+    cudaEglColorFormatY10V10U10_444SemiPlanar = 22, /**< Y10, V10U10 in two surfaces (VU as one surface) with UV byte ordering, U/V width = Y width, U/V height = Y height. */
+    cudaEglColorFormatY10V10U10_420SemiPlanar = 23, /**< Y10, V10U10 in two surfaces (VU as one surface) with UV byte ordering, U/V width = 1/2 Y width, U/V height = 1/2 Y height. */
+    cudaEglColorFormatY12V12U12_444SemiPlanar = 24, /**< Y12, V12U12 in two surfaces (VU as one surface) with UV byte ordering, U/V width = Y width, U/V height = Y height. */
+    cudaEglColorFormatY12V12U12_420SemiPlanar = 25, /**< Y12, V12U12 in two surfaces (VU as one surface) with UV byte ordering, U/V width = 1/2 Y width, U/V height = 1/2 Y height. */
+    cudaEglColorFormatVYUY_ER                 = 26, /**< Extended Range Y, U, V in one surface, interleaved as YVYU. */
+    cudaEglColorFormatUYVY_ER                 = 27, /**< Extended Range Y, U, V in one surface, interleaved as YUYV. */
+    cudaEglColorFormatYUYV_ER                 = 28, /**< Extended Range Y, U, V in one surface, interleaved as UYVY. */
+    cudaEglColorFormatYVYU_ER                 = 29, /**< Extended Range Y, U, V in one surface, interleaved as VYUY. */
+    cudaEglColorFormatYUV_ER                  = 30, /**< Extended Range Y, U, V three channels in one surface, interleaved as VUY. Only pitch linear format supported. */
+    cudaEglColorFormatYUVA_ER                 = 31, /**< Extended Range Y, U, V, A four channels in one surface, interleaved as AVUY. */
+    cudaEglColorFormatAYUV_ER                 = 32, /**< Extended Range Y, U, V, A four channels in one surface, interleaved as VUYA. */
     cudaEglColorFormatYUV444Planar_ER         = 33, /**< Extended Range Y, U, V in three surfaces, U/V width = Y width, U/V height = Y height. */
     cudaEglColorFormatYUV422Planar_ER         = 34, /**< Extended Range Y, U, V in three surfaces, U/V width = 1/2 Y width, U/V height = Y height. */
     cudaEglColorFormatYUV420Planar_ER         = 35, /**< Extended Range Y, U, V in three surfaces, U/V width = 1/2 Y width, U/V height = 1/2 Y height. */
-    cudaEglColorFormatYUV444SemiPlanar_ER     = 36, /**< Extended Range Y, UV in two surfaces (UV as one surface), U/V width = Y width, U/V height = Y height. */
-    cudaEglColorFormatYUV422SemiPlanar_ER     = 37, /**< Extended Range Y, UV in two surfaces (UV as one surface), U/V width = 1/2 Y width, U/V height = Y height. */
-    cudaEglColorFormatYUV420SemiPlanar_ER     = 38, /**< Extended Range Y, UV in two surfaces (UV as one surface), U/V width = 1/2 Y width, U/V height = 1/2 Y height. */
+    cudaEglColorFormatYUV444SemiPlanar_ER     = 36, /**< Extended Range Y, UV in two surfaces (UV as one surface) with VU byte ordering, U/V width = Y width, U/V height = Y height. */
+    cudaEglColorFormatYUV422SemiPlanar_ER     = 37, /**< Extended Range Y, UV in two surfaces (UV as one surface) with VU byte ordering, U/V width = 1/2 Y width, U/V height = Y height. */
+    cudaEglColorFormatYUV420SemiPlanar_ER     = 38, /**< Extended Range Y, UV in two surfaces (UV as one surface) with VU byte ordering, U/V width = 1/2 Y width, U/V height = 1/2 Y height. */
     cudaEglColorFormatYVU444Planar_ER         = 39, /**< Extended Range Y, V, U in three surfaces, U/V width = Y width, U/V height = Y height. */
     cudaEglColorFormatYVU422Planar_ER         = 40, /**< Extended Range Y, V, U in three surfaces, U/V width = 1/2 Y width, U/V height = Y height. */
     cudaEglColorFormatYVU420Planar_ER         = 41, /**< Extended Range Y, V, U in three surfaces, U/V width = 1/2 Y width, U/V height = 1/2 Y height. */
-    cudaEglColorFormatYVU444SemiPlanar_ER     = 42, /**< Extended Range Y, VU in two surfaces (VU as one surface), U/V width = Y width, U/V height = Y height. */
-    cudaEglColorFormatYVU422SemiPlanar_ER     = 43, /**< Extended Range Y, VU in two surfaces (VU as one surface), U/V width = 1/2 Y width, U/V height = Y height. */
-    cudaEglColorFormatYVU420SemiPlanar_ER     = 44, /**< Extended Range Y, VU in two surfaces (VU as one surface), U/V width = 1/2 Y width, U/V height = 1/2 Y height. */
+    cudaEglColorFormatYVU444SemiPlanar_ER     = 42, /**< Extended Range Y, VU in two surfaces (VU as one surface) with UV byte ordering, U/V width = Y width, U/V height = Y height. */
+    cudaEglColorFormatYVU422SemiPlanar_ER     = 43, /**< Extended Range Y, VU in two surfaces (VU as one surface) with UV byte ordering, U/V width = 1/2 Y width, U/V height = Y height. */
+    cudaEglColorFormatYVU420SemiPlanar_ER     = 44, /**< Extended Range Y, VU in two surfaces (VU as one surface) with UV byte ordering, U/V width = 1/2 Y width, U/V height = 1/2 Y height. */
     cudaEglColorFormatBayerRGGB               = 45, /**< Bayer format - one channel in one surface with interleaved RGGB ordering. */
     cudaEglColorFormatBayerBGGR               = 46, /**< Bayer format - one channel in one surface with interleaved BGGR ordering. */
     cudaEglColorFormatBayerGRBG               = 47, /**< Bayer format - one channel in one surface with interleaved GRBG ordering. */
     cudaEglColorFormatBayerGBRG               = 48, /**< Bayer format - one channel in one surface with interleaved GBRG ordering. */
-    cudaEglColorFormatBayer10RGGB             = 49, /**< Bayer10 format - one channel in one surface with interleaved RGGB ordering. 10 bits used 6 bits No-op. */
-    cudaEglColorFormatBayer10BGGR             = 50, /**< Bayer10 format - one channel in one surface with interleaved BGGR ordering. 10 bits used 6 bits No-op. */
-    cudaEglColorFormatBayer10GRBG             = 51, /**< Bayer10 format - one channel in one surface with interleaved GRBG ordering. 10 bits used 6 bits No-op. */
-    cudaEglColorFormatBayer10GBRG             = 52, /**< Bayer10 format - one channel in one surface with interleaved GBRG ordering. 10 bits used 6 bits No-op. */
-    cudaEglColorFormatBayer12RGGB             = 53, /**< Bayer12 format - one channel in one surface with interleaved RGGB ordering. 12 bits used 4 bits No-op. */
-    cudaEglColorFormatBayer12BGGR             = 54, /**< Bayer12 format - one channel in one surface with interleaved BGGR ordering. 12 bits used 4 bits No-op. */
-    cudaEglColorFormatBayer12GRBG             = 55, /**< Bayer12 format - one channel in one surface with interleaved GRBG ordering. 12 bits used 4 bits No-op. */
-    cudaEglColorFormatBayer12GBRG             = 56, /**< Bayer12 format - one channel in one surface with interleaved GBRG ordering. 12 bits used 4 bits No-op. */
-    cudaEglColorFormatBayer14RGGB             = 57, /**< Bayer14 format - one channel in one surface with interleaved RGGB ordering. 14 bits used 2 bits No-op. */
-    cudaEglColorFormatBayer14BGGR             = 58, /**< Bayer14 format - one channel in one surface with interleaved BGGR ordering. 14 bits used 2 bits No-op. */
-    cudaEglColorFormatBayer14GRBG             = 59, /**< Bayer14 format - one channel in one surface with interleaved GRBG ordering. 14 bits used 2 bits No-op. */
-    cudaEglColorFormatBayer14GBRG             = 60, /**< Bayer14 format - one channel in one surface with interleaved GBRG ordering. 14 bits used 2 bits No-op. */
-    cudaEglColorFormatBayer20RGGB             = 61, /**< Bayer20 format - one channel in one surface with interleaved RGGB ordering. 20 bits used 12 bits No-op. */
-    cudaEglColorFormatBayer20BGGR             = 62, /**< Bayer20 format - one channel in one surface with interleaved BGGR ordering. 20 bits used 12 bits No-op. */
-    cudaEglColorFormatBayer20GRBG             = 63, /**< Bayer20 format - one channel in one surface with interleaved GRBG ordering. 20 bits used 12 bits No-op. */
-    cudaEglColorFormatBayer20GBRG             = 64, /**< Bayer20 format - one channel in one surface with interleaved GBRG ordering. 20 bits used 12 bits No-op. */
+    cudaEglColorFormatBayer10RGGB             = 49, /**< Bayer10 format - one channel in one surface with interleaved RGGB ordering. Out of 16 bits, 10 bits used 6 bits No-op. */
+    cudaEglColorFormatBayer10BGGR             = 50, /**< Bayer10 format - one channel in one surface with interleaved BGGR ordering. Out of 16 bits, 10 bits used 6 bits No-op. */
+    cudaEglColorFormatBayer10GRBG             = 51, /**< Bayer10 format - one channel in one surface with interleaved GRBG ordering. Out of 16 bits, 10 bits used 6 bits No-op. */
+    cudaEglColorFormatBayer10GBRG             = 52, /**< Bayer10 format - one channel in one surface with interleaved GBRG ordering. Out of 16 bits, 10 bits used 6 bits No-op. */
+    cudaEglColorFormatBayer12RGGB             = 53, /**< Bayer12 format - one channel in one surface with interleaved RGGB ordering. Out of 16 bits, 12 bits used 4 bits No-op. */
+    cudaEglColorFormatBayer12BGGR             = 54, /**< Bayer12 format - one channel in one surface with interleaved BGGR ordering. Out of 16 bits, 12 bits used 4 bits No-op. */
+    cudaEglColorFormatBayer12GRBG             = 55, /**< Bayer12 format - one channel in one surface with interleaved GRBG ordering. Out of 16 bits, 12 bits used 4 bits No-op. */
+    cudaEglColorFormatBayer12GBRG             = 56, /**< Bayer12 format - one channel in one surface with interleaved GBRG ordering. Out of 16 bits, 12 bits used 4 bits No-op. */
+    cudaEglColorFormatBayer14RGGB             = 57, /**< Bayer14 format - one channel in one surface with interleaved RGGB ordering. Out of 16 bits, 14 bits used 2 bits No-op. */
+    cudaEglColorFormatBayer14BGGR             = 58, /**< Bayer14 format - one channel in one surface with interleaved BGGR ordering. Out of 16 bits, 14 bits used 2 bits No-op. */
+    cudaEglColorFormatBayer14GRBG             = 59, /**< Bayer14 format - one channel in one surface with interleaved GRBG ordering. Out of 16 bits, 14 bits used 2 bits No-op. */
+    cudaEglColorFormatBayer14GBRG             = 60, /**< Bayer14 format - one channel in one surface with interleaved GBRG ordering. Out of 16 bits, 14 bits used 2 bits No-op. */
+    cudaEglColorFormatBayer20RGGB             = 61, /**< Bayer20 format - one channel in one surface with interleaved RGGB ordering. Out of 32 bits, 20 bits used 12 bits No-op. */
+    cudaEglColorFormatBayer20BGGR             = 62, /**< Bayer20 format - one channel in one surface with interleaved BGGR ordering. Out of 32 bits, 20 bits used 12 bits No-op. */
+    cudaEglColorFormatBayer20GRBG             = 63, /**< Bayer20 format - one channel in one surface with interleaved GRBG ordering. Out of 32 bits, 20 bits used 12 bits No-op. */
+    cudaEglColorFormatBayer20GBRG             = 64, /**< Bayer20 format - one channel in one surface with interleaved GBRG ordering. Out of 32 bits, 20 bits used 12 bits No-op. */
     cudaEglColorFormatYVU444Planar            = 65, /**< Y, V, U in three surfaces, each in a separate surface, U/V width = Y width, U/V height = Y height. */
     cudaEglColorFormatYVU422Planar            = 66, /**< Y, V, U in three surfaces, each in a separate surface, U/V width = 1/2 Y width, U/V height = Y height. */
     cudaEglColorFormatYVU420Planar            = 67, /**< Y, V, U in three surfaces, each in a separate surface, U/V width = 1/2 Y width, U/V height = 1/2 Y height. */
- 
+    cudaEglColorFormatBayerIspRGGB            = 68, /**< Nvidia proprietary Bayer ISP format - one channel in one surface with interleaved RGGB ordering and mapped to opaque integer datatype. */
+    cudaEglColorFormatBayerIspBGGR            = 69, /**< Nvidia proprietary Bayer ISP format - one channel in one surface with interleaved BGGR ordering and mapped to opaque integer datatype. */
+    cudaEglColorFormatBayerIspGRBG            = 70, /**< Nvidia proprietary Bayer ISP format - one channel in one surface with interleaved GRBG ordering and mapped to opaque integer datatype. */
+    cudaEglColorFormatBayerIspGBRG            = 71, /**< Nvidia proprietary Bayer ISP format - one channel in one surface with interleaved GBRG ordering and mapped to opaque integer datatype. */
 } cudaEglColorFormat;
 
 /**

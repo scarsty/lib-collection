@@ -82,13 +82,8 @@ extern "C" {
  *
  * It is the user's responsibility to avoid \ref sampling_beyond_image_boundaries.
  *
- * @{
+ * <h3><a name="CommonDilateParameters">Common parameters for nppiDilate functions include:</a></h3>
  *
- */
-
-/**
- * Single-channel 8-bit unsigned integer dilation.
- * 
  * \param pSrc  \ref source_image_pointer.
  * \param nSrcStep \ref source_image_line_step.
  * \param pDst \ref destination_image_pointer.
@@ -99,6 +94,16 @@ extern "C" {
  * \param oAnchor X and Y offsets of the mask origin frame of reference
  *        w.r.t the source pixel.
  * \return \ref image_data_error_codes, \ref roi_error_codes
+ *
+ * @{
+ *
+ */
+
+/**
+ * Single-channel 8-bit unsigned integer dilation.
+ * 
+ * For common parameter descriptions, see <a href="#CommonDilateParameters">Common parameters for nppiDilate functions</a>.
+ *
  */
 NppStatus 
 nppiDilate_8u_C1R(const Npp8u * pSrc, Npp32s nSrcStep, Npp8u * pDst, Npp32s nDstStep, NppiSize oSizeROI, 
@@ -107,16 +112,8 @@ nppiDilate_8u_C1R(const Npp8u * pSrc, Npp32s nSrcStep, Npp8u * pDst, Npp32s nDst
 /**
  * Three-channel 8-bit unsigned integer dilation.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonDilateParameters">Common parameters for nppiDilate functions</a>.
+ *
  */
 NppStatus 
 nppiDilate_8u_C3R(const Npp8u * pSrc, Npp32s nSrcStep, Npp8u * pDst, Npp32s nDstStep, NppiSize oSizeROI, 
@@ -125,16 +122,8 @@ nppiDilate_8u_C3R(const Npp8u * pSrc, Npp32s nSrcStep, Npp8u * pDst, Npp32s nDst
 /**
  * Four-channel 8-bit unsigned integer dilation.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonDilateParameters">Common parameters for nppiDilate functions</a>.
+ *
  */
 NppStatus
 nppiDilate_8u_C4R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst, int nDstStep, NppiSize oSizeROI,
@@ -143,16 +132,8 @@ nppiDilate_8u_C4R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst, int nDstStep, 
 /**
  * Four-channel 8-bit unsigned integer dilation, ignoring alpha-channel.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonDilateParameters">Common parameters for nppiDilate functions</a>.
+ *
  */
 NppStatus
 nppiDilate_8u_AC4R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst, int nDstStep, NppiSize oSizeROI,
@@ -162,16 +143,8 @@ nppiDilate_8u_AC4R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst, int nDstStep,
 /**
  * Single-channel 16-bit unsigned integer dilation.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonDilateParameters">Common parameters for nppiDilate functions</a>.
+ *
  */
 NppStatus 
 nppiDilate_16u_C1R(const Npp16u * pSrc, Npp32s nSrcStep, Npp16u * pDst, Npp32s nDstStep, NppiSize oSizeROI, 
@@ -180,16 +153,8 @@ nppiDilate_16u_C1R(const Npp16u * pSrc, Npp32s nSrcStep, Npp16u * pDst, Npp32s n
 /**
  * Three-channel 16-bit unsigned integer dilation.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonDilateParameters">Common parameters for nppiDilate functions</a>.
+ *
  */
 NppStatus 
 nppiDilate_16u_C3R(const Npp16u * pSrc, Npp32s nSrcStep, Npp16u * pDst, Npp32s nDstStep, NppiSize oSizeROI, 
@@ -198,16 +163,8 @@ nppiDilate_16u_C3R(const Npp16u * pSrc, Npp32s nSrcStep, Npp16u * pDst, Npp32s n
 /**
  * Four-channel 16-bit unsigned integer dilation.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonDilateParameters">Common parameters for nppiDilate functions</a>.
+ *
  */
 NppStatus
 nppiDilate_16u_C4R(const Npp16u * pSrc, int nSrcStep, Npp16u * pDst, int nDstStep, NppiSize oSizeROI,
@@ -216,16 +173,8 @@ nppiDilate_16u_C4R(const Npp16u * pSrc, int nSrcStep, Npp16u * pDst, int nDstSte
 /**
  * Four-channel 16-bit unsigned integer dilation, ignoring alpha-channel.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonDilateParameters">Common parameters for nppiDilate functions</a>.
+ *
  */
 NppStatus
 nppiDilate_16u_AC4R(const Npp16u * pSrc, int nSrcStep, Npp16u * pDst, int nDstStep, NppiSize oSizeROI,
@@ -235,16 +184,8 @@ nppiDilate_16u_AC4R(const Npp16u * pSrc, int nSrcStep, Npp16u * pDst, int nDstSt
 /**
  * Single-channel 32-bit floating-point dilation.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonDilateParameters">Common parameters for nppiDilate functions</a>.
+ *
  */
 NppStatus 
 nppiDilate_32f_C1R(const Npp32f * pSrc, Npp32s nSrcStep, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI, 
@@ -253,16 +194,8 @@ nppiDilate_32f_C1R(const Npp32f * pSrc, Npp32s nSrcStep, Npp32f * pDst, Npp32s n
 /**
  * Three-channel 32-bit floating-point dilation.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonDilateParameters">Common parameters for nppiDilate functions</a>.
+ *
  */
 NppStatus 
 nppiDilate_32f_C3R(const Npp32f * pSrc, Npp32s nSrcStep, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI, 
@@ -271,16 +204,8 @@ nppiDilate_32f_C3R(const Npp32f * pSrc, Npp32s nSrcStep, Npp32f * pDst, Npp32s n
 /**
  * Four-channel 32-bit floating-point dilation.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonDilateParameters">Common parameters for nppiDilate functions</a>.
+ *
  */
 NppStatus
 nppiDilate_32f_C4R(const Npp32f * pSrc, int nSrcStep, Npp32f * pDst, int nDstStep, NppiSize oSizeROI,
@@ -289,16 +214,8 @@ nppiDilate_32f_C4R(const Npp32f * pSrc, int nSrcStep, Npp32f * pDst, int nDstSte
 /**
  * Four-channel 32-bit floating-point dilation, ignoring alpha-channel.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonDilateParameters">Common parameters for nppiDilate functions</a>.
+ *
  */
 NppStatus
 nppiDilate_32f_AC4R(const Npp32f * pSrc, int nSrcStep, Npp32f * pDst, int nDstStep, NppiSize oSizeROI,
@@ -319,13 +236,8 @@ nppiDilate_32f_AC4R(const Npp32f * pSrc, int nSrcStep, Npp32f * pDst, int nDstSt
  *
  * Currently only the NPP_BORDER_REPLICATE border type operation is supported.
  *
- * @{
+ * <h3><a name="CommonDilateBorderParameters">Common parameters for nppiDilateBorder functions include:</a></h3>
  *
- */
-
-/**
- * Single-channel 8-bit unsigned integer dilation with border control.
- * 
  * \param pSrc  \ref source_image_pointer.
  * \param nSrcStep \ref source_image_line_step.
  * \param oSrcSize Source image width and height in pixels relative to pSrc.
@@ -339,6 +251,16 @@ nppiDilate_32f_AC4R(const Npp32f * pSrc, int nSrcStep, Npp32f * pDst, int nDstSt
  *        w.r.t the source pixel.
  * \param eBorderType The border type operation to be applied at source image border boundaries.
  * \return \ref image_data_error_codes, \ref roi_error_codes
+ *
+ * @{
+ *
+ */
+
+/**
+ * Single-channel 8-bit unsigned integer dilation with border control.
+ * 
+ * For common parameter descriptions, see <a href="#CommonDilateBorderParameters">Common parameters for nppiDilateBorder functions</a>.
+ *
  */
 NppStatus 
 nppiDilateBorder_8u_C1R(const Npp8u * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp8u * pDst, Npp32s nDstStep, NppiSize oSizeROI, 
@@ -347,19 +269,8 @@ nppiDilateBorder_8u_C1R(const Npp8u * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, 
 /**
  * Three-channel 8-bit unsigned integer dilation with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonDilateBorderParameters">Common parameters for nppiDilateBorder functions</a>.
+ *
  */
 NppStatus 
 nppiDilateBorder_8u_C3R(const Npp8u * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp8u * pDst, Npp32s nDstStep, NppiSize oSizeROI, 
@@ -368,19 +279,8 @@ nppiDilateBorder_8u_C3R(const Npp8u * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, 
 /**
  * Four-channel 8-bit unsigned integer dilation with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonDilateBorderParameters">Common parameters for nppiDilateBorder functions</a>.
+ *
  */
 NppStatus
 nppiDilateBorder_8u_C4R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp8u * pDst, int nDstStep, NppiSize oSizeROI,
@@ -389,19 +289,8 @@ nppiDilateBorder_8u_C4R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, Npp
 /**
  * Four-channel 8-bit unsigned integer dilation with border control, ignoring alpha-channel.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonDilateBorderParameters">Common parameters for nppiDilateBorder functions</a>.
+ *
  */
 NppStatus
 nppiDilateBorder_8u_AC4R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp8u * pDst, int nDstStep, NppiSize oSizeROI,
@@ -411,19 +300,8 @@ nppiDilateBorder_8u_AC4R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, Np
 /**
  * Single-channel 16-bit unsigned integer dilation with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonDilateBorderParameters">Common parameters for nppiDilateBorder functions</a>.
+ *
  */
 NppStatus 
 nppiDilateBorder_16u_C1R(const Npp16u * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp16u * pDst, Npp32s nDstStep, NppiSize oSizeROI, 
@@ -432,19 +310,8 @@ nppiDilateBorder_16u_C1R(const Npp16u * pSrc, Npp32s nSrcStep, NppiSize oSrcSize
 /**
  * Three-channel 16-bit unsigned integer dilation with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonDilateBorderParameters">Common parameters for nppiDilateBorder functions</a>.
+ *
  */
 NppStatus 
 nppiDilateBorder_16u_C3R(const Npp16u * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp16u * pDst, Npp32s nDstStep, NppiSize oSizeROI, 
@@ -453,19 +320,8 @@ nppiDilateBorder_16u_C3R(const Npp16u * pSrc, Npp32s nSrcStep, NppiSize oSrcSize
 /**
  * Four-channel 16-bit unsigned integer dilation with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonDilateBorderParameters">Common parameters for nppiDilateBorder functions</a>.
+ *
  */
 NppStatus
 nppiDilateBorder_16u_C4R(const Npp16u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp16u * pDst, int nDstStep, NppiSize oSizeROI,
@@ -474,19 +330,8 @@ nppiDilateBorder_16u_C4R(const Npp16u * pSrc, int nSrcStep, NppiSize oSrcSize, N
 /**
  * Four-channel 16-bit unsigned integer dilation with border control, ignoring alpha-channel.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonDilateBorderParameters">Common parameters for nppiDilateBorder functions</a>.
+ *
  */
 NppStatus
 nppiDilateBorder_16u_AC4R(const Npp16u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp16u * pDst, int nDstStep, NppiSize oSizeROI,
@@ -496,19 +341,8 @@ nppiDilateBorder_16u_AC4R(const Npp16u * pSrc, int nSrcStep, NppiSize oSrcSize, 
 /**
  * Single-channel 32-bit floating-point dilation with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonDilateBorderParameters">Common parameters for nppiDilateBorder functions</a>.
+ *
  */
 NppStatus 
 nppiDilateBorder_32f_C1R(const Npp32f * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI, 
@@ -517,19 +351,8 @@ nppiDilateBorder_32f_C1R(const Npp32f * pSrc, Npp32s nSrcStep, NppiSize oSrcSize
 /**
  * Three-channel 32-bit floating-point dilation with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonDilateBorderParameters">Common parameters for nppiDilateBorder functions</a>.
+ *
  */
 NppStatus 
 nppiDilateBorder_32f_C3R(const Npp32f * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI, 
@@ -538,19 +361,8 @@ nppiDilateBorder_32f_C3R(const Npp32f * pSrc, Npp32s nSrcStep, NppiSize oSrcSize
 /**
  * Four-channel 32-bit floating-point dilation with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonDilateBorderParameters">Common parameters for nppiDilateBorder functions</a>.
+ *
  */
 NppStatus
 nppiDilateBorder_32f_C4R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, int nDstStep, NppiSize oSizeROI,
@@ -559,19 +371,8 @@ nppiDilateBorder_32f_C4R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, N
 /**
  * Four-channel 32-bit floating-point dilation with border control, ignoring alpha-channel.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonDilateBorderParameters">Common parameters for nppiDilateBorder functions</a>.
+ *
  */
 NppStatus
 nppiDilateBorder_32f_AC4R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, int nDstStep, NppiSize oSizeROI,
@@ -580,19 +381,8 @@ nppiDilateBorder_32f_AC4R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, 
 /**
  * Single-channel 8-bit unsigned integer gray scale dilation with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array in device memory.
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonDilateBorderParameters">Common parameters for nppiDilateBorder functions</a>.
+ *
  */
 NppStatus 
 nppiGrayDilateBorder_8u_C1R(const Npp8u * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp8u * pDst, Npp32s nDstStep, NppiSize oSizeROI, 
@@ -601,19 +391,8 @@ nppiGrayDilateBorder_8u_C1R(const Npp8u * pSrc, Npp32s nSrcStep, NppiSize oSrcSi
 /**
  * Single-channel 32-bit floating point gray scale dilation with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array in device memory.
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonDilateBorderParameters">Common parameters for nppiDilateBorder functions</a>.
+ *
  */
 NppStatus 
 nppiGrayDilateBorder_32f_C1R(const Npp32f * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI, 
@@ -627,6 +406,15 @@ nppiGrayDilateBorder_32f_C1R(const Npp32f * pSrc, Npp32s nSrcStep, NppiSize oSrc
  *
  * It is the user's responsibility to avoid \ref sampling_beyond_image_boundaries.
  *
+ * <h3><a name="CommonDilate3x3Parameters">Common parameters for nppiDilate3x3 functions include:</a></h3>
+ *
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ *
  * @{
  *
  */
@@ -634,12 +422,8 @@ nppiGrayDilateBorder_32f_C1R(const Npp32f * pSrc, Npp32s nSrcStep, NppiSize oSrc
 /**
  * Single-channel 8-bit unsigned integer 3x3 dilation.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonDilate3x3Parameters">Common parameters for nppiDilate3x3 functions</a>.
+ *
  */
 NppStatus 
 nppiDilate3x3_8u_C1R(const Npp8u * pSrc, Npp32s nSrcStep, Npp8u * pDst, Npp32s nDstStep, NppiSize oSizeROI);
@@ -647,12 +431,8 @@ nppiDilate3x3_8u_C1R(const Npp8u * pSrc, Npp32s nSrcStep, Npp8u * pDst, Npp32s n
 /**
  * Three-channel 8-bit unsigned integer 3x3 dilation.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonDilate3x3Parameters">Common parameters for nppiDilate3x3 functions</a>.
+ *
  */
 NppStatus 
 nppiDilate3x3_8u_C3R(const Npp8u * pSrc, Npp32s nSrcStep, Npp8u * pDst, Npp32s nDstStep, NppiSize oSizeROI);
@@ -660,12 +440,8 @@ nppiDilate3x3_8u_C3R(const Npp8u * pSrc, Npp32s nSrcStep, Npp8u * pDst, Npp32s n
 /**
  * Four-channel 8-bit unsigned integer 3x3 dilation.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonDilate3x3Parameters">Common parameters for nppiDilate3x3 functions</a>.
+ *
  */
 NppStatus
 nppiDilate3x3_8u_C4R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
@@ -673,12 +449,8 @@ nppiDilate3x3_8u_C4R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst, int nDstSte
 /**
  * Four-channel 8-bit unsigned integer 3x3 dilation, ignoring alpha-channel.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonDilate3x3Parameters">Common parameters for nppiDilate3x3 functions</a>.
+ *
  */
 NppStatus
 nppiDilate3x3_8u_AC4R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
@@ -687,12 +459,8 @@ nppiDilate3x3_8u_AC4R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst, int nDstSt
 /**
  * Single-channel 16-bit unsigned integer 3x3 dilation.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonDilate3x3Parameters">Common parameters for nppiDilate3x3 functions</a>.
+ *
  */
 NppStatus 
 nppiDilate3x3_16u_C1R(const Npp16u * pSrc, Npp32s nSrcStep, Npp16u * pDst, Npp32s nDstStep, NppiSize oSizeROI);
@@ -700,12 +468,8 @@ nppiDilate3x3_16u_C1R(const Npp16u * pSrc, Npp32s nSrcStep, Npp16u * pDst, Npp32
 /**
  * Three-channel 16-bit unsigned integer 3x3 dilation.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonDilate3x3Parameters">Common parameters for nppiDilate3x3 functions</a>.
+ *
  */
 NppStatus 
 nppiDilate3x3_16u_C3R(const Npp16u * pSrc, Npp32s nSrcStep, Npp16u * pDst, Npp32s nDstStep, NppiSize oSizeROI);
@@ -713,12 +477,8 @@ nppiDilate3x3_16u_C3R(const Npp16u * pSrc, Npp32s nSrcStep, Npp16u * pDst, Npp32
 /**
  * Four-channel 16-bit unsigned integer 3x3 dilation.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonDilate3x3Parameters">Common parameters for nppiDilate3x3 functions</a>.
+ *
  */
 NppStatus
 nppiDilate3x3_16u_C4R(const Npp16u * pSrc, int nSrcStep, Npp16u * pDst, int nDstStep, NppiSize oSizeROI);
@@ -726,12 +486,8 @@ nppiDilate3x3_16u_C4R(const Npp16u * pSrc, int nSrcStep, Npp16u * pDst, int nDst
 /**
  * Four-channel 16-bit unsigned integer 3x3 dilation, ignoring alpha-channel.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonDilate3x3Parameters">Common parameters for nppiDilate3x3 functions</a>.
+ *
  */
 NppStatus
 nppiDilate3x3_16u_AC4R(const Npp16u * pSrc, int nSrcStep, Npp16u * pDst, int nDstStep, NppiSize oSizeROI);
@@ -740,12 +496,8 @@ nppiDilate3x3_16u_AC4R(const Npp16u * pSrc, int nSrcStep, Npp16u * pDst, int nDs
 /**
  * Single-channel 32-bit floating-point 3x3 dilation.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonDilate3x3Parameters">Common parameters for nppiDilate3x3 functions</a>.
+ *
  */
 NppStatus 
 nppiDilate3x3_32f_C1R(const Npp32f * pSrc, Npp32s nSrcStep, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI);
@@ -753,12 +505,8 @@ nppiDilate3x3_32f_C1R(const Npp32f * pSrc, Npp32s nSrcStep, Npp32f * pDst, Npp32
 /**
  * Three-channel 32-bit floating-point 3x3 dilation.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonDilate3x3Parameters">Common parameters for nppiDilate3x3 functions</a>.
+ *
  */
 NppStatus 
 nppiDilate3x3_32f_C3R(const Npp32f * pSrc, Npp32s nSrcStep, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI);
@@ -766,12 +514,8 @@ nppiDilate3x3_32f_C3R(const Npp32f * pSrc, Npp32s nSrcStep, Npp32f * pDst, Npp32
 /**
  * Four-channel 32-bit floating-point 3x3 dilation.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonDilate3x3Parameters">Common parameters for nppiDilate3x3 functions</a>.
+ *
  */
 NppStatus
 nppiDilate3x3_32f_C4R(const Npp32f * pSrc, int nSrcStep, Npp32f * pDst, int nDstStep, NppiSize oSizeROI);
@@ -779,12 +523,8 @@ nppiDilate3x3_32f_C4R(const Npp32f * pSrc, int nSrcStep, Npp32f * pDst, int nDst
 /**
  * Four-channel 32-bit floating-point 3x3 dilation, ignoring alpha-channel.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonDilate3x3Parameters">Common parameters for nppiDilate3x3 functions</a>.
+ *
  */
 NppStatus
 nppiDilate3x3_32f_AC4R(const Npp32f * pSrc, int nSrcStep, Npp32f * pDst, int nDstStep, NppiSize oSizeROI);
@@ -792,12 +532,8 @@ nppiDilate3x3_32f_AC4R(const Npp32f * pSrc, int nSrcStep, Npp32f * pDst, int nDs
 /**
  * Single-channel 64-bit floating-point 3x3 dilation.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonDilate3x3Parameters">Common parameters for nppiDilate3x3 functions</a>.
+ *
  */
 NppStatus 
 nppiDilate3x3_64f_C1R(const Npp64f * pSrc, Npp32s nSrcStep, Npp64f * pDst, Npp32s nDstStep, NppiSize oSizeROI);
@@ -813,6 +549,18 @@ nppiDilate3x3_64f_C1R(const Npp64f * pSrc, Npp32s nSrcStep, Npp64f * pDst, Npp32
  *
  * Currently only the NPP_BORDER_REPLICATE border type operation is supported.
  *
+ * <h3><a name="CommonDilate3x3BorderParameters">Common parameters for nppiDilate3x3Border functions include:</a></h3>
+ *
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Source image width and height in pixels relative to pSrc.
+ * \param oSrcOffset Source image starting point relative to pSrc. 
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param eBorderType The border type operation to be applied at source image border boundaries.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ *
  * @{
  *
  */
@@ -820,15 +568,8 @@ nppiDilate3x3_64f_C1R(const Npp64f * pSrc, Npp32s nSrcStep, Npp64f * pDst, Npp32
 /**
  * Single-channel 8-bit unsigned integer 3x3 dilation with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonDilate3x3BorderParameters">Common parameters for nppiDilate3x3Border functions</a>.
+ *
  */
 NppStatus 
 nppiDilate3x3Border_8u_C1R(const Npp8u * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp8u * pDst, Npp32s nDstStep, NppiSize oSizeROI, NppiBorderType eBorderType);
@@ -836,15 +577,8 @@ nppiDilate3x3Border_8u_C1R(const Npp8u * pSrc, Npp32s nSrcStep, NppiSize oSrcSiz
 /**
  * Three-channel 8-bit unsigned integer 3x3 dilation with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonDilate3x3BorderParameters">Common parameters for nppiDilate3x3Border functions</a>.
+ *
  */
 NppStatus 
 nppiDilate3x3Border_8u_C3R(const Npp8u * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp8u * pDst, Npp32s nDstStep, NppiSize oSizeROI, NppiBorderType eBorderType);
@@ -852,15 +586,8 @@ nppiDilate3x3Border_8u_C3R(const Npp8u * pSrc, Npp32s nSrcStep, NppiSize oSrcSiz
 /**
  * Four-channel 8-bit unsigned integer 3x3 dilation with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonDilate3x3BorderParameters">Common parameters for nppiDilate3x3Border functions</a>.
+ *
  */
 NppStatus
 nppiDilate3x3Border_8u_C4R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp8u * pDst, int nDstStep, NppiSize oSizeROI, NppiBorderType eBorderType);
@@ -868,15 +595,8 @@ nppiDilate3x3Border_8u_C4R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, 
 /**
  * Four-channel 8-bit unsigned integer 3x3 dilation with border control, ignoring alpha-channel.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonDilate3x3BorderParameters">Common parameters for nppiDilate3x3Border functions</a>.
+ *
  */
 NppStatus
 nppiDilate3x3Border_8u_AC4R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp8u * pDst, int nDstStep, NppiSize oSizeROI, NppiBorderType eBorderType);
@@ -885,15 +605,8 @@ nppiDilate3x3Border_8u_AC4R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize,
 /**
  * Single-channel 16-bit unsigned integer 3x3 dilation with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonDilate3x3BorderParameters">Common parameters for nppiDilate3x3Border functions</a>.
+ *
  */
 NppStatus 
 nppiDilate3x3Border_16u_C1R(const Npp16u * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp16u * pDst, Npp32s nDstStep, NppiSize oSizeROI, NppiBorderType eBorderType);
@@ -901,15 +614,6 @@ nppiDilate3x3Border_16u_C1R(const Npp16u * pSrc, Npp32s nSrcStep, NppiSize oSrcS
 /**
  * Three-channel 16-bit unsigned integer 3x3 dilation with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
  */
 NppStatus 
 nppiDilate3x3Border_16u_C3R(const Npp16u * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp16u * pDst, Npp32s nDstStep, NppiSize oSizeROI, NppiBorderType eBorderType);
@@ -917,15 +621,6 @@ nppiDilate3x3Border_16u_C3R(const Npp16u * pSrc, Npp32s nSrcStep, NppiSize oSrcS
 /**
  * Four-channel 16-bit unsigned integer 3x3 dilation with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
  */
 NppStatus
 nppiDilate3x3Border_16u_C4R(const Npp16u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp16u * pDst, int nDstStep, NppiSize oSizeROI, NppiBorderType eBorderType);
@@ -933,15 +628,6 @@ nppiDilate3x3Border_16u_C4R(const Npp16u * pSrc, int nSrcStep, NppiSize oSrcSize
 /**
  * Four-channel 16-bit unsigned integer 3x3 dilation with border control, ignoring alpha-channel.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
  */
 NppStatus
 nppiDilate3x3Border_16u_AC4R(const Npp16u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp16u * pDst, int nDstStep, NppiSize oSizeROI, NppiBorderType eBorderType);
@@ -950,15 +636,8 @@ nppiDilate3x3Border_16u_AC4R(const Npp16u * pSrc, int nSrcStep, NppiSize oSrcSiz
 /**
  * Single-channel 32-bit floating-point 3x3 dilation with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonDilate3x3BorderParameters">Common parameters for nppiDilate3x3Border functions</a>.
+ *
  */
 NppStatus 
 nppiDilate3x3Border_32f_C1R(const Npp32f * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI, NppiBorderType eBorderType);
@@ -966,15 +645,8 @@ nppiDilate3x3Border_32f_C1R(const Npp32f * pSrc, Npp32s nSrcStep, NppiSize oSrcS
 /**
  * Three-channel 32-bit floating-point 3x3 dilation with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonDilate3x3BorderParameters">Common parameters for nppiDilate3x3Border functions</a>.
+ *
  */
 NppStatus 
 nppiDilate3x3Border_32f_C3R(const Npp32f * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI, NppiBorderType eBorderType);
@@ -982,15 +654,8 @@ nppiDilate3x3Border_32f_C3R(const Npp32f * pSrc, Npp32s nSrcStep, NppiSize oSrcS
 /**
  * Four-channel 32-bit floating-point 3x3 dilation with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonDilate3x3BorderParameters">Common parameters for nppiDilate3x3Border functions</a>.
+ *
  */
 NppStatus
 nppiDilate3x3Border_32f_C4R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, int nDstStep, NppiSize oSizeROI, NppiBorderType eBorderType);
@@ -998,15 +663,8 @@ nppiDilate3x3Border_32f_C4R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize
 /**
  * Four-channel 32-bit floating-point 3x3 dilation with border control, ignoring alpha-channel.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonDilate3x3BorderParameters">Common parameters for nppiDilate3x3Border functions</a>.
+ *
  */
 NppStatus
 nppiDilate3x3Border_32f_AC4R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, int nDstStep, NppiSize oSizeROI, NppiBorderType eBorderType);
@@ -1021,6 +679,19 @@ nppiDilate3x3Border_32f_AC4R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSiz
  *
  * It is the user's responsibility to avoid \ref sampling_beyond_image_boundaries.
  *
+ * <h3><a name="CommonErodeParameters">Common parameters for nppiErode functions include:</a></h3>
+ *
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \param pMask Pointer to the start address of the mask array
+ * \param oMaskSize Width and Height mask array.
+ * \param oAnchor X and Y offsets of the mask origin frame of reference
+ *        w.r.t the source pixel.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ *
  * @{
  *
  */
@@ -1029,16 +700,8 @@ nppiDilate3x3Border_32f_AC4R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSiz
 /**
  * Single-channel 8-bit unsigned integer erosion.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErodeParameters">Common parameters for nppiErode functions</a>.
+ *
  */
 NppStatus 
 nppiErode_8u_C1R(const Npp8u * pSrc, Npp32s nSrcStep, Npp8u * pDst, Npp32s nDstStep, NppiSize oSizeROI, 
@@ -1047,16 +710,8 @@ nppiErode_8u_C1R(const Npp8u * pSrc, Npp32s nSrcStep, Npp8u * pDst, Npp32s nDstS
 /**
  * Three-channel 8-bit unsigned integer erosion.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErodeParameters">Common parameters for nppiErode functions</a>.
+ *
  */
 NppStatus 
 nppiErode_8u_C3R(const Npp8u * pSrc, Npp32s nSrcStep, Npp8u * pDst, Npp32s nDstStep, NppiSize oSizeROI, 
@@ -1065,16 +720,8 @@ nppiErode_8u_C3R(const Npp8u * pSrc, Npp32s nSrcStep, Npp8u * pDst, Npp32s nDstS
 /**
  * Four-channel 8-bit unsigned integer erosion.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErodeParameters">Common parameters for nppiErode functions</a>.
+ *
  */
 NppStatus
 nppiErode_8u_C4R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst, int nDstStep, NppiSize oSizeROI,
@@ -1083,16 +730,8 @@ nppiErode_8u_C4R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst, int nDstStep, N
 /**
  * Four-channel 8-bit unsigned integer erosion, ignoring alpha-channel.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErodeParameters">Common parameters for nppiErode functions</a>.
+ *
  */
 NppStatus
 nppiErode_8u_AC4R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst, int nDstStep, NppiSize oSizeROI,
@@ -1102,16 +741,8 @@ nppiErode_8u_AC4R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst, int nDstStep, 
 /**
  * Single-channel 16-bit unsigned integer erosion.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErodeParameters">Common parameters for nppiErode functions</a>.
+ *
  */
 NppStatus 
 nppiErode_16u_C1R(const Npp16u * pSrc, Npp32s nSrcStep, Npp16u * pDst, Npp32s nDstStep, NppiSize oSizeROI, 
@@ -1120,16 +751,6 @@ nppiErode_16u_C1R(const Npp16u * pSrc, Npp32s nSrcStep, Npp16u * pDst, Npp32s nD
 /**
  * Three-channel 16-bit unsigned integer erosion.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \return \ref image_data_error_codes, \ref roi_error_codes
  */
 NppStatus 
 nppiErode_16u_C3R(const Npp16u * pSrc, Npp32s nSrcStep, Npp16u * pDst, Npp32s nDstStep, NppiSize oSizeROI, 
@@ -1138,16 +759,8 @@ nppiErode_16u_C3R(const Npp16u * pSrc, Npp32s nSrcStep, Npp16u * pDst, Npp32s nD
 /**
  * Four-channel 16-bit unsigned integer erosion.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErodeParameters">Common parameters for nppiErode functions</a>.
+ *
  */
 NppStatus
 nppiErode_16u_C4R(const Npp16u * pSrc, int nSrcStep, Npp16u * pDst, int nDstStep, NppiSize oSizeROI,
@@ -1156,16 +769,8 @@ nppiErode_16u_C4R(const Npp16u * pSrc, int nSrcStep, Npp16u * pDst, int nDstStep
 /**
  * Four-channel 16-bit unsigned integer erosion, ignoring alpha-channel.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErodeParameters">Common parameters for nppiErode functions</a>.
+ *
  */
 NppStatus
 nppiErode_16u_AC4R(const Npp16u * pSrc, int nSrcStep, Npp16u * pDst, int nDstStep, NppiSize oSizeROI,
@@ -1175,16 +780,8 @@ nppiErode_16u_AC4R(const Npp16u * pSrc, int nSrcStep, Npp16u * pDst, int nDstSte
 /**
  * Single-channel 32-bit floating-point erosion.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErodeParameters">Common parameters for nppiErode functions</a>.
+ *
  */
 NppStatus 
 nppiErode_32f_C1R(const Npp32f * pSrc, Npp32s nSrcStep, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI, 
@@ -1193,16 +790,8 @@ nppiErode_32f_C1R(const Npp32f * pSrc, Npp32s nSrcStep, Npp32f * pDst, Npp32s nD
 /**
  * Three-channel 32-bit floating-point erosion.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErodeParameters">Common parameters for nppiErode functions</a>.
+ *
  */
 NppStatus 
 nppiErode_32f_C3R(const Npp32f * pSrc, Npp32s nSrcStep, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI, 
@@ -1211,16 +800,8 @@ nppiErode_32f_C3R(const Npp32f * pSrc, Npp32s nSrcStep, Npp32f * pDst, Npp32s nD
 /**
  * Four-channel 32-bit floating-point erosion.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErodeParameters">Common parameters for nppiErode functions</a>.
+ *
  */
 NppStatus
 nppiErode_32f_C4R(const Npp32f * pSrc, int nSrcStep, Npp32f * pDst, int nDstStep, NppiSize oSizeROI,
@@ -1229,16 +810,8 @@ nppiErode_32f_C4R(const Npp32f * pSrc, int nSrcStep, Npp32f * pDst, int nDstStep
 /**
  * Four-channel 32-bit floating-point erosion, ignoring alpha-channel.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErodeParameters">Common parameters for nppiErode functions</a>.
+ *
  */
 NppStatus
 nppiErode_32f_AC4R(const Npp32f * pSrc, int nSrcStep, Npp32f * pDst, int nDstStep, NppiSize oSizeROI,
@@ -1259,13 +832,8 @@ nppiErode_32f_AC4R(const Npp32f * pSrc, int nSrcStep, Npp32f * pDst, int nDstSte
  *
  * Currently only the NPP_BORDER_REPLICATE border type operation is supported.
  *
- * @{
+ * <h3><a name="CommonErodeBorderParameters">Common parameters for nppiErodeBorder functions include:</a></h3>
  *
- */
-
-/**
- * Single-channel 8-bit unsigned integer erosion with border control.
- * 
  * \param pSrc  \ref source_image_pointer.
  * \param nSrcStep \ref source_image_line_step.
  * \param oSrcSize Source image width and height in pixels relative to pSrc.
@@ -1279,6 +847,16 @@ nppiErode_32f_AC4R(const Npp32f * pSrc, int nSrcStep, Npp32f * pDst, int nDstSte
  *        w.r.t the source pixel.
  * \param eBorderType The border type operation to be applied at source image border boundaries.
  * \return \ref image_data_error_codes, \ref roi_error_codes
+ *
+ * @{
+ *
+ */
+
+/**
+ * Single-channel 8-bit unsigned integer erosion with border control.
+ * 
+ * For common parameter descriptions, see <a href="#CommonErodeBorderParameters">Common parameters for nppiErodeBorder functions</a>.
+ *
  */
 NppStatus 
 nppiErodeBorder_8u_C1R(const Npp8u * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp8u * pDst, Npp32s nDstStep, NppiSize oSizeROI, 
@@ -1287,19 +865,8 @@ nppiErodeBorder_8u_C1R(const Npp8u * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, N
 /**
  * Three-channel 8-bit unsigned integer erosion with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErodeBorderParameters">Common parameters for nppiErodeBorder functions</a>.
+ *
  */
 NppStatus 
 nppiErodeBorder_8u_C3R(const Npp8u * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp8u * pDst, Npp32s nDstStep, NppiSize oSizeROI, 
@@ -1308,19 +875,8 @@ nppiErodeBorder_8u_C3R(const Npp8u * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, N
 /**
  * Four-channel 8-bit unsigned integer erosion with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErodeBorderParameters">Common parameters for nppiErodeBorder functions</a>.
+ *
  */
 NppStatus
 nppiErodeBorder_8u_C4R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp8u * pDst, int nDstStep, NppiSize oSizeROI,
@@ -1329,19 +885,8 @@ nppiErodeBorder_8u_C4R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, Nppi
 /**
  * Four-channel 8-bit unsigned integer erosion with border control, ignoring alpha-channel.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErodeBorderParameters">Common parameters for nppiErodeBorder functions</a>.
+ *
  */
 NppStatus
 nppiErodeBorder_8u_AC4R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp8u * pDst, int nDstStep, NppiSize oSizeROI,
@@ -1351,19 +896,8 @@ nppiErodeBorder_8u_AC4R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, Npp
 /**
  * Single-channel 16-bit unsigned integer erosion with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErodeBorderParameters">Common parameters for nppiErodeBorder functions</a>.
+ *
  */
 NppStatus 
 nppiErodeBorder_16u_C1R(const Npp16u * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp16u * pDst, Npp32s nDstStep, NppiSize oSizeROI, 
@@ -1372,19 +906,8 @@ nppiErodeBorder_16u_C1R(const Npp16u * pSrc, Npp32s nSrcStep, NppiSize oSrcSize,
 /**
  * Three-channel 16-bit unsigned integer erosion with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErodeBorderParameters">Common parameters for nppiErodeBorder functions</a>.
+ *
  */
 NppStatus 
 nppiErodeBorder_16u_C3R(const Npp16u * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp16u * pDst, Npp32s nDstStep, NppiSize oSizeROI, 
@@ -1393,19 +916,8 @@ nppiErodeBorder_16u_C3R(const Npp16u * pSrc, Npp32s nSrcStep, NppiSize oSrcSize,
 /**
  * Four-channel 16-bit unsigned integer erosion with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErodeBorderParameters">Common parameters for nppiErodeBorder functions</a>.
+ *
  */
 NppStatus
 nppiErodeBorder_16u_C4R(const Npp16u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp16u * pDst, int nDstStep, NppiSize oSizeROI,
@@ -1414,19 +926,8 @@ nppiErodeBorder_16u_C4R(const Npp16u * pSrc, int nSrcStep, NppiSize oSrcSize, Np
 /**
  * Four-channel 16-bit unsigned integer erosion with border control, ignoring alpha-channel.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErodeBorderParameters">Common parameters for nppiErodeBorder functions</a>.
+ *
  */
 NppStatus
 nppiErodeBorder_16u_AC4R(const Npp16u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp16u * pDst, int nDstStep, NppiSize oSizeROI,
@@ -1436,19 +937,8 @@ nppiErodeBorder_16u_AC4R(const Npp16u * pSrc, int nSrcStep, NppiSize oSrcSize, N
 /**
  * Single-channel 32-bit floating-point erosion with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErodeBorderParameters">Common parameters for nppiErodeBorder functions</a>.
+ *
  */
 NppStatus 
 nppiErodeBorder_32f_C1R(const Npp32f * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI, 
@@ -1457,19 +947,8 @@ nppiErodeBorder_32f_C1R(const Npp32f * pSrc, Npp32s nSrcStep, NppiSize oSrcSize,
 /**
  * Three-channel 32-bit floating-point erosion with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErodeBorderParameters">Common parameters for nppiErodeBorder functions</a>.
+ *
  */
 NppStatus 
 nppiErodeBorder_32f_C3R(const Npp32f * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI, 
@@ -1478,19 +957,8 @@ nppiErodeBorder_32f_C3R(const Npp32f * pSrc, Npp32s nSrcStep, NppiSize oSrcSize,
 /**
  * Four-channel 32-bit floating-point erosion with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErodeBorderParameters">Common parameters for nppiErodeBorder functions</a>.
+ *
  */
 NppStatus
 nppiErodeBorder_32f_C4R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, int nDstStep, NppiSize oSizeROI,
@@ -1499,19 +967,8 @@ nppiErodeBorder_32f_C4R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, Np
 /**
  * Four-channel 32-bit floating-point erosion with border control, ignoring alpha-channel.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErodeBorderParameters">Common parameters for nppiErodeBorder functions</a>.
+ *
  */
 NppStatus
 nppiErodeBorder_32f_AC4R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, int nDstStep, NppiSize oSizeROI,
@@ -1520,19 +977,8 @@ nppiErodeBorder_32f_AC4R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, N
 /**
  * Single-channel 8-bit unsigned integer gray scale erosion with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array in device memory.
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErodeBorderParameters">Common parameters for nppiErodeBorder functions</a>.
+ *
  */
 NppStatus 
 nppiGrayErodeBorder_8u_C1R(const Npp8u * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp8u * pDst, Npp32s nDstStep, NppiSize oSizeROI, 
@@ -1541,19 +987,8 @@ nppiGrayErodeBorder_8u_C1R(const Npp8u * pSrc, Npp32s nSrcStep, NppiSize oSrcSiz
 /**
  * Single-channel 32-bit floating point gray scale erosion with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array in device memory.
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErodeBorderParameters">Common parameters for nppiErodeBorder functions</a>.
+ *
  */
 NppStatus 
 nppiGrayErodeBorder_32f_C1R(const Npp32f * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI, 
@@ -1567,6 +1002,15 @@ nppiGrayErodeBorder_32f_C1R(const Npp32f * pSrc, Npp32s nSrcStep, NppiSize oSrcS
  *
  * It is the user's responsibility to avoid \ref sampling_beyond_image_boundaries.
  *
+ * <h3><a name="CommonErode3x3Parameters">Common parameters for nppiErode3x3 functions include:</a></h3>
+ *
+ * \param pSrc  \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ *
  * @{
  *
  */
@@ -1575,12 +1019,8 @@ nppiGrayErodeBorder_32f_C1R(const Npp32f * pSrc, Npp32s nSrcStep, NppiSize oSrcS
 /**
  * Single-channel 8-bit unsigned integer 3x3 erosion.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErode3x3Parameters">Common parameters for nppiErode3x3 functions</a>.
+ *
  */
 NppStatus 
 nppiErode3x3_8u_C1R(const Npp8u * pSrc, Npp32s nSrcStep, Npp8u * pDst, Npp32s nDstStep, NppiSize oSizeROI);
@@ -1588,12 +1028,8 @@ nppiErode3x3_8u_C1R(const Npp8u * pSrc, Npp32s nSrcStep, Npp8u * pDst, Npp32s nD
 /**
  * Three-channel 8-bit unsigned integer 3x3 erosion.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErode3x3Parameters">Common parameters for nppiErode3x3 functions</a>.
+ *
  */
 NppStatus 
 nppiErode3x3_8u_C3R(const Npp8u * pSrc, Npp32s nSrcStep, Npp8u * pDst, Npp32s nDstStep, NppiSize oSizeROI);
@@ -1601,12 +1037,8 @@ nppiErode3x3_8u_C3R(const Npp8u * pSrc, Npp32s nSrcStep, Npp8u * pDst, Npp32s nD
 /**
  * Four-channel 8-bit unsigned integer 3x3 erosion.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErode3x3Parameters">Common parameters for nppiErode3x3 functions</a>.
+ *
  */
 NppStatus
 nppiErode3x3_8u_C4R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
@@ -1614,12 +1046,8 @@ nppiErode3x3_8u_C4R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst, int nDstStep
 /**
  * Four-channel 8-bit unsigned integer 3x3 erosion, ignoring alpha-channel.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErode3x3Parameters">Common parameters for nppiErode3x3 functions</a>.
+ *
  */
 NppStatus
 nppiErode3x3_8u_AC4R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
@@ -1628,12 +1056,8 @@ nppiErode3x3_8u_AC4R(const Npp8u * pSrc, int nSrcStep, Npp8u * pDst, int nDstSte
 /**
  * Single-channel 16-bit unsigned integer 3x3 erosion.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErode3x3Parameters">Common parameters for nppiErode3x3 functions</a>.
+ *
  */
 NppStatus 
 nppiErode3x3_16u_C1R(const Npp16u * pSrc, Npp32s nSrcStep, Npp16u * pDst, Npp32s nDstStep, NppiSize oSizeROI);
@@ -1641,12 +1065,8 @@ nppiErode3x3_16u_C1R(const Npp16u * pSrc, Npp32s nSrcStep, Npp16u * pDst, Npp32s
 /**
  * Three-channel 16-bit unsigned integer 3x3 erosion.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErode3x3Parameters">Common parameters for nppiErode3x3 functions</a>.
+ *
  */
 NppStatus 
 nppiErode3x3_16u_C3R(const Npp16u * pSrc, Npp32s nSrcStep, Npp16u * pDst, Npp32s nDstStep, NppiSize oSizeROI);
@@ -1654,12 +1074,8 @@ nppiErode3x3_16u_C3R(const Npp16u * pSrc, Npp32s nSrcStep, Npp16u * pDst, Npp32s
 /**
  * Four-channel 16-bit unsigned integer 3x3 erosion.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErode3x3Parameters">Common parameters for nppiErode3x3 functions</a>.
+ *
  */
 NppStatus
 nppiErode3x3_16u_C4R(const Npp16u * pSrc, int nSrcStep, Npp16u * pDst, int nDstStep, NppiSize oSizeROI);
@@ -1667,12 +1083,8 @@ nppiErode3x3_16u_C4R(const Npp16u * pSrc, int nSrcStep, Npp16u * pDst, int nDstS
 /**
  * Four-channel 16-bit unsigned integer 3x3 erosion, ignoring alpha-channel.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErode3x3Parameters">Common parameters for nppiErode3x3 functions</a>.
+ *
  */
 NppStatus
 nppiErode3x3_16u_AC4R(const Npp16u * pSrc, int nSrcStep, Npp16u * pDst, int nDstStep, NppiSize oSizeROI);
@@ -1681,12 +1093,8 @@ nppiErode3x3_16u_AC4R(const Npp16u * pSrc, int nSrcStep, Npp16u * pDst, int nDst
 /**
  * Single-channel 32-bit floating-point 3x3 erosion.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErode3x3Parameters">Common parameters for nppiErode3x3 functions</a>.
+ *
  */
 NppStatus 
 nppiErode3x3_32f_C1R(const Npp32f * pSrc, Npp32s nSrcStep, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI);
@@ -1694,12 +1102,8 @@ nppiErode3x3_32f_C1R(const Npp32f * pSrc, Npp32s nSrcStep, Npp32f * pDst, Npp32s
 /**
  * Three-channel 32-bit floating-point 3x3 erosion.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErode3x3Parameters">Common parameters for nppiErode3x3 functions</a>.
+ *
  */
 NppStatus 
 nppiErode3x3_32f_C3R(const Npp32f * pSrc, Npp32s nSrcStep, Npp32f * pDst, Npp32s nDstStep, NppiSize oSizeROI);
@@ -1707,12 +1111,8 @@ nppiErode3x3_32f_C3R(const Npp32f * pSrc, Npp32s nSrcStep, Npp32f * pDst, Npp32s
 /**
  * Four-channel 32-bit floating-point 3x3 erosion.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErode3x3Parameters">Common parameters for nppiErode3x3 functions</a>.
+ *
  */
 NppStatus
 nppiErode3x3_32f_C4R(const Npp32f * pSrc, int nSrcStep, Npp32f * pDst, int nDstStep, NppiSize oSizeROI);
@@ -1720,12 +1120,8 @@ nppiErode3x3_32f_C4R(const Npp32f * pSrc, int nSrcStep, Npp32f * pDst, int nDstS
 /**
  * Four-channel 32-bit floating-point 3x3 erosion, ignoring alpha-channel.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErode3x3Parameters">Common parameters for nppiErode3x3 functions</a>.
+ *
  */
 NppStatus
 nppiErode3x3_32f_AC4R(const Npp32f * pSrc, int nSrcStep, Npp32f * pDst, int nDstStep, NppiSize oSizeROI);
@@ -1733,12 +1129,8 @@ nppiErode3x3_32f_AC4R(const Npp32f * pSrc, int nSrcStep, Npp32f * pDst, int nDst
 /**
  * Single-channel 64-bit floating-point 3x3 erosion.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErode3x3Parameters">Common parameters for nppiErode3x3 functions</a>.
+ *
  */
 NppStatus 
 nppiErode3x3_64f_C1R(const Npp64f * pSrc, Npp32s nSrcStep, Npp64f * pDst, Npp32s nDstStep, NppiSize oSizeROI);
@@ -1754,13 +1146,8 @@ nppiErode3x3_64f_C1R(const Npp64f * pSrc, Npp32s nSrcStep, Npp64f * pDst, Npp32s
  *
  * Currently only the NPP_BORDER_REPLICATE border type operation is supported.
  *
- * @{
+ * <h3><a name="CommonErode3x3BorderParameters">Common parameters for nppiErode3x3Border functions include:</a></h3>
  *
- */
-
-/**
- * Single-channel 8-bit unsigned integer 3x3 erosion with border control.
- * 
  * \param pSrc  \ref source_image_pointer.
  * \param nSrcStep \ref source_image_line_step.
  * \param oSrcSize Source image width and height in pixels relative to pSrc.
@@ -1770,6 +1157,16 @@ nppiErode3x3_64f_C1R(const Npp64f * pSrc, Npp32s nSrcStep, Npp64f * pDst, Npp32s
  * \param oSizeROI \ref roi_specification.
  * \param eBorderType The border type operation to be applied at source image border boundaries.
  * \return \ref image_data_error_codes, \ref roi_error_codes
+ *
+ * @{
+ *
+ */
+
+/**
+ * Single-channel 8-bit unsigned integer 3x3 erosion with border control.
+ * 
+ * For common parameter descriptions, see <a href="#CommonErode3x3BorderParameters">Common parameters for nppiErode3x3Border functions</a>.
+ *
  */
 NppStatus 
 nppiErode3x3Border_8u_C1R(const Npp8u * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, 
@@ -1778,15 +1175,8 @@ nppiErode3x3Border_8u_C1R(const Npp8u * pSrc, Npp32s nSrcStep, NppiSize oSrcSize
 /**
  * Three-channel 8-bit unsigned integer 3x3 erosion with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErode3x3BorderParameters">Common parameters for nppiErode3x3Border functions</a>.
+ *
  */
 NppStatus 
 nppiErode3x3Border_8u_C3R(const Npp8u * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, 
@@ -1795,15 +1185,8 @@ nppiErode3x3Border_8u_C3R(const Npp8u * pSrc, Npp32s nSrcStep, NppiSize oSrcSize
 /**
  * Four-channel 8-bit unsigned integer 3x3 erosion with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErode3x3BorderParameters">Common parameters for nppiErode3x3Border functions</a>.
+ *
  */
 NppStatus
 nppiErode3x3Border_8u_C4R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, 
@@ -1812,15 +1195,8 @@ nppiErode3x3Border_8u_C4R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, N
 /**
  * Four-channel 8-bit unsigned integer 3x3 erosion with border control, ignoring alpha-channel.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErode3x3BorderParameters">Common parameters for nppiErode3x3Border functions</a>.
+ *
  */
 NppStatus
 nppiErode3x3Border_8u_AC4R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, 
@@ -1830,15 +1206,8 @@ nppiErode3x3Border_8u_AC4R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, 
 /**
  * Single-channel 16-bit unsigned integer 3x3 erosion with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErode3x3BorderParameters">Common parameters for nppiErode3x3Border functions</a>.
+ *
  */
 NppStatus 
 nppiErode3x3Border_16u_C1R(const Npp16u * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, 
@@ -1847,15 +1216,8 @@ nppiErode3x3Border_16u_C1R(const Npp16u * pSrc, Npp32s nSrcStep, NppiSize oSrcSi
 /**
  * Three-channel 16-bit unsigned integer 3x3 erosion with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErode3x3BorderParameters">Common parameters for nppiErode3x3Border functions</a>.
+ *
  */
 NppStatus 
 nppiErode3x3Border_16u_C3R(const Npp16u * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, 
@@ -1864,15 +1226,8 @@ nppiErode3x3Border_16u_C3R(const Npp16u * pSrc, Npp32s nSrcStep, NppiSize oSrcSi
 /**
  * Four-channel 16-bit unsigned integer 3x3 erosion with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErode3x3BorderParameters">Common parameters for nppiErode3x3Border functions</a>.
+ *
  */
 NppStatus
 nppiErode3x3Border_16u_C4R(const Npp16u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, 
@@ -1881,15 +1236,8 @@ nppiErode3x3Border_16u_C4R(const Npp16u * pSrc, int nSrcStep, NppiSize oSrcSize,
 /**
  * Four-channel 16-bit unsigned integer 3x3 erosion with border control, ignoring alpha-channel.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErode3x3BorderParameters">Common parameters for nppiErode3x3Border functions</a>.
+ *
  */
 NppStatus
 nppiErode3x3Border_16u_AC4R(const Npp16u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, 
@@ -1899,15 +1247,8 @@ nppiErode3x3Border_16u_AC4R(const Npp16u * pSrc, int nSrcStep, NppiSize oSrcSize
 /**
  * Single-channel 32-bit floating-point 3x3 erosion with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErode3x3BorderParameters">Common parameters for nppiErode3x3Border functions</a>.
+ *
  */
 NppStatus 
 nppiErode3x3Border_32f_C1R(const Npp32f * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, 
@@ -1916,15 +1257,8 @@ nppiErode3x3Border_32f_C1R(const Npp32f * pSrc, Npp32s nSrcStep, NppiSize oSrcSi
 /**
  * Three-channel 32-bit floating-point 3x3 erosion with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErode3x3BorderParameters">Common parameters for nppiErode3x3Border functions</a>.
+ *
  */
 NppStatus 
 nppiErode3x3Border_32f_C3R(const Npp32f * pSrc, Npp32s nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, 
@@ -1933,15 +1267,8 @@ nppiErode3x3Border_32f_C3R(const Npp32f * pSrc, Npp32s nSrcStep, NppiSize oSrcSi
 /**
  * Four-channel 32-bit floating-point 3x3 erosion with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErode3x3BorderParameters">Common parameters for nppiErode3x3Border functions</a>.
+ *
  */
 NppStatus
 nppiErode3x3Border_32f_C4R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, 
@@ -1950,15 +1277,8 @@ nppiErode3x3Border_32f_C4R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize,
 /**
  * Four-channel 32-bit floating-point 3x3 erosion with border control, ignoring alpha-channel.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonErode3x3BorderParameters">Common parameters for nppiErode3x3Border functions</a>.
+ *
  */
 NppStatus
 nppiErode3x3Border_32f_AC4R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, 
@@ -1980,6 +1300,11 @@ nppiErode3x3Border_32f_AC4R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize
  * MorphGetBufferSize to determine the amount of device memory to allocate as a working buffer.  The application allocated device memory
  * is then passed as the pBuffer parameter to the corresponding MorphXXXBorder function.
  *
+ * <h3><a name="CommonMorphGetBufferSizeParameters">Common parameters for nppiMorphGetBufferSize functions include:</a></h3>
+ *
+ * \param oSizeROI \ref roi_specification.
+ * \param hpBufferSize Required buffer size in bytes.
+ *
  * @{
  *
  */
@@ -1988,8 +1313,8 @@ nppiErode3x3Border_32f_AC4R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize
  * Calculate scratch buffer size needed for 1 channel 8-bit unsigned integer MorphCloseBorder, MorphOpenBorder, MorphTopHatBorder, 
  * MorphBlackHatBorder, or MorphGradientBorder function based on destination image oSizeROI width and height.
  *
- * \param oSizeROI \ref roi_specification.
- * \param hpBufferSize Required buffer size in bytes.
+ * For common parameter descriptions, see <a href="#CommonMorphGetBufferSizeParameters">Common parameters for nppiMorphGetBufferSize functions</a>.
+ *
  */
 NppStatus 
 nppiMorphGetBufferSize_8u_C1R(NppiSize oSizeROI, int * hpBufferSize);
@@ -1998,8 +1323,8 @@ nppiMorphGetBufferSize_8u_C1R(NppiSize oSizeROI, int * hpBufferSize);
  * Calculate scratch buffer size needed for 3 channel 8-bit unsigned integer MorphCloseBorder, MorphOpenBorder, MorphTopHatBorder, 
  * MorphBlackHatBorder or MorphGradientBorder function based on destination image oSizeROI width and height.
  *
- * \param oSizeROI \ref roi_specification.
- * \param hpBufferSize Required buffer size in bytes.
+ * For common parameter descriptions, see <a href="#CommonMorphGetBufferSizeParameters">Common parameters for nppiMorphGetBufferSize functions</a>.
+ *
  */
 NppStatus 
 nppiMorphGetBufferSize_8u_C3R(NppiSize oSizeROI, int * hpBufferSize);
@@ -2008,8 +1333,8 @@ nppiMorphGetBufferSize_8u_C3R(NppiSize oSizeROI, int * hpBufferSize);
  * Calculate scratch buffer size needed for 4 channel 8-bit unsigned integer MorphCloseBorder, MorphOpenBorder, MorphTopHatBorder,
  * MorphBlackHatBorder, or MorphGradientBorder function based on destination image oSizeROI width and height.
  *
- * \param oSizeROI \ref roi_specification.
- * \param hpBufferSize Required buffer size in bytes.
+ * For common parameter descriptions, see <a href="#CommonMorphGetBufferSizeParameters">Common parameters for nppiMorphGetBufferSize functions</a>.
+ *
  */
 NppStatus 
 nppiMorphGetBufferSize_8u_C4R(NppiSize oSizeROI, int * hpBufferSize);
@@ -2018,8 +1343,8 @@ nppiMorphGetBufferSize_8u_C4R(NppiSize oSizeROI, int * hpBufferSize);
  * Calculate scratch buffer size needed for 1 channel 16-bit unsigned integer MorphCloseBorder, MorphOpenBorder, MorphTopHatBorder,
  * MorphBlackHatBorder, or MorphGradientBorder function based on destination image oSizeROI width and height.
  *
- * \param oSizeROI \ref roi_specification.
- * \param hpBufferSize Required buffer size in bytes.
+ * For common parameter descriptions, see <a href="#CommonMorphGetBufferSizeParameters">Common parameters for nppiMorphGetBufferSize functions</a>.
+ *
  */
 NppStatus 
 nppiMorphGetBufferSize_16u_C1R(NppiSize oSizeROI, int * hpBufferSize);
@@ -2028,8 +1353,8 @@ nppiMorphGetBufferSize_16u_C1R(NppiSize oSizeROI, int * hpBufferSize);
  * Calculate scratch buffer size needed for 1 channel 16-bit signed integer MorphCloseBorder, MorphOpenBorder, MorphTopHatBorder,
  * MorphBlackHatBorder, or MorphGradientBorder function based on destination image oSizeROI width and height.
  *
- * \param oSizeROI \ref roi_specification.
- * \param hpBufferSize Required buffer size in bytes.
+ * For common parameter descriptions, see <a href="#CommonMorphGetBufferSizeParameters">Common parameters for nppiMorphGetBufferSize functions</a>.
+ *
  */
 NppStatus 
 nppiMorphGetBufferSize_16s_C1R(NppiSize oSizeROI, int * hpBufferSize);
@@ -2038,8 +1363,8 @@ nppiMorphGetBufferSize_16s_C1R(NppiSize oSizeROI, int * hpBufferSize);
  * Calculate scratch buffer size needed for 1 channel 32-bit floating point MorphCloseBorder, MorphOpenBorder, MorphTopHatBorder,
  * MorphBlackHatBorder, or MorphGradientBorder function based on destination image oSizeROI width and height.
  *
- * \param oSizeROI \ref roi_specification.
- * \param hpBufferSize Required buffer size in bytes.
+ * For common parameter descriptions, see <a href="#CommonMorphGetBufferSizeParameters">Common parameters for nppiMorphGetBufferSize functions</a>.
+ *
  */
 NppStatus 
 nppiMorphGetBufferSize_32f_C1R(NppiSize oSizeROI, int * hpBufferSize);
@@ -2048,8 +1373,8 @@ nppiMorphGetBufferSize_32f_C1R(NppiSize oSizeROI, int * hpBufferSize);
  * Calculate scratch buffer size needed for 3 channel 32-bit floating point MorphCloseBorder, MorphOpenBorder, MorphTopHatBorder,
  * MorphBlackHatBorder, or MorphGradientBorder function based on destination image oSizeROI width and height.
  *
- * \param oSizeROI \ref roi_specification.
- * \param hpBufferSize Required buffer size in bytes.
+ * For common parameter descriptions, see <a href="#CommonMorphGetBufferSizeParameters">Common parameters for nppiMorphGetBufferSize functions</a>.
+ *
  */
 NppStatus 
 nppiMorphGetBufferSize_32f_C3R(NppiSize oSizeROI, int * hpBufferSize);
@@ -2058,8 +1383,8 @@ nppiMorphGetBufferSize_32f_C3R(NppiSize oSizeROI, int * hpBufferSize);
  * Calculate scratch buffer size needed for 4 channel 32-bit floating point MorphCloseBorder, MorphOpenBorder, MorphTopHatBorder,
  * MorphBlackHatBorder, or MorphGradientBorder function based on destination image oSizeROI width and height.
  *
- * \param oSizeROI \ref roi_specification.
- * \param hpBufferSize Required buffer size in bytes.
+ * For common parameter descriptions, see <a href="#CommonMorphGetBufferSizeParameters">Common parameters for nppiMorphGetBufferSize functions</a>.
+ *
  */
 NppStatus 
 nppiMorphGetBufferSize_32f_C4R(NppiSize oSizeROI, int * hpBufferSize);
@@ -2086,13 +1411,8 @@ nppiMorphGetBufferSize_32f_C4R(NppiSize oSizeROI, int * hpBufferSize);
  *
  * Currently only the NPP_BORDER_REPLICATE border type operation is supported.
  *
- * @{
+ * <h3><a name="CommonMorphCloseBorderParameters">Common parameters for nppiMorphCloseBorder functions include:</a></h3>
  *
- */
-
-/**
- * 1 channel 8-bit unsigned integer morphological close with border control.
- * 
  * \param pSrc  \ref source_image_pointer.
  * \param nSrcStep \ref source_image_line_step.
  * \param oSrcSize Source image width and height in pixels relative to pSrc.
@@ -2107,6 +1427,16 @@ nppiMorphGetBufferSize_32f_C4R(NppiSize oSizeROI, int * hpBufferSize);
  * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
  * \param eBorderType The border type operation to be applied at source image border boundaries.
  * \return \ref image_data_error_codes, \ref roi_error_codes
+ *
+ * @{
+ *
+ */
+
+/**
+ * 1 channel 8-bit unsigned integer morphological close with border control.
+ * 
+ * For common parameter descriptions, see <a href="#CommonMorphCloseBorderParameters">Common parameters for nppiMorphCloseBorder functions</a>.
+ *
  */
 NppStatus 
 nppiMorphCloseBorder_8u_C1R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp8u * pDst, int nDstStep, 
@@ -2115,20 +1445,8 @@ nppiMorphCloseBorder_8u_C1R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize,
 /**
  * 3 channel 8-bit unsigned integer morphological close with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonMorphCloseBorderParameters">Common parameters for nppiMorphCloseBorder functions</a>.
+ *
  */
 NppStatus 
 nppiMorphCloseBorder_8u_C3R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp8u * pDst, int nDstStep, 
@@ -2137,20 +1455,8 @@ nppiMorphCloseBorder_8u_C3R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize,
 /**
  * 4 channel 8-bit unsigned integer morphological close with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonMorphCloseBorderParameters">Common parameters for nppiMorphCloseBorder functions</a>.
+ *
  */
 NppStatus 
 nppiMorphCloseBorder_8u_C4R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp8u * pDst, int nDstStep, 
@@ -2159,20 +1465,8 @@ nppiMorphCloseBorder_8u_C4R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize,
 /**
  * 1 channel 16-bit unsigned integer morphological close with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonMorphCloseBorderParameters">Common parameters for nppiMorphCloseBorder functions</a>.
+ *
  */
 NppStatus 
 nppiMorphCloseBorder_16u_C1R(const Npp16u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp16u * pDst, int nDstStep, 
@@ -2181,20 +1475,8 @@ nppiMorphCloseBorder_16u_C1R(const Npp16u * pSrc, int nSrcStep, NppiSize oSrcSiz
 /**
  * 1 channel 16-bit signed integer morphological close with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonMorphCloseBorderParameters">Common parameters for nppiMorphCloseBorder functions</a>.
+ *
  */
 NppStatus 
 nppiMorphCloseBorder_16s_C1R(const Npp16s * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp16s * pDst, int nDstStep, 
@@ -2203,20 +1485,8 @@ nppiMorphCloseBorder_16s_C1R(const Npp16s * pSrc, int nSrcStep, NppiSize oSrcSiz
 /**
  * 1 channel 32-bit floating point morphological close with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonMorphCloseBorderParameters">Common parameters for nppiMorphCloseBorder functions</a>.
+ *
  */
 NppStatus 
 nppiMorphCloseBorder_32f_C1R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, int nDstStep, 
@@ -2225,20 +1495,8 @@ nppiMorphCloseBorder_32f_C1R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSiz
 /**
  * 3 channel 32-bit floating point morphological close with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonMorphCloseBorderParameters">Common parameters for nppiMorphCloseBorder functions</a>.
+ *
  */
 NppStatus 
 nppiMorphCloseBorder_32f_C3R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, int nDstStep, 
@@ -2247,20 +1505,8 @@ nppiMorphCloseBorder_32f_C3R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSiz
 /**
  * 4 channel 32-bit floating point morphological close with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonMorphCloseBorderParameters">Common parameters for nppiMorphCloseBorder functions</a>.
+ *
  */
 NppStatus 
 nppiMorphCloseBorder_32f_C4R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, int nDstStep, 
@@ -2288,13 +1534,8 @@ nppiMorphCloseBorder_32f_C4R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSiz
  *
  * Currently only the NPP_BORDER_REPLICATE border type operation is supported.
  *
- * @{
+ * <h3><a name="CommonMorphOpenBorderParameters">Common parameters for nppiMorphOpenBorder functions include:</a></h3>
  *
- */
-
-/**
- * 1 channel 8-bit unsigned integer morphological open with border control.
- * 
  * \param pSrc  \ref source_image_pointer.
  * \param nSrcStep \ref source_image_line_step.
  * \param oSrcSize Source image width and height in pixels relative to pSrc.
@@ -2309,6 +1550,16 @@ nppiMorphCloseBorder_32f_C4R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSiz
  * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
  * \param eBorderType The border type operation to be applied at source image border boundaries.
  * \return \ref image_data_error_codes, \ref roi_error_codes
+ *
+ * @{
+ *
+ */
+
+/**
+ * 1 channel 8-bit unsigned integer morphological open with border control.
+ * 
+ * For common parameter descriptions, see <a href="#CommonMorphOpenBorderParameters">Common parameters for nppiMorphOpenBorder functions</a>.
+ *
  */
 NppStatus 
 nppiMorphOpenBorder_8u_C1R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp8u * pDst, int nDstStep, 
@@ -2317,20 +1568,8 @@ nppiMorphOpenBorder_8u_C1R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, 
 /**
  * 3 channel 8-bit unsigned integer morphological open with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonMorphOpenBorderParameters">Common parameters for nppiMorphOpenBorder functions</a>.
+ *
  */
 NppStatus 
 nppiMorphOpenBorder_8u_C3R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp8u * pDst, int nDstStep, 
@@ -2339,20 +1578,8 @@ nppiMorphOpenBorder_8u_C3R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, 
 /**
  * 4 channel 8-bit unsigned integer morphological open with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonMorphOpenBorderParameters">Common parameters for nppiMorphOpenBorder functions</a>.
+ *
  */
 NppStatus 
 nppiMorphOpenBorder_8u_C4R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp8u * pDst, int nDstStep, 
@@ -2361,20 +1588,8 @@ nppiMorphOpenBorder_8u_C4R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, 
 /**
  * 1 channel 16-bit unsigned integer morphological open with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonMorphOpenBorderParameters">Common parameters for nppiMorphOpenBorder functions</a>.
+ *
  */
 NppStatus 
 nppiMorphOpenBorder_16u_C1R(const Npp16u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp16u * pDst, int nDstStep, 
@@ -2383,20 +1598,8 @@ nppiMorphOpenBorder_16u_C1R(const Npp16u * pSrc, int nSrcStep, NppiSize oSrcSize
 /**
  * 1 channel 16-bit signed integer morphological open with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonMorphOpenBorderParameters">Common parameters for nppiMorphOpenBorder functions</a>.
+ *
  */
 NppStatus 
 nppiMorphOpenBorder_16s_C1R(const Npp16s * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp16s * pDst, int nDstStep, 
@@ -2405,20 +1608,8 @@ nppiMorphOpenBorder_16s_C1R(const Npp16s * pSrc, int nSrcStep, NppiSize oSrcSize
 /**
  * 1 channel 32-bit floating point morphological open with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonMorphOpenBorderParameters">Common parameters for nppiMorphOpenBorder functions</a>.
+ *
  */
 NppStatus 
 nppiMorphOpenBorder_32f_C1R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, int nDstStep, 
@@ -2427,20 +1618,8 @@ nppiMorphOpenBorder_32f_C1R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize
 /**
  * 3 channel 32-bit floating point morphological open with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonMorphOpenBorderParameters">Common parameters for nppiMorphOpenBorder functions</a>.
+ *
  */
 NppStatus 
 nppiMorphOpenBorder_32f_C3R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, int nDstStep, 
@@ -2449,20 +1628,8 @@ nppiMorphOpenBorder_32f_C3R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize
 /**
  * 4 channel 32-bit floating point morphological open with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonMorphOpenBorderParameters">Common parameters for nppiMorphOpenBorder functions</a>.
+ *
  */
 NppStatus 
 nppiMorphOpenBorder_32f_C4R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, int nDstStep, 
@@ -2489,13 +1656,8 @@ nppiMorphOpenBorder_32f_C4R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize
  *
  * Currently only the NPP_BORDER_REPLICATE border type operation is supported.
  *
- * @{
+ * <h3><a name="CommonMorphTopHatBorderParameters">Common parameters for nppiMorphTopHatBorder functions include:</a></h3>
  *
- */
-
-/**
- * 1 channel 8-bit unsigned integer morphological top hat with border control.
- * 
  * \param pSrc  \ref source_image_pointer.
  * \param nSrcStep \ref source_image_line_step.
  * \param oSrcSize Source image width and height in pixels relative to pSrc.
@@ -2510,6 +1672,16 @@ nppiMorphOpenBorder_32f_C4R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize
  * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
  * \param eBorderType The border type operation to be applied at source image border boundaries.
  * \return \ref image_data_error_codes, \ref roi_error_codes
+ *
+ * @{
+ *
+ */
+
+/**
+ * 1 channel 8-bit unsigned integer morphological top hat with border control.
+ * 
+ * For common parameter descriptions, see <a href="#CommonMorphTopHatBorderParameters">Common parameters for nppiMorphTopHatBorder functions</a>.
+ *
  */
 NppStatus 
 nppiMorphTopHatBorder_8u_C1R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp8u * pDst, int nDstStep, 
@@ -2518,20 +1690,8 @@ nppiMorphTopHatBorder_8u_C1R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize
 /**
  * 3 channel 8-bit unsigned integer morphological top hat with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonMorphTopHatBorderParameters">Common parameters for nppiMorphTopHatBorder functions</a>.
+ *
  */
 NppStatus 
 nppiMorphTopHatBorder_8u_C3R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp8u * pDst, int nDstStep, 
@@ -2540,20 +1700,8 @@ nppiMorphTopHatBorder_8u_C3R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize
 /**
  * 4 channel 8-bit unsigned integer morphological top hat with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonMorphTopHatBorderParameters">Common parameters for nppiMorphTopHatBorder functions</a>.
+ *
  */
 NppStatus 
 nppiMorphTopHatBorder_8u_C4R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp8u * pDst, int nDstStep, 
@@ -2562,20 +1710,8 @@ nppiMorphTopHatBorder_8u_C4R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize
 /**
  * 1 channel 16-bit unsigned integer morphological top hat with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonMorphTopHatBorderParameters">Common parameters for nppiMorphTopHatBorder functions</a>.
+ *
  */
 NppStatus 
 nppiMorphTopHatBorder_16u_C1R(const Npp16u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp16u * pDst, int nDstStep, 
@@ -2584,20 +1720,8 @@ nppiMorphTopHatBorder_16u_C1R(const Npp16u * pSrc, int nSrcStep, NppiSize oSrcSi
 /**
  * 1 channel 16-bit signed integer morphological top hat with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonMorphTopHatBorderParameters">Common parameters for nppiMorphTopHatBorder functions</a>.
+ *
  */
 NppStatus 
 nppiMorphTopHatBorder_16s_C1R(const Npp16s * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp16s * pDst, int nDstStep, 
@@ -2606,20 +1730,8 @@ nppiMorphTopHatBorder_16s_C1R(const Npp16s * pSrc, int nSrcStep, NppiSize oSrcSi
 /**
  * 1 channel 32-bit floating point morphological top hat with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonMorphTopHatBorderParameters">Common parameters for nppiMorphTopHatBorder functions</a>.
+ *
  */
 NppStatus 
 nppiMorphTopHatBorder_32f_C1R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, int nDstStep, 
@@ -2628,20 +1740,8 @@ nppiMorphTopHatBorder_32f_C1R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSi
 /**
  * 3 channel 32-bit floating point morphological top hat with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonMorphTopHatBorderParameters">Common parameters for nppiMorphTopHatBorder functions</a>.
+ *
  */
 NppStatus 
 nppiMorphTopHatBorder_32f_C3R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, int nDstStep, 
@@ -2650,20 +1750,8 @@ nppiMorphTopHatBorder_32f_C3R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSi
 /**
  * 4 channel 32-bit floating point morphological top hat with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonMorphTopHatBorderParameters">Common parameters for nppiMorphTopHatBorder functions</a>.
+ *
  */
 NppStatus 
 nppiMorphTopHatBorder_32f_C4R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, int nDstStep, 
@@ -2690,13 +1778,8 @@ nppiMorphTopHatBorder_32f_C4R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSi
  *
  * Currently only the NPP_BORDER_REPLICATE border type operation is supported.
  *
- * @{
+ * <h3><a name="CommonMorphBlackHatBorderParameters">Common parameters for nppiMorphBlackHatBorder functions include:</a></h3>
  *
- */
-
-/**
- * 1 channel 8-bit unsigned integer morphological black hat with border control.
- * 
  * \param pSrc  \ref source_image_pointer.
  * \param nSrcStep \ref source_image_line_step.
  * \param oSrcSize Source image width and height in pixels relative to pSrc.
@@ -2711,6 +1794,16 @@ nppiMorphTopHatBorder_32f_C4R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSi
  * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
  * \param eBorderType The border type operation to be applied at source image border boundaries.
  * \return \ref image_data_error_codes, \ref roi_error_codes
+ *
+ * @{
+ *
+ */
+
+/**
+ * 1 channel 8-bit unsigned integer morphological black hat with border control.
+ * 
+ * For common parameter descriptions, see <a href="#CommonMorphBlackHatBorderParameters">Common parameters for nppiMorphBlackHatBorder functions</a>.
+ *
  */
 NppStatus 
 nppiMorphBlackHatBorder_8u_C1R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp8u * pDst, int nDstStep, 
@@ -2719,20 +1812,8 @@ nppiMorphBlackHatBorder_8u_C1R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSi
 /**
  * 3 channel 8-bit unsigned integer morphological black hat with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonMorphBlackHatBorderParameters">Common parameters for nppiMorphBlackHatBorder functions</a>.
+ *
  */
 NppStatus 
 nppiMorphBlackHatBorder_8u_C3R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp8u * pDst, int nDstStep, 
@@ -2741,20 +1822,8 @@ nppiMorphBlackHatBorder_8u_C3R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSi
 /**
  * 4 channel 8-bit unsigned integer morphological black hat with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonMorphBlackHatBorderParameters">Common parameters for nppiMorphBlackHatBorder functions</a>.
+ *
  */
 NppStatus 
 nppiMorphBlackHatBorder_8u_C4R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp8u * pDst, int nDstStep, 
@@ -2763,20 +1832,8 @@ nppiMorphBlackHatBorder_8u_C4R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSi
 /**
  * 1 channel 16-bit unsigned integer morphological black hat with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonMorphBlackHatBorderParameters">Common parameters for nppiMorphBlackHatBorder functions</a>.
+ *
  */
 NppStatus 
 nppiMorphBlackHatBorder_16u_C1R(const Npp16u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp16u * pDst, int nDstStep, 
@@ -2785,20 +1842,8 @@ nppiMorphBlackHatBorder_16u_C1R(const Npp16u * pSrc, int nSrcStep, NppiSize oSrc
 /**
  * 1 channel 16-bit signed integer morphological black hat with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonMorphBlackHatBorderParameters">Common parameters for nppiMorphBlackHatBorder functions</a>.
+ *
  */
 NppStatus 
 nppiMorphBlackHatBorder_16s_C1R(const Npp16s * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp16s * pDst, int nDstStep, 
@@ -2807,20 +1852,8 @@ nppiMorphBlackHatBorder_16s_C1R(const Npp16s * pSrc, int nSrcStep, NppiSize oSrc
 /**
  * 1 channel 32-bit floating point morphological black hat with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonMorphBlackHatBorderParameters">Common parameters for nppiMorphBlackHatBorder functions</a>.
+ *
  */
 NppStatus 
 nppiMorphBlackHatBorder_32f_C1R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, int nDstStep, 
@@ -2829,20 +1862,8 @@ nppiMorphBlackHatBorder_32f_C1R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrc
 /**
  * 3 channel 32-bit floating point morphological black hat with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonMorphBlackHatBorderParameters">Common parameters for nppiMorphBlackHatBorder functions</a>.
+ *
  */
 NppStatus 
 nppiMorphBlackHatBorder_32f_C3R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, int nDstStep, 
@@ -2851,20 +1872,8 @@ nppiMorphBlackHatBorder_32f_C3R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrc
 /**
  * 4 channel 32-bit floating point morphological black hat with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonMorphBlackHatBorderParameters">Common parameters for nppiMorphBlackHatBorder functions</a>.
+ *
  */
 NppStatus 
 nppiMorphBlackHatBorder_32f_C4R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, int nDstStep, 
@@ -2891,13 +1900,8 @@ nppiMorphBlackHatBorder_32f_C4R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrc
  *
  * Currently only the NPP_BORDER_REPLICATE border type operation is supported.
  *
- * @{
+ * <h3><a name="CommonMorphGradientBorderParameters">Common parameters for nppiMorphGradientBorder functions include:</a></h3>
  *
- */
-
-/**
- * 1 channel 8-bit unsigned integer morphological gradient with border control.
- * 
  * \param pSrc  \ref source_image_pointer.
  * \param nSrcStep \ref source_image_line_step.
  * \param oSrcSize Source image width and height in pixels relative to pSrc.
@@ -2912,6 +1916,16 @@ nppiMorphBlackHatBorder_32f_C4R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrc
  * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
  * \param eBorderType The border type operation to be applied at source image border boundaries.
  * \return \ref image_data_error_codes, \ref roi_error_codes
+ *
+ * @{
+ *
+ */
+
+/**
+ * 1 channel 8-bit unsigned integer morphological gradient with border control.
+ * 
+ * For common parameter descriptions, see <a href="#CommonMorphGradientBorderParameters">Common parameters for nppiMorphGradientBorder functions</a>.
+ *
  */
 NppStatus 
 nppiMorphGradientBorder_8u_C1R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp8u * pDst, int nDstStep, 
@@ -2920,20 +1934,8 @@ nppiMorphGradientBorder_8u_C1R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSi
 /**
  * 3 channel 8-bit unsigned integer morphological gradient with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonMorphGradientBorderParameters">Common parameters for nppiMorphGradientBorder functions</a>.
+ *
  */
 NppStatus 
 nppiMorphGradientBorder_8u_C3R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp8u * pDst, int nDstStep, 
@@ -2942,20 +1944,8 @@ nppiMorphGradientBorder_8u_C3R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSi
 /**
  * 4 channel 8-bit unsigned integer morphological gradient with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonMorphGradientBorderParameters">Common parameters for nppiMorphGradientBorder functions</a>.
+ *
  */
 NppStatus 
 nppiMorphGradientBorder_8u_C4R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp8u * pDst, int nDstStep, 
@@ -2964,20 +1954,8 @@ nppiMorphGradientBorder_8u_C4R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSi
 /**
  * 1 channel 16-bit unsigned integer morphological gradient with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonMorphGradientBorderParameters">Common parameters for nppiMorphGradientBorder functions</a>.
+ *
  */
 NppStatus 
 nppiMorphGradientBorder_16u_C1R(const Npp16u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp16u * pDst, int nDstStep, 
@@ -2986,20 +1964,8 @@ nppiMorphGradientBorder_16u_C1R(const Npp16u * pSrc, int nSrcStep, NppiSize oSrc
 /**
  * 1 channel 16-bit signed integer morphological gradient with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonMorphGradientBorderParameters">Common parameters for nppiMorphGradientBorder functions</a>.
+ *
  */
 NppStatus 
 nppiMorphGradientBorder_16s_C1R(const Npp16s * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp16s * pDst, int nDstStep, 
@@ -3008,20 +1974,8 @@ nppiMorphGradientBorder_16s_C1R(const Npp16s * pSrc, int nSrcStep, NppiSize oSrc
 /**
  * 1 channel 32-bit floating point morphological gradient with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonMorphGradientBorderParameters">Common parameters for nppiMorphGradientBorder functions</a>.
+ *
  */
 NppStatus 
 nppiMorphGradientBorder_32f_C1R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, int nDstStep, 
@@ -3030,20 +1984,8 @@ nppiMorphGradientBorder_32f_C1R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrc
 /**
  * 3 channel 32-bit floating point morphological gradient with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonMorphGradientBorderParameters">Common parameters for nppiMorphGradientBorder functions</a>.
+ *
  */
 NppStatus 
 nppiMorphGradientBorder_32f_C3R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, int nDstStep, 
@@ -3052,20 +1994,8 @@ nppiMorphGradientBorder_32f_C3R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrc
 /**
  * 4 channel 32-bit floating point morphological gradient with border control.
  * 
- * \param pSrc  \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Source image width and height in pixels relative to pSrc.
- * \param oSrcOffset Source image starting point relative to pSrc. 
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oSizeROI \ref roi_specification.
- * \param pMask Pointer to the start address of the mask array
- * \param oMaskSize Width and Height mask array.
- * \param oAnchor X and Y offsets of the mask origin frame of reference
- *        w.r.t the source pixel.
- * \param pBuffer Pointer to device memory scratch buffer at least as large as value returned by the corresponding MorphGetBufferSize call.
- * \param eBorderType The border type operation to be applied at source image border boundaries.
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonMorphGradientBorderParameters">Common parameters for nppiMorphGradientBorder functions</a>.
+ *
  */
 NppStatus 
 nppiMorphGradientBorder_32f_C4R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiPoint oSrcOffset, Npp32f * pDst, int nDstStep, 

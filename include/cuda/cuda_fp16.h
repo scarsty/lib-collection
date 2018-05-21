@@ -51,49 +51,61 @@
 * \defgroup CUDA_MATH_INTRINSIC_HALF Half Precision Intrinsics
 * This section describes half precision intrinsic functions that are
 * only supported in device code.
+* To use these functions include the header file \p cuda_fp16.h in your program.
 */
 
 /**
 * \defgroup CUDA_MATH__HALF_ARITHMETIC Half Arithmetic Functions
 * \ingroup CUDA_MATH_INTRINSIC_HALF
+* To use these functions include the header file \p cuda_fp16.h in your program.
 */
 
 /**
 * \defgroup CUDA_MATH__HALF2_ARITHMETIC Half2 Arithmetic Functions
 * \ingroup CUDA_MATH_INTRINSIC_HALF
+* To use these functions include the header file \p cuda_fp16.h in your program.
 */
 
 /**
 * \defgroup CUDA_MATH__HALF_COMPARISON Half Comparison Functions
 * \ingroup CUDA_MATH_INTRINSIC_HALF
+* To use these functions include the header file \p cuda_fp16.h in your program.
 */
 
 /**
 * \defgroup CUDA_MATH__HALF2_COMPARISON Half2 Comparison Functions
 * \ingroup CUDA_MATH_INTRINSIC_HALF
+* To use these functions include the header file \p cuda_fp16.h in your program.
 */
 
 /**
 * \defgroup CUDA_MATH__HALF_MISC Half Precision Conversion And Data Movement
 * \ingroup CUDA_MATH_INTRINSIC_HALF
+* To use these functions include the header file \p cuda_fp16.h in your program.
 */
 
 /**
 * \defgroup CUDA_MATH__HALF_FUNCTIONS Half Math Functions
 * \ingroup CUDA_MATH_INTRINSIC_HALF
+* To use these functions include the header file \p cuda_fp16.h in your program.
 */
 
 /**
 * \defgroup CUDA_MATH__HALF2_FUNCTIONS Half2 Math Functions
 * \ingroup CUDA_MATH_INTRINSIC_HALF
+* To use these functions include the header file \p cuda_fp16.h in your program.
 */
 
 #ifndef __CUDA_FP16_H__
 #define __CUDA_FP16_H__
 
-#if defined(__cplusplus) && defined(__CUDACC__)
-
+#if defined(__cplusplus)
+#if defined(__CUDACC__)
 #define __CUDA_FP16_DECL__ static __device__ __inline__
+#define __CUDA_HOSTDEVICE_FP16_DECL__ static __host__ __device__ __inline__
+#else
+#define __CUDA_HOSTDEVICE_FP16_DECL__ static
+#endif /* defined(__CUDACC__) */
 
 #define __CUDA_FP16_TYPES_EXIST__
 /* Forward-declaration of structures defined in "cuda_fp16.hpp" */
@@ -109,7 +121,7 @@ struct __half2;
 *
 * \return Returns \p half result with converted value.
 */
-__CUDA_FP16_DECL__ __half __float2half(const float a);
+__CUDA_HOSTDEVICE_FP16_DECL__ __half __float2half(const float a);
 /**
 * \ingroup CUDA_MATH__HALF_MISC
 * \brief Converts float number to half precision in round-to-nearest-even mode
@@ -119,7 +131,7 @@ __CUDA_FP16_DECL__ __half __float2half(const float a);
 *
 * \return Returns \p half result with converted value.
 */
-__CUDA_FP16_DECL__ __half __float2half_rn(const float a);
+__CUDA_HOSTDEVICE_FP16_DECL__ __half __float2half_rn(const float a);
 /**
 * \ingroup CUDA_MATH__HALF_MISC
 * \brief Converts float number to half precision in round-towards-zero mode
@@ -129,7 +141,7 @@ __CUDA_FP16_DECL__ __half __float2half_rn(const float a);
 *
 * \return Returns \p half result with converted value.
 */
-__CUDA_FP16_DECL__ __half __float2half_rz(const float a);
+__CUDA_HOSTDEVICE_FP16_DECL__ __half __float2half_rz(const float a);
 /**
 * \ingroup CUDA_MATH__HALF_MISC
 * \brief Converts float number to half precision in round-down mode
@@ -139,7 +151,7 @@ __CUDA_FP16_DECL__ __half __float2half_rz(const float a);
 *
 * \return Returns \p half result with converted value.
 */
-__CUDA_FP16_DECL__ __half __float2half_rd(const float a);
+__CUDA_HOSTDEVICE_FP16_DECL__ __half __float2half_rd(const float a);
 /**
 * \ingroup CUDA_MATH__HALF_MISC
 * \brief Converts float number to half precision in round-up mode
@@ -149,7 +161,7 @@ __CUDA_FP16_DECL__ __half __float2half_rd(const float a);
 *
 * \return Returns \p half result with converted value.
 */
-__CUDA_FP16_DECL__ __half __float2half_ru(const float a);
+__CUDA_HOSTDEVICE_FP16_DECL__ __half __float2half_ru(const float a);
 /**
 * \ingroup CUDA_MATH__HALF_MISC
 * \brief Converts \p half number to float.
@@ -158,8 +170,79 @@ __CUDA_FP16_DECL__ __half __float2half_ru(const float a);
 *
 * \return Returns float result with converted value.
 */
-__CUDA_FP16_DECL__ float __half2float(const __half a);
+__CUDA_HOSTDEVICE_FP16_DECL__ float __half2float(const __half a);
+/**
+* \ingroup CUDA_MATH__HALF_MISC
+* \brief Converts input to half precision in round-to-nearest-even mode and
+* populates both halves of \p half2 with converted value.
+*
+* Converts input \p a to half precision in round-to-nearest-even mode and
+* populates both halves of \p half2 with converted value.
+*
+* \return Returns \p half2 with both halves equal to the converted half
+* precision number.
+*/
+__CUDA_HOSTDEVICE_FP16_DECL__ __half2 __float2half2_rn(const float a);
+/**
+* \ingroup CUDA_MATH__HALF_MISC
+* \brief Converts both input floats to half precision in round-to-nearest-even
+* mode and returns \p half2 with converted values.
+*
+* Converts both input floats to half precision in round-to-nearest-even mode
+* and combines the results into one \p half2 number. Low 16 bits of the return
+* value correspond to the input \p a, high 16 bits correspond to the input \p
+* b.
+*
+* \return Returns \p half2 which has corresponding halves equal to the
+* converted input floats.
+*/
+__CUDA_HOSTDEVICE_FP16_DECL__ __half2 __floats2half2_rn(const float a, const float b);
+/**
+* \ingroup CUDA_MATH__HALF_MISC
+* \brief Converts low 16 bits of \p half2 to float and returns the result
+*
+* Converts low 16 bits of \p half2 input \p a to 32 bit floating point number
+* and returns the result.
+*
+* \return Returns low 16 bits of \p a converted to float.
+*/
+__CUDA_HOSTDEVICE_FP16_DECL__ float __low2float(const __half2 a);
+/**
+* \ingroup CUDA_MATH__HALF_MISC
+* \brief Converts high 16 bits of \p half2 to float and returns the result
+*
+* Converts high 16 bits of \p half2 input \p a to 32 bit floating point number
+* and returns the result.
+*
+* \return Returns high 16 bits of \p a converted to float.
+*/
+__CUDA_HOSTDEVICE_FP16_DECL__ float __high2float(const __half2 a);
 
+#if defined(__CUDACC__)
+/**
+* \ingroup CUDA_MATH__HALF_MISC
+* \brief Converts both components of float2 number to half precision in
+* round-to-nearest-even mode and returns \p half2 with converted values.
+*
+* Converts both components of float2 to half precision in round-to-nearest
+* mode and combines the results into one \p half2 number. Low 16 bits of the
+* return value correspond to \p a.x and high 16 bits of the return value
+* correspond to \p a.y.
+*
+* \return Returns \p half2 which has corresponding halves equal to the
+* converted float2 components.
+*/
+__CUDA_HOSTDEVICE_FP16_DECL__ __half2 __float22half2_rn(const float2 a);
+/**
+* \ingroup CUDA_MATH__HALF_MISC
+* \brief Converts both halves of \p half2 to float2 and returns the result.
+*
+* Converts both halves of \p half2 input \p a to float2 and returns the
+* result.
+*
+* \return Returns converted float2.
+*/
+__CUDA_HOSTDEVICE_FP16_DECL__ float2 __half22float2(const __half2 a);
 /**
 * \ingroup CUDA_MATH__HALF_MISC
 * \brief Convert a half to a signed integer in round-to-nearest-even mode.
@@ -753,66 +836,6 @@ __CUDA_FP16_DECL__ __half2 h2rint(const __half2 h);
 
 /**
 * \ingroup CUDA_MATH__HALF_MISC
-* \brief Converts input to half precision in round-to-nearest-even mode and
-* populates both halves of \p half2 with converted value.
-*
-* Converts input \p a to half precision in round-to-nearest-even mode and
-* populates both halves of \p half2 with converted value.
-*
-* \return Returns \p half2 with both halves equal to the converted half
-* precision number.
-*/
-__CUDA_FP16_DECL__ __half2 __float2half2_rn(const float a);
-/**
-* \ingroup CUDA_MATH__HALF_MISC
-* \brief Converts both input floats to half precision in round-to-nearest-even
-* mode and returns \p half2 with converted values.
-*
-* Converts both input floats to half precision in round-to-nearest-even mode
-* and combines the results into one \p half2 number. Low 16 bits of the return
-* value correspond to the input \p a, high 16 bits correspond to the input \p
-* b.
-*
-* \return Returns \p half2 which has corresponding halves equal to the
-* converted input floats.
-*/
-__CUDA_FP16_DECL__ __half2 __floats2half2_rn(const float a, const float b);
-/**
-* \ingroup CUDA_MATH__HALF_MISC
-* \brief Converts both components of float2 number to half precision in
-* round-to-nearest-even mode and returns \p half2 with converted values.
-*
-* Converts both components of float2 to half precision in round-to-nearest
-* mode and combines the results into one \p half2 number. Low 16 bits of the
-* return value correspond to \p a.x and high 16 bits of the return value
-* correspond to \p a.y.
-*
-* \return Returns \p half2 which has corresponding halves equal to the
-* converted float2 components.
-*/
-__CUDA_FP16_DECL__ __half2 __float22half2_rn(const float2 a);
-/**
-* \ingroup CUDA_MATH__HALF_MISC
-* \brief Converts both halves of \p half2 to float2 and returns the result.
-*
-* Converts both halves of \p half2 input \p a to float2 and returns the
-* result.
-*
-* \return Returns converted float2.
-*/
-__CUDA_FP16_DECL__ float2 __half22float2(const __half2 a);
-/**
-* \ingroup CUDA_MATH__HALF_MISC
-* \brief Converts low 16 bits of \p half2 to float and returns the result
-*
-* Converts low 16 bits of \p half2 input \p a to 32 bit floating point number
-* and returns the result.
-*
-* \return Returns low 16 bits of \p a converted to float.
-*/
-__CUDA_FP16_DECL__ float __low2float(const __half2 a);
-/**
-* \ingroup CUDA_MATH__HALF_MISC
 * \brief Returns \p half2 with both halves equal to the input value.
 *
 * Returns \p half2 number with both halves equal to the input \p a \p half
@@ -821,16 +844,6 @@ __CUDA_FP16_DECL__ float __low2float(const __half2 a);
 * \return Returns \p half2 with both halves equal to the input \p a.
 */
 __CUDA_FP16_DECL__ __half2 __half2half2(const __half a);
-/**
-* \ingroup CUDA_MATH__HALF_MISC
-* \brief Converts high 16 bits of \p half2 to float and returns the result
-*
-* Converts high 16 bits of \p half2 input \p a to 32 bit floating point number
-* and returns the result.
-*
-* \return Returns high 16 bits of \p a converted to float.
-*/
-__CUDA_FP16_DECL__ float __high2float(const __half2 a);
 /**
 * \ingroup CUDA_MATH__HALF_MISC
 * \brief Swaps both halves of the \p half2 input.
@@ -1948,9 +1961,18 @@ __CUDA_FP16_DECL__ __half2 h2sin(const __half2 a);
 
 #endif /*if __CUDA_ARCH__ >= 530 || !defined(__CUDA_ARCH__)*/
 
-#undef __CUDA_FP16_DECL__
+#if __CUDA_ARCH__ >= 600 || !defined(__CUDA_ARCH__)
 
-#endif /* defined(__cplusplus) && defined(__CUDACC__) */
+__CUDA_FP16_DECL__ __half2 atomicAdd(__half2 *address, __half2 val);
+
+#endif /*if __CUDA_ARCH__ >= 600 || !defined(__CUDA_ARCH__)*/
+
+#endif /* defined(__CUDACC__) */
+
+#undef __CUDA_FP16_DECL__
+#undef __CUDA_HOSTDEVICE_FP16_DECL__
+
+#endif /* defined(__cplusplus) */
 
 /* Note the .hpp file is included even for host-side compilation, to capture the "half" & "half2" definitions */
 #include "cuda_fp16.hpp"

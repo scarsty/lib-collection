@@ -1,4 +1,3 @@
-
  /* Copyright 2009-2017 NVIDIA Corporation.  All rights reserved. 
   * 
   * NOTICE TO LICENSEE: 
@@ -64,7 +63,7 @@ extern "C" {
 /** @defgroup image_geometry_transforms Geometry Transforms
  *  @ingroup nppi
  *
- * Routines manipulating an image's geometry.
+ * Routines manipulating an image geometry.
  *
  * These functions can be found in the nppig library. Linking to only the sub-libraries that you use can significantly
  * save link time, application load time, and CUDA runtime startup time when using dynamic libraries.
@@ -148,7 +147,7 @@ extern "C" {
  *         - ::NPP_RESIZE_NO_OPERATION_ERROR if either destination ROI width or
  *           height is less than 1 pixel.
  *         - ::NPP_RESIZE_FACTOR_ERROR Indicates an error condition if either nXFactor or
- *           nYFactor is less than or equal to zero.
+ *           nYFactor is less than or equal to zero or in the case of NPPI_INTER_SUPER are not both downscaling.
  *         - ::NPP_INTERPOLATION_ERROR if eInterpolation has an illegal value.
  *         - ::NPP_SIZE_ERROR if source size width or height is less than 2 pixels.
  *
@@ -183,12 +182,7 @@ nppiGetResizeRect(NppiRect oSrcROI, NppiRect *pDstRect,
 /** @name ResizeSqrPixel
  * Resizes images.
  *                                    
- * @{
- *
- */
-
-/**
- * 1 channel 8-bit unsigned image resize.
+ * <h3><a name="CommonResizeSqrPackedPixelParameters">Common parameters for nppiResizeSqrPixel packed pixel functions include:</a></h3>
  *
  * \param pSrc \ref source_image_pointer.
  * \param nSrcStep \ref source_image_line_step.
@@ -203,6 +197,32 @@ nppiGetResizeRect(NppiRect oSrcROI, NppiRect *pDstRect,
  * \param nYShift Source pixel shift in y-direction.
  * \param eInterpolation The type of eInterpolation to perform resampling.
  * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ *
+ * <h3><a name="CommonResizeSqrPlanarPixelParameters">Common parameters for nppiResizeSqrPixel planar pixel functions include:</a></h3>
+ *
+ * \param pSrc \ref source_planar_image_pointer_array (host memory array containing device memory image plane pointers).
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Size in pixels of the source image.
+ * \param oSrcROI Region of interest in the source image.
+ * \param pDst \ref destination_planar_image_pointer_array (host memory array containing device memory image plane pointers).
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oDstROI Region of interest in the destination image.
+ * \param nXFactor Factor by which x dimension is changed. 
+ * \param nYFactor Factor by which y dimension is changed. 
+ * \param nXShift Source pixel shift in x-direction.
+ * \param nYShift Source pixel shift in y-direction.
+ * \param eInterpolation The type of eInterpolation to perform resampling.
+ * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ *
+ * @{
+ *
+ */
+
+/**
+ * 1 channel 8-bit unsigned image resize.
+ *
+ * For common parameter descriptions, see <a href="#CommonResizeSqrPackedPixelParameters">Common parameters for nppiResizeSqrPixel packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResizeSqrPixel_8u_C1R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -212,19 +232,8 @@ nppiResizeSqrPixel_8u_C1R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, N
 /**
  * 3 channel 8-bit unsigned image resize.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Region of interest in the destination image.
- * \param nXFactor Factor by which x dimension is changed. 
- * \param nYFactor Factor by which y dimension is changed. 
- * \param nXShift Source pixel shift in x-direction.
- * \param nYShift Source pixel shift in y-direction.
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizeSqrPackedPixelParameters">Common parameters for nppiResizeSqrPixel packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResizeSqrPixel_8u_C3R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -234,19 +243,8 @@ nppiResizeSqrPixel_8u_C3R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, N
 /**
  * 4 channel 8-bit unsigned image resize.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Region of interest in the destination image.
- * \param nXFactor Factor by which x dimension is changed. 
- * \param nYFactor Factor by which y dimension is changed. 
- * \param nXShift Source pixel shift in x-direction.
- * \param nYShift Source pixel shift in y-direction.
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizeSqrPackedPixelParameters">Common parameters for nppiResizeSqrPixel packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResizeSqrPixel_8u_C4R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -256,19 +254,8 @@ nppiResizeSqrPixel_8u_C4R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, N
 /**
  * 4 channel 8-bit unsigned image resize not affecting alpha.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Region of interest in the destination image.
- * \param nXFactor Factor by which x dimension is changed. 
- * \param nYFactor Factor by which y dimension is changed. 
- * \param nXShift Source pixel shift in x-direction.
- * \param nYShift Source pixel shift in y-direction.
- * \param eInterpolation The type of interpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizeSqrPackedPixelParameters">Common parameters for nppiResizeSqrPixel packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResizeSqrPixel_8u_AC4R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -278,19 +265,8 @@ nppiResizeSqrPixel_8u_AC4R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, 
 /**
  * 3 channel 8-bit unsigned planar image resize.
  *
- * \param pSrc \ref source_planar_image_pointer_array (host memory array containing device memory image plane pointers).
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pDst \ref destination_planar_image_pointer_array (host memory array containing device memory image plane pointers).
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Region of interest in the destination image.
- * \param nXFactor Factor by which x dimension is changed. 
- * \param nYFactor Factor by which y dimension is changed. 
- * \param nXShift Source pixel shift in x-direction.
- * \param nYShift Source pixel shift in y-direction.
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizeSqrPlanarPixelParameters">Common parameters for nppiResizeSqrPixel planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResizeSqrPixel_8u_P3R(const Npp8u * const pSrc[3], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -300,19 +276,8 @@ nppiResizeSqrPixel_8u_P3R(const Npp8u * const pSrc[3], NppiSize oSrcSize, int nS
 /**
  * 4 channel 8-bit unsigned planar image resize.
  *
- * \param pSrc \ref source_planar_image_pointer_array (host memory array containing device memory image plane pointers).
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pDst \ref destination_planar_image_pointer_array (host memory array containing device memory image plane pointers).
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Region of interest in the destination image.
- * \param nXFactor Factor by which x dimension is changed. 
- * \param nYFactor Factor by which y dimension is changed. 
- * \param nXShift Source pixel shift in x-direction.
- * \param nYShift Source pixel shift in y-direction.
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizeSqrPlanarPixelParameters">Common parameters for nppiResizeSqrPixel planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResizeSqrPixel_8u_P4R(const Npp8u * const pSrc[4], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -322,19 +287,8 @@ nppiResizeSqrPixel_8u_P4R(const Npp8u * const pSrc[4], NppiSize oSrcSize, int nS
 /**
  * 1 channel 16-bit unsigned image resize.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Region of interest in the destination image.
- * \param nXFactor Factor by which x dimension is changed. 
- * \param nYFactor Factor by which y dimension is changed. 
- * \param nXShift Source pixel shift in x-direction.
- * \param nYShift Source pixel shift in y-direction.
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizeSqrPackedPixelParameters">Common parameters for nppiResizeSqrPixel packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResizeSqrPixel_16u_C1R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -344,19 +298,8 @@ nppiResizeSqrPixel_16u_C1R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep,
 /**
  * 3 channel 16-bit unsigned image resize.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Region of interest in the destination image.
- * \param nXFactor Factor by which x dimension is changed. 
- * \param nYFactor Factor by which y dimension is changed. 
- * \param nXShift Source pixel shift in x-direction.
- * \param nYShift Source pixel shift in y-direction.
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizeSqrPackedPixelParameters">Common parameters for nppiResizeSqrPixel packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResizeSqrPixel_16u_C3R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -366,19 +309,8 @@ nppiResizeSqrPixel_16u_C3R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep,
 /**
  * 4 channel 16-bit unsigned image resize.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Region of interest in the destination image.
- * \param nXFactor Factor by which x dimension is changed. 
- * \param nYFactor Factor by which y dimension is changed. 
- * \param nXShift Source pixel shift in x-direction.
- * \param nYShift Source pixel shift in y-direction.
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizeSqrPackedPixelParameters">Common parameters for nppiResizeSqrPixel packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResizeSqrPixel_16u_C4R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -388,19 +320,8 @@ nppiResizeSqrPixel_16u_C4R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep,
 /**
  * 4 channel 16-bit unsigned image resize not affecting alpha.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Region of interest in the destination image.
- * \param nXFactor Factor by which x dimension is changed. 
- * \param nYFactor Factor by which y dimension is changed. 
- * \param nXShift Source pixel shift in x-direction.
- * \param nYShift Source pixel shift in y-direction.
- * \param eInterpolation The type of interpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizeSqrPackedPixelParameters">Common parameters for nppiResizeSqrPixel packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResizeSqrPixel_16u_AC4R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -410,19 +331,8 @@ nppiResizeSqrPixel_16u_AC4R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep
 /**
  * 3 channel 16-bit unsigned planar image resize.
  *
- * \param pSrc \ref source_planar_image_pointer_array (host memory array containing device memory image plane pointers).
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pDst \ref destination_planar_image_pointer_array (host memory array containing device memory image plane pointers).
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Region of interest in the destination image.
- * \param nXFactor Factor by which x dimension is changed. 
- * \param nYFactor Factor by which y dimension is changed. 
- * \param nXShift Source pixel shift in x-direction.
- * \param nYShift Source pixel shift in y-direction.
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizeSqrPlanarPixelParameters">Common parameters for nppiResizeSqrPixel planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResizeSqrPixel_16u_P3R(const Npp16u * const pSrc[3], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -432,19 +342,8 @@ nppiResizeSqrPixel_16u_P3R(const Npp16u * const pSrc[3], NppiSize oSrcSize, int 
 /**
  * 4 channel 16-bit unsigned planar image resize.
  *
- * \param pSrc \ref source_planar_image_pointer_array (host memory array containing device memory image plane pointers).
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pDst \ref destination_planar_image_pointer_array (host memory array containing device memory image plane pointers).
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Region of interest in the destination image.
- * \param nXFactor Factor by which x dimension is changed. 
- * \param nYFactor Factor by which y dimension is changed. 
- * \param nXShift Source pixel shift in x-direction.
- * \param nYShift Source pixel shift in y-direction.
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizeSqrPlanarPixelParameters">Common parameters for nppiResizeSqrPixel planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResizeSqrPixel_16u_P4R(const Npp16u * const pSrc[4], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -454,19 +353,8 @@ nppiResizeSqrPixel_16u_P4R(const Npp16u * const pSrc[4], NppiSize oSrcSize, int 
 /**
  * 1 channel 16-bit signed image resize.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Region of interest in the destination image.
- * \param nXFactor Factor by which x dimension is changed. 
- * \param nYFactor Factor by which y dimension is changed. 
- * \param nXShift Source pixel shift in x-direction.
- * \param nYShift Source pixel shift in y-direction.
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizeSqrPackedPixelParameters">Common parameters for nppiResizeSqrPixel packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResizeSqrPixel_16s_C1R(const Npp16s * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -476,19 +364,8 @@ nppiResizeSqrPixel_16s_C1R(const Npp16s * pSrc, NppiSize oSrcSize, int nSrcStep,
 /**
  * 3 channel 16-bit signed image resize.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Region of interest in the destination image.
- * \param nXFactor Factor by which x dimension is changed. 
- * \param nYFactor Factor by which y dimension is changed. 
- * \param nXShift Source pixel shift in x-direction.
- * \param nYShift Source pixel shift in y-direction.
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizeSqrPackedPixelParameters">Common parameters for nppiResizeSqrPixel packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResizeSqrPixel_16s_C3R(const Npp16s * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -498,19 +375,8 @@ nppiResizeSqrPixel_16s_C3R(const Npp16s * pSrc, NppiSize oSrcSize, int nSrcStep,
 /**
  * 4 channel 16-bit signed image resize.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Region of interest in the destination image.
- * \param nXFactor Factor by which x dimension is changed. 
- * \param nYFactor Factor by which y dimension is changed. 
- * \param nXShift Source pixel shift in x-direction.
- * \param nYShift Source pixel shift in y-direction.
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizeSqrPackedPixelParameters">Common parameters for nppiResizeSqrPixel packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResizeSqrPixel_16s_C4R(const Npp16s * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -520,19 +386,8 @@ nppiResizeSqrPixel_16s_C4R(const Npp16s * pSrc, NppiSize oSrcSize, int nSrcStep,
 /**
  * 4 channel 16-bit signed image resize not affecting alpha.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Region of interest in the destination image.
- * \param nXFactor Factor by which x dimension is changed. 
- * \param nYFactor Factor by which y dimension is changed. 
- * \param nXShift Source pixel shift in x-direction.
- * \param nYShift Source pixel shift in y-direction.
- * \param eInterpolation The type of interpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizeSqrPackedPixelParameters">Common parameters for nppiResizeSqrPixel packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResizeSqrPixel_16s_AC4R(const Npp16s * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -542,19 +397,8 @@ nppiResizeSqrPixel_16s_AC4R(const Npp16s * pSrc, NppiSize oSrcSize, int nSrcStep
 /**
  * 3 channel 16-bit signed planar image resize.
  *
- * \param pSrc \ref source_planar_image_pointer_array (host memory array containing device memory image plane pointers).
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pDst \ref destination_planar_image_pointer_array (host memory array containing device memory image plane pointers).
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Region of interest in the destination image.
- * \param nXFactor Factor by which x dimension is changed. 
- * \param nYFactor Factor by which y dimension is changed. 
- * \param nXShift Source pixel shift in x-direction.
- * \param nYShift Source pixel shift in y-direction.
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizeSqrPlanarPixelParameters">Common parameters for nppiResizeSqrPixel planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResizeSqrPixel_16s_P3R(const Npp16s * const pSrc[3], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -564,19 +408,8 @@ nppiResizeSqrPixel_16s_P3R(const Npp16s * const pSrc[3], NppiSize oSrcSize, int 
 /**
  * 4 channel 16-bit signed planar image resize.
  *
- * \param pSrc \ref source_planar_image_pointer_array (host memory array containing device memory image plane pointers).
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pDst \ref destination_planar_image_pointer_array (host memory array containing device memory image plane pointers).
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Region of interest in the destination image.
- * \param nXFactor Factor by which x dimension is changed. 
- * \param nYFactor Factor by which y dimension is changed. 
- * \param nXShift Source pixel shift in x-direction.
- * \param nYShift Source pixel shift in y-direction.
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizeSqrPlanarPixelParameters">Common parameters for nppiResizeSqrPixel planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResizeSqrPixel_16s_P4R(const Npp16s * const pSrc[4], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -586,19 +419,8 @@ nppiResizeSqrPixel_16s_P4R(const Npp16s * const pSrc[4], NppiSize oSrcSize, int 
 /**
  * 1 channel 32-bit floating point image resize.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Region of interest in the destination image.
- * \param nXFactor Factor by which x dimension is changed. 
- * \param nYFactor Factor by which y dimension is changed. 
- * \param nXShift Source pixel shift in x-direction.
- * \param nYShift Source pixel shift in y-direction.
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizeSqrPackedPixelParameters">Common parameters for nppiResizeSqrPixel packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResizeSqrPixel_32f_C1R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -608,19 +430,8 @@ nppiResizeSqrPixel_32f_C1R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep,
 /**
  * 3 channel 32-bit floating point image resize.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Region of interest in the destination image.
- * \param nXFactor Factor by which x dimension is changed. 
- * \param nYFactor Factor by which y dimension is changed. 
- * \param nXShift Source pixel shift in x-direction.
- * \param nYShift Source pixel shift in y-direction.
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizeSqrPackedPixelParameters">Common parameters for nppiResizeSqrPixel packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResizeSqrPixel_32f_C3R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -630,19 +441,8 @@ nppiResizeSqrPixel_32f_C3R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep,
 /**
  * 4 channel 32-bit floating point image resize.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Region of interest in the destination image.
- * \param nXFactor Factor by which x dimension is changed. 
- * \param nYFactor Factor by which y dimension is changed. 
- * \param nXShift Source pixel shift in x-direction.
- * \param nYShift Source pixel shift in y-direction.
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizeSqrPackedPixelParameters">Common parameters for nppiResizeSqrPixel packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResizeSqrPixel_32f_C4R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -652,19 +452,8 @@ nppiResizeSqrPixel_32f_C4R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep,
 /**
  * 4 channel 32-bit floating point image resize not affecting alpha.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Region of interest in the destination image.
- * \param nXFactor Factor by which x dimension is changed. 
- * \param nYFactor Factor by which y dimension is changed. 
- * \param nXShift Source pixel shift in x-direction.
- * \param nYShift Source pixel shift in y-direction.
- * \param eInterpolation The type of interpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizeSqrPackedPixelParameters">Common parameters for nppiResizeSqrPixel packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResizeSqrPixel_32f_AC4R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -674,19 +463,8 @@ nppiResizeSqrPixel_32f_AC4R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep
 /**
  * 3 channel 32-bit floating point planar image resize.
  *
- * \param pSrc \ref source_planar_image_pointer_array (host memory array containing device memory image plane pointers).
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pDst \ref destination_planar_image_pointer_array (host memory array containing device memory image plane pointers).
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Region of interest in the destination image.
- * \param nXFactor Factor by which x dimension is changed. 
- * \param nYFactor Factor by which y dimension is changed. 
- * \param nXShift Source pixel shift in x-direction.
- * \param nYShift Source pixel shift in y-direction.
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizeSqrPlanarPixelParameters">Common parameters for nppiResizeSqrPixel planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResizeSqrPixel_32f_P3R(const Npp32f * const pSrc[3], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -696,19 +474,8 @@ nppiResizeSqrPixel_32f_P3R(const Npp32f * const pSrc[3], NppiSize oSrcSize, int 
 /**
  * 4 channel 32-bit floating point planar image resize.
  *
- * \param pSrc \ref source_planar_image_pointer_array (host memory array containing device memory image plane pointers).
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pDst \ref destination_planar_image_pointer_array (host memory array containing device memory image plane pointers).
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Region of interest in the destination image.
- * \param nXFactor Factor by which x dimension is changed. 
- * \param nYFactor Factor by which y dimension is changed. 
- * \param nXShift Source pixel shift in x-direction.
- * \param nYShift Source pixel shift in y-direction.
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizeSqrPlanarPixelParameters">Common parameters for nppiResizeSqrPixel planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResizeSqrPixel_32f_P4R(const Npp32f * const pSrc[4], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -718,19 +485,8 @@ nppiResizeSqrPixel_32f_P4R(const Npp32f * const pSrc[4], NppiSize oSrcSize, int 
 /**
  * 1 channel 64-bit floating point image resize.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Region of interest in the destination image.
- * \param nXFactor Factor by which x dimension is changed. 
- * \param nYFactor Factor by which y dimension is changed. 
- * \param nXShift Source pixel shift in x-direction.
- * \param nYShift Source pixel shift in y-direction.
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizeSqrPackedPixelParameters">Common parameters for nppiResizeSqrPixel packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResizeSqrPixel_64f_C1R(const Npp64f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -740,20 +496,9 @@ nppiResizeSqrPixel_64f_C1R(const Npp64f * pSrc, NppiSize oSrcSize, int nSrcStep,
 /**
  * 3 channel 64-bit floating point image resize.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Region of interest in the destination image.
- * \param nXFactor Factor by which x dimension is changed. 
- * \param nYFactor Factor by which y dimension is changed. 
- * \param nXShift Source pixel shift in x-direction.
- * \param nYShift Source pixel shift in y-direction.
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
- */
+  * For common parameter descriptions, see <a href="#CommonResizeSqrPackedPixelParameters">Common parameters for nppiResizeSqrPixel packed pixel functions</a>.
+ *
+*/
 NppStatus 
 nppiResizeSqrPixel_64f_C3R(const Npp64f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
                                  Npp64f * pDst, int nDstStep, NppiRect oDstROI,
@@ -762,19 +507,8 @@ nppiResizeSqrPixel_64f_C3R(const Npp64f * pSrc, NppiSize oSrcSize, int nSrcStep,
 /**
  * 4 channel 64-bit floating point image resize.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Region of interest in the destination image.
- * \param nXFactor Factor by which x dimension is changed. 
- * \param nYFactor Factor by which y dimension is changed. 
- * \param nXShift Source pixel shift in x-direction.
- * \param nYShift Source pixel shift in y-direction.
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizeSqrPackedPixelParameters">Common parameters for nppiResizeSqrPixel packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResizeSqrPixel_64f_C4R(const Npp64f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -784,19 +518,8 @@ nppiResizeSqrPixel_64f_C4R(const Npp64f * pSrc, NppiSize oSrcSize, int nSrcStep,
 /**
  * 4 channel 64-bit floating point image resize not affecting alpha.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Region of interest in the destination image.
- * \param nXFactor Factor by which x dimension is changed. 
- * \param nYFactor Factor by which y dimension is changed. 
- * \param nXShift Source pixel shift in x-direction.
- * \param nYShift Source pixel shift in y-direction.
- * \param eInterpolation The type of interpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizeSqrPackedPixelParameters">Common parameters for nppiResizeSqrPixel packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResizeSqrPixel_64f_AC4R(const Npp64f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -806,19 +529,8 @@ nppiResizeSqrPixel_64f_AC4R(const Npp64f * pSrc, NppiSize oSrcSize, int nSrcStep
 /**
  * 3 channel 64-bit floating point planar image resize.
  *
- * \param pSrc \ref source_planar_image_pointer_array (host memory array containing device memory image plane pointers).
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pDst \ref destination_planar_image_pointer_array (host memory array containing device memory image plane pointers).
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Region of interest in the destination image.
- * \param nXFactor Factor by which x dimension is changed. 
- * \param nYFactor Factor by which y dimension is changed. 
- * \param nXShift Source pixel shift in x-direction.
- * \param nYShift Source pixel shift in y-direction.
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizeSqrPlanarPixelParameters">Common parameters for nppiResizeSqrPixel planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResizeSqrPixel_64f_P3R(const Npp64f * const pSrc[3], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -828,19 +540,8 @@ nppiResizeSqrPixel_64f_P3R(const Npp64f * const pSrc[3], NppiSize oSrcSize, int 
 /**
  * 4 channel 64-bit floating point planar image resize.
  *
- * \param pSrc \ref source_planar_image_pointer_array (host memory array containing device memory image plane pointers).
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pDst \ref destination_planar_image_pointer_array (host memory array containing device memory image plane pointers).
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Region of interest in the destination image.
- * \param nXFactor Factor by which x dimension is changed. 
- * \param nYFactor Factor by which y dimension is changed. 
- * \param nXShift Source pixel shift in x-direction.
- * \param nYShift Source pixel shift in y-direction.
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizeSqrPlanarPixelParameters">Common parameters for nppiResizeSqrPixel planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResizeSqrPixel_64f_P4R(const Npp64f * const pSrc[4], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -939,12 +640,7 @@ nppiGetResizeTiledSourceOffset(NppiRect oSrcRectROI, NppiRect oDstRectROI, NppiP
 /** @name Resize
  * Resizes images.
  *                                    
- * @{
- *
- */
-
-/**
- * 1 channel 8-bit unsigned image resize.
+ * <h3><a name="CommonResizePackedPixelParameters">Common parameters for nppiResize packed pixel functions include:</a></h3>
  *
  * \param pSrc \ref source_image_pointer to origin of source image.
  * \param nSrcStep \ref source_image_line_step.
@@ -956,6 +652,29 @@ nppiGetResizeTiledSourceOffset(NppiRect oSrcRectROI, NppiRect oDstRectROI, NppiP
  * \param oDstRectROI Region of interest in the destination image (may overlap destination image size width and height).
  * \param eInterpolation The type of eInterpolation to perform resampling.
  * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ *
+ * <h3><a name="CommonResizePlanarPixelParameters">Common parameters for nppiResize planar pixel functions include:</a></h3>
+ *
+ * \param pSrc \ref source_planar_image_pointer_array (host memory array containing device memory image plane origin pointers).
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Size in pixels of the entire source image.
+ * \param oSrcRectROI Region of interest in the source image (may overlap source image size width and height).
+ * \param pDst \ref destination_planar_image_pointer_array (host memory array containing device memory image plane origin pointers).
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oDstSize Size in pixels of the entire destination image.
+ * \param oDstRectROI Region of interest in the destination image (may overlap destination image size width and height).
+ * \param eInterpolation The type of eInterpolation to perform resampling.
+ * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * 
+ * @{
+ *
+ */
+
+/**
+ * 1 channel 8-bit unsigned image resize.
+ *
+ * For common parameter descriptions, see <a href="#CommonResizePackedPixelParameters">Common parameters for nppiResize packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResize_8u_C1R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiRect oSrcRectROI, 
@@ -964,16 +683,8 @@ nppiResize_8u_C1R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiRect 
 /**
  * 3 channel 8-bit unsigned image resize.
  *
- * \param pSrc \ref source_image_pointer to origin of source image.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the entire source image.
- * \param oSrcRectROI Region of interest in the source image (may overlap source image size width and height).
- * \param pDst \ref destination_image_pointer to origin of destination image.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSize Size in pixels of the entire destination image.
- * \param oDstRectROI Region of interest in the destination image (may overlap destination image size width and height).
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizePackedPixelParameters">Common parameters for nppiResize packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResize_8u_C3R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiRect oSrcRectROI, 
@@ -982,16 +693,8 @@ nppiResize_8u_C3R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiRect 
 /**
  * 4 channel 8-bit unsigned image resize.
  *
- * \param pSrc \ref source_image_pointer to origin of source image.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the entire source image.
- * \param oSrcRectROI Region of interest in the source image (may overlap source image size width and height).
- * \param pDst \ref destination_image_pointer to origin of destination image.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSize Size in pixels of the entire destination image.
- * \param oDstRectROI Region of interest in the destination image (may overlap destination image size width and height).
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizePackedPixelParameters">Common parameters for nppiResize packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResize_8u_C4R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiRect oSrcRectROI, 
@@ -1000,16 +703,8 @@ nppiResize_8u_C4R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiRect 
 /**
  * 4 channel 8-bit unsigned image resize not affecting alpha.
  *
- * \param pSrc \ref source_image_pointer to origin of source image.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the entire source image.
- * \param oSrcRectROI Region of interest in the source image (may overlap source image size width and height).
- * \param pDst \ref destination_image_pointer to origin of destination image.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSize Size in pixels of the entire destination image.
- * \param oDstRectROI Region of interest in the destination image (may overlap destination image size width and height).
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizePackedPixelParameters">Common parameters for nppiResize packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResize_8u_AC4R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiRect oSrcRectROI, 
@@ -1018,16 +713,8 @@ nppiResize_8u_AC4R(const Npp8u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiRect
 /**
  * 3 channel 8-bit unsigned planar image resize.
  *
- * \param pSrc \ref source_planar_image_pointer_array (host memory array containing device memory image plane origin pointers).
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the entire source image.
- * \param oSrcRectROI Region of interest in the source image (may overlap source image size width and height).
- * \param pDst \ref destination_planar_image_pointer_array (host memory array containing device memory image plane origin pointers).
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSize Size in pixels of the entire destination image.
- * \param oDstRectROI Region of interest in the destination image (may overlap destination image size width and height).
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizePlanarPixelParameters">Common parameters for nppiResize planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResize_8u_P3R(const Npp8u * pSrc[3], int nSrcStep, NppiSize oSrcSize, NppiRect oSrcRectROI, 
@@ -1036,16 +723,8 @@ nppiResize_8u_P3R(const Npp8u * pSrc[3], int nSrcStep, NppiSize oSrcSize, NppiRe
 /**
  * 4 channel 8-bit unsigned planar image resize.
  *
- * \param pSrc \ref source_planar_image_pointer_array (host memory array containing device memory image plane origin pointers).
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the entire source image.
- * \param oSrcRectROI Region of interest in the source image (may overlap source image size width and height).
- * \param pDst \ref destination_planar_image_pointer_array (host memory array containing device memory image plane origin pointers).
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSize Size in pixels of the entire destination image.
- * \param oDstRectROI Region of interest in the destination image (may overlap destination image size width and height).
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizePlanarPixelParameters">Common parameters for nppiResize planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResize_8u_P4R(const Npp8u * pSrc[4], int nSrcStep, NppiSize oSrcSize, NppiRect oSrcRectROI, 
@@ -1054,16 +733,8 @@ nppiResize_8u_P4R(const Npp8u * pSrc[4], int nSrcStep, NppiSize oSrcSize, NppiRe
 /**
  * 1 channel 16-bit unsigned image resize.
  *
- * \param pSrc \ref source_image_pointer to origin of source image.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the entire source image.
- * \param oSrcRectROI Region of interest in the source image (may overlap source image size width and height).
- * \param pDst \ref destination_image_pointer to origin of destination image.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSize Size in pixels of the entire destination image.
- * \param oDstRectROI Region of interest in the destination image (may overlap destination image size width and height).
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizePackedPixelParameters">Common parameters for nppiResize packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResize_16u_C1R(const Npp16u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiRect oSrcRectROI, 
@@ -1072,16 +743,8 @@ nppiResize_16u_C1R(const Npp16u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiRec
 /**
  * 3 channel 16-bit unsigned image resize.
  *
- * \param pSrc \ref source_image_pointer to origin of source image.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the entire source image.
- * \param oSrcRectROI Region of interest in the source image (may overlap source image size width and height).
- * \param pDst \ref destination_image_pointer to origin of destination image.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSize Size in pixels of the entire destination image.
- * \param oDstRectROI Region of interest in the destination image (may overlap destination image size width and height).
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizePackedPixelParameters">Common parameters for nppiResize packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResize_16u_C3R(const Npp16u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiRect oSrcRectROI, 
@@ -1090,16 +753,8 @@ nppiResize_16u_C3R(const Npp16u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiRec
 /**
  * 4 channel 16-bit unsigned image resize.
  *
- * \param pSrc \ref source_image_pointer to origin of source image.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the entire source image.
- * \param oSrcRectROI Region of interest in the source image (may overlap source image size width and height).
- * \param pDst \ref destination_image_pointer to origin of destination image.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSize Size in pixels of the entire destination image.
- * \param oDstRectROI Region of interest in the destination image (may overlap destination image size width and height).
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizePackedPixelParameters">Common parameters for nppiResize packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResize_16u_C4R(const Npp16u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiRect oSrcRectROI, 
@@ -1108,16 +763,8 @@ nppiResize_16u_C4R(const Npp16u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiRec
 /**
  * 4 channel 16-bit unsigned image resize not affecting alpha.
  *
- * \param pSrc \ref source_image_pointer to origin of source image.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the entire source image.
- * \param oSrcRectROI Region of interest in the source image (may overlap source image size width and height).
- * \param pDst \ref destination_image_pointer to origin of destination image.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSize Size in pixels of the entire destination image.
- * \param oDstRectROI Region of interest in the destination image (may overlap destination image size width and height).
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizePackedPixelParameters">Common parameters for nppiResize packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResize_16u_AC4R(const Npp16u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiRect oSrcRectROI, 
@@ -1126,16 +773,8 @@ nppiResize_16u_AC4R(const Npp16u * pSrc, int nSrcStep, NppiSize oSrcSize, NppiRe
 /**
  * 3 channel 16-bit unsigned planar image resize.
  *
- * \param pSrc \ref source_planar_image_pointer_array (host memory array containing device memory image plane origin pointers).
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the entire source image.
- * \param oSrcRectROI Region of interest in the source image (may overlap source image size width and height).
- * \param pDst \ref destination_planar_image_pointer_array (host memory array containing device memory image plane origin pointers).
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSize Size in pixels of the entire destination image.
- * \param oDstRectROI Region of interest in the destination image (may overlap destination image size width and height).
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizePlanarPixelParameters">Common parameters for nppiResize planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResize_16u_P3R(const Npp16u * pSrc[3], int nSrcStep, NppiSize oSrcSize, NppiRect oSrcRectROI, 
@@ -1144,16 +783,8 @@ nppiResize_16u_P3R(const Npp16u * pSrc[3], int nSrcStep, NppiSize oSrcSize, Nppi
 /**
  * 4 channel 16-bit unsigned planar image resize.
  *
- * \param pSrc \ref source_planar_image_pointer_array (host memory array containing device memory image plane origin pointers).
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the entire source image.
- * \param oSrcRectROI Region of interest in the source image (may overlap source image size width and height).
- * \param pDst \ref destination_planar_image_pointer_array (host memory array containing device memory image plane origin pointers).
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSize Size in pixels of the entire destination image.
- * \param oDstRectROI Region of interest in the destination image (may overlap destination image size width and height).
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizePlanarPixelParameters">Common parameters for nppiResize planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResize_16u_P4R(const Npp16u * pSrc[4], int nSrcStep, NppiSize oSrcSize, NppiRect oSrcRectROI, 
@@ -1162,16 +793,8 @@ nppiResize_16u_P4R(const Npp16u * pSrc[4], int nSrcStep, NppiSize oSrcSize, Nppi
 /**
  * 1 channel 16-bit signed image resize.
  *
- * \param pSrc \ref source_image_pointer to origin of source image.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the entire source image.
- * \param oSrcRectROI Region of interest in the source image (may overlap source image size width and height).
- * \param pDst \ref destination_image_pointer to origin of destination image.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSize Size in pixels of the entire destination image.
- * \param oDstRectROI Region of interest in the destination image (may overlap destination image size width and height).
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizePackedPixelParameters">Common parameters for nppiResize packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResize_16s_C1R(const Npp16s * pSrc, int nSrcStep, NppiSize oSrcSize, NppiRect oSrcRectROI, 
@@ -1180,16 +803,8 @@ nppiResize_16s_C1R(const Npp16s * pSrc, int nSrcStep, NppiSize oSrcSize, NppiRec
 /**
  * 3 channel 16-bit signed image resize.
  *
- * \param pSrc \ref source_image_pointer to origin of source image.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the entire source image.
- * \param oSrcRectROI Region of interest in the source image (may overlap source image size width and height).
- * \param pDst \ref destination_image_pointer to origin of destination image.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSize Size in pixels of the entire destination image.
- * \param oDstRectROI Region of interest in the destination image (may overlap destination image size width and height).
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizePackedPixelParameters">Common parameters for nppiResize packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResize_16s_C3R(const Npp16s * pSrc, int nSrcStep, NppiSize oSrcSize, NppiRect oSrcRectROI, 
@@ -1198,16 +813,8 @@ nppiResize_16s_C3R(const Npp16s * pSrc, int nSrcStep, NppiSize oSrcSize, NppiRec
 /**
  * 4 channel 16-bit signed image resize.
  *
- * \param pSrc \ref source_image_pointer to origin of source image.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the entire source image.
- * \param oSrcRectROI Region of interest in the source image (may overlap source image size width and height).
- * \param pDst \ref destination_image_pointer to origin of destination image.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSize Size in pixels of the entire destination image.
- * \param oDstRectROI Region of interest in the destination image (may overlap destination image size width and height).
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizePackedPixelParameters">Common parameters for nppiResize packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResize_16s_C4R(const Npp16s * pSrc, int nSrcStep, NppiSize oSrcSize, NppiRect oSrcRectROI, 
@@ -1216,16 +823,8 @@ nppiResize_16s_C4R(const Npp16s * pSrc, int nSrcStep, NppiSize oSrcSize, NppiRec
 /**
  * 4 channel 16-bit signed image resize not affecting alpha.
  *
- * \param pSrc \ref source_image_pointer to origin of source image.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the entire source image.
- * \param oSrcRectROI Region of interest in the source image (may overlap source image size width and height).
- * \param pDst \ref destination_image_pointer to origin of destination image.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSize Size in pixels of the entire destination image.
- * \param oDstRectROI Region of interest in the destination image (may overlap destination image size width and height).
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizePackedPixelParameters">Common parameters for nppiResize packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResize_16s_AC4R(const Npp16s * pSrc, int nSrcStep, NppiSize oSrcSize, NppiRect oSrcRectROI, 
@@ -1234,16 +833,8 @@ nppiResize_16s_AC4R(const Npp16s * pSrc, int nSrcStep, NppiSize oSrcSize, NppiRe
 /**
  * 3 channel 16-bit signed planar image resize.
  *
- * \param pSrc \ref source_planar_image_pointer_array (host memory array containing device memory image plane origin pointers).
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the entire source image.
- * \param oSrcRectROI Region of interest in the source image (may overlap source image size width and height).
- * \param pDst \ref destination_planar_image_pointer_array (host memory array containing device memory image plane origin pointers).
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSize Size in pixels of the entire destination image.
- * \param oDstRectROI Region of interest in the destination image (may overlap destination image size width and height).
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizePlanarPixelParameters">Common parameters for nppiResize planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResize_16s_P3R(const Npp16s * pSrc[3], int nSrcStep, NppiSize oSrcSize, NppiRect oSrcRectROI, 
@@ -1252,16 +843,8 @@ nppiResize_16s_P3R(const Npp16s * pSrc[3], int nSrcStep, NppiSize oSrcSize, Nppi
 /**
  * 4 channel 16-bit signed planar image resize.
  *
- * \param pSrc \ref source_planar_image_pointer_array (host memory array containing device memory image plane origin pointers).
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the entire source image.
- * \param oSrcRectROI Region of interest in the source image (may overlap source image size width and height).
- * \param pDst \ref destination_planar_image_pointer_array (host memory array containing device memory image plane origin pointers).
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSize Size in pixels of the entire destination image.
- * \param oDstRectROI Region of interest in the destination image (may overlap destination image size width and height).
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizePlanarPixelParameters">Common parameters for nppiResize planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResize_16s_P4R(const Npp16s * pSrc[4], int nSrcStep, NppiSize oSrcSize, NppiRect oSrcRectROI, 
@@ -1270,16 +853,8 @@ nppiResize_16s_P4R(const Npp16s * pSrc[4], int nSrcStep, NppiSize oSrcSize, Nppi
 /**
  * 1 channel 32-bit floating point image resize.
  *
- * \param pSrc \ref source_image_pointer to origin of source image.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the entire source image.
- * \param oSrcRectROI Region of interest in the source image (may overlap source image size width and height).
- * \param pDst \ref destination_image_pointer to origin of destination image.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSize Size in pixels of the entire destination image.
- * \param oDstRectROI Region of interest in the destination image (may overlap destination image size width and height).
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizePackedPixelParameters">Common parameters for nppiResize packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResize_32f_C1R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiRect oSrcRectROI, 
@@ -1288,16 +863,8 @@ nppiResize_32f_C1R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiRec
 /**
  * 3 channel 32-bit floating point image resize.
  *
- * \param pSrc \ref source_image_pointer to origin of source image.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the entire source image.
- * \param oSrcRectROI Region of interest in the source image (may overlap source image size width and height).
- * \param pDst \ref destination_image_pointer to origin of destination image.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSize Size in pixels of the entire destination image.
- * \param oDstRectROI Region of interest in the destination image (may overlap destination image size width and height).
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizePackedPixelParameters">Common parameters for nppiResize packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResize_32f_C3R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiRect oSrcRectROI, 
@@ -1306,16 +873,8 @@ nppiResize_32f_C3R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiRec
 /**
  * 4 channel 32-bit floating point image resize.
  *
- * \param pSrc \ref source_image_pointer to origin of source image.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the entire source image.
- * \param oSrcRectROI Region of interest in the source image (may overlap source image size width and height).
- * \param pDst \ref destination_image_pointer to origin of destination image.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSize Size in pixels of the entire destination image.
- * \param oDstRectROI Region of interest in the destination image (may overlap destination image size width and height).
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizePackedPixelParameters">Common parameters for nppiResize packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResize_32f_C4R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiRect oSrcRectROI, 
@@ -1324,16 +883,8 @@ nppiResize_32f_C4R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiRec
 /**
  * 4 channel 32-bit floating point image resize not affecting alpha.
  *
- * \param pSrc \ref source_image_pointer to origin of source image.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the entire source image.
- * \param oSrcRectROI Region of interest in the source image (may overlap source image size width and height).
- * \param pDst \ref destination_image_pointer to origin of destination image.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSize Size in pixels of the entire destination image.
- * \param oDstRectROI Region of interest in the destination image (may overlap destination image size width and height).
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizePackedPixelParameters">Common parameters for nppiResize packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResize_32f_AC4R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiRect oSrcRectROI, 
@@ -1342,16 +893,8 @@ nppiResize_32f_AC4R(const Npp32f * pSrc, int nSrcStep, NppiSize oSrcSize, NppiRe
 /**
  * 3 channel 32-bit floating point planar image resize.
  *
- * \param pSrc \ref source_planar_image_pointer_array (host memory array containing device memory image plane origin pointers).
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the entire source image.
- * \param oSrcRectROI Region of interest in the source image (may overlap source image size width and height).
- * \param pDst \ref destination_planar_image_pointer_array (host memory array containing device memory image plane origin pointers).
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSize Size in pixels of the entire destination image.
- * \param oDstRectROI Region of interest in the destination image (may overlap destination image size width and height).
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizePlanarPixelParameters">Common parameters for nppiResize planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResize_32f_P3R(const Npp32f * pSrc[3], int nSrcStep, NppiSize oSrcSize, NppiRect oSrcRectROI, 
@@ -1360,16 +903,8 @@ nppiResize_32f_P3R(const Npp32f * pSrc[3], int nSrcStep, NppiSize oSrcSize, Nppi
 /**
  * 4 channel 32-bit floating point planar image resize.
  *
- * \param pSrc \ref source_planar_image_pointer_array (host memory array containing device memory image plane origin pointers).
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the entire source image.
- * \param oSrcRectROI Region of interest in the source image (may overlap source image size width and height).
- * \param pDst \ref destination_planar_image_pointer_array (host memory array containing device memory image plane origin pointers).
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSize Size in pixels of the entire destination image.
- * \param oDstRectROI Region of interest in the destination image (may overlap destination image size width and height).
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizePlanarPixelParameters">Common parameters for nppiResize planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiResize_32f_P4R(const Npp32f * pSrc[4], int nSrcStep, NppiSize oSrcSize, NppiRect oSrcRectROI, 
@@ -1413,6 +948,17 @@ nppiResize_32f_P4R(const Npp32f * pSrc[4], int nSrcStep, NppiSize oSrcSize, Nppi
  *         - ::NPP_INTERPOLATION_ERROR if eInterpolation has an illegal value.
  *         - ::NPP_SIZE_ERROR if source size width or height is less than 2 pixels.
  *
+ * <h3><a name="CommonResizeBatchParameters">Common parameters for nppiResizeBatch functions include:</a></h3>
+ *
+ * \param oSmallestSrcSize Size in pixels of the entire smallest source image width and height, may be from different images.
+ * \param oSrcRectROI Region of interest in the source images (may overlap source image size width and height).
+ * \param oSmallestDstSize Size in pixels of the entire smallest destination image width and height, may be from different images.
+ * \param oDstRectROI Region of interest in the destination images (may overlap destination image size width and height).
+ * \param eInterpolation The type of eInterpolation to perform resampling. Currently limited to NPPI_INTER_NN, NPPI_INTER_LINEAR, NPPI_INTER_CUBIC, or NPPI_INTER_SUPER. 
+ * \param pBatchList Device memory pointer to nBatchSize list of NppiResizeBatchCXR structures.
+ * \param nBatchSize Number of NppiResizeBatchCXR structures in this call (must be > 1).
+ * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ *
  * @{
  *
  */
@@ -1428,14 +974,8 @@ typedef struct
 /**
  * 1 channel 32-bit floating point image resize batch.
  *
- * \param oSmallestSrcSize Size in pixels of the entire smallest source image width and height, may be from different images.
- * \param oSrcRectROI Region of interest in the source images (may overlap source image size width and height).
- * \param oSmallestDstSize Size in pixels of the entire smallest destination image width and height, may be from different images.
- * \param oDstRectROI Region of interest in the destination images (may overlap destination image size width and height).
- * \param eInterpolation The type of eInterpolation to perform resampling. Currently limited to NPPI_INTER_NN, NPPI_INTER_LINEAR, NPPI_INTER_CUBIC, or NPPI_INTER_SUPER. 
- * \param pBatchList Device memory pointer to nBatchSize list of NppiResizeBatchCXR structures.
- * \param nBatchSize Number of NppiResizeBatchCXR structures in this call (must be > 1).
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizeBatchParameters">Common parameters for nppiResizeBatch functions</a>.
+ *
  */
 NppStatus 
 nppiResizeBatch_32f_C1R(NppiSize oSmallestSrcSize, NppiRect oSrcRectROI, NppiSize oSmallestDstSize, NppiRect oDstRectROI, 
@@ -1444,14 +984,8 @@ nppiResizeBatch_32f_C1R(NppiSize oSmallestSrcSize, NppiRect oSrcRectROI, NppiSiz
 /**
  * 3 channel 32-bit floating point image resize batch.
  *
- * \param oSmallestSrcSize Size in pixels of the entire smallest source image width and height, may be from different images.
- * \param oSrcRectROI Region of interest in the source images (may overlap source image size width and height).
- * \param oSmallestDstSize Size in pixels of the entire smallest destination image width and height, may be from different images.
- * \param oDstRectROI Region of interest in the destination images (may overlap destination image size width and height).
- * \param eInterpolation The type of eInterpolation to perform resampling. Currently limited to NPPI_INTER_NN, NPPI_INTER_LINEAR, NPPI_INTER_CUBIC, or NPPI_INTER_SUPER. 
- * \param pBatchList Device memory pointer to nBatchSize list of NppiResizeBatchCXR structures.
- * \param nBatchSize Number of NppiResizeBatchCXR structures in this call (must be > 1).
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizeBatchParameters">Common parameters for nppiResizeBatch functions</a>.
+ *
  */
 NppStatus 
 nppiResizeBatch_32f_C3R(NppiSize oSmallestSrcSize, NppiRect oSrcRectROI, NppiSize oSmallestDstSize, NppiRect oDstRectROI, 
@@ -1460,14 +994,8 @@ nppiResizeBatch_32f_C3R(NppiSize oSmallestSrcSize, NppiRect oSrcRectROI, NppiSiz
 /**
  * 4 channel 32-bit floating point image resize batch.
  *
- * \param oSmallestSrcSize Size in pixels of the entire smallest source image width and height, may be from different images.
- * \param oSrcRectROI Region of interest in the source images (may overlap source image size width and height).
- * \param oSmallestDstSize Size in pixels of the entire smallest destination image width and height, may be from different images.
- * \param oDstRectROI Region of interest in the destination images (may overlap destination image size width and height).
- * \param eInterpolation The type of eInterpolation to perform resampling. Currently limited to NPPI_INTER_NN, NPPI_INTER_LINEAR, NPPI_INTER_CUBIC, or NPPI_INTER_SUPER. 
- * \param pBatchList Device memory pointer to nBatchSize list of NppiResizeBatchCXR structures.
- * \param nBatchSize Number of NppiResizeBatchCXR structures in this call (must be > 1).
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizeBatchParameters">Common parameters for nppiResizeBatch functions</a>.
+ *
  */
 NppStatus 
 nppiResizeBatch_32f_C4R(NppiSize oSmallestSrcSize, NppiRect oSrcRectROI, NppiSize oSmallestDstSize, NppiRect oDstRectROI, 
@@ -1476,14 +1004,8 @@ nppiResizeBatch_32f_C4R(NppiSize oSmallestSrcSize, NppiRect oSrcRectROI, NppiSiz
 /**
  * 4 channel 32-bit floating point image resize batch not affecting alpha.
  *
- * \param oSmallestSrcSize Size in pixels of the entire smallest source image width and height, may be from different images.
- * \param oSrcRectROI Region of interest in the source images (may overlap source image size width and height).
- * \param oSmallestDstSize Size in pixels of the entire smallest destination image width and height, may be from different images.
- * \param oDstRectROI Region of interest in the destination images (may overlap destination image size width and height).
- * \param eInterpolation The type of eInterpolation to perform resampling. Currently limited to NPPI_INTER_NN, NPPI_INTER_LINEAR, NPPI_INTER_CUBIC, or NPPI_INTER_SUPER. 
- * \param pBatchList Device memory pointer to nBatchSize list of NppiResizeBatchCXR structures.
- * \param nBatchSize Number of NppiResizeBatchCXR structures in this call (must be > 1).
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref resize_error_codes
+ * For common parameter descriptions, see <a href="#CommonResizeBatchParameters">Common parameters for nppiResizeBatch functions</a>.
+ *
  */
 NppStatus 
 nppiResizeBatch_32f_AC4R(NppiSize oSmallestSrcSize, NppiRect oSrcRectROI, NppiSize oSmallestDstSize, NppiRect oDstRectROI, 
@@ -1525,6 +1047,38 @@ nppiResizeBatch_32f_AC4R(NppiSize oSmallestSrcSize, NppiRect oSrcRectROI, NppiSi
  *           srcROIRect has no intersection with the source image.
  *         - ::NPP_INTERPOLATION_ERROR if eInterpolation has an illegal value.
  *
+ * <h3><a name="CommonRemapPackedPixelParameters">Common parameters for nppiRemap packed pixel functions include:</a></h3>
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Size in pixels of the source image.
+ * \param oSrcROI Region of interest in the source image.
+ * \param pXMap Device memory pointer to 2D image array of X coordinate values to be used when sampling source image. 
+ * \param nXMapStep pXMap image array line step in bytes.
+ * \param pYMap Device memory pointer to 2D image array of Y coordinate values to be used when sampling source image. 
+ * \param nYMapStep pYMap image array line step in bytes.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oDstSizeROI Region of interest size in the destination image.
+ * \param eInterpolation The type of eInterpolation to perform resampling.
+ * \return \ref image_data_error_codes, \ref roi_error_codes, \ref remap_error_codes
+ *
+ * <h3><a name="CommonRemapPlanarPixelParameters">Common parameters for nppiRemap planar pixel functions include:</a></h3>
+ *
+ * \param pSrc \ref source_planar_image_pointer_array.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcSize Size in pixels of the source image.
+ * \param oSrcROI Region of interest in the source image.
+ * \param pXMap Device memory pointer to 2D image array of X coordinate values to be used when sampling source image. 
+ * \param nXMapStep pXMap image array line step in bytes.
+ * \param pYMap Device memory pointer to 2D image array of Y coordinate values to be used when sampling source image. 
+ * \param nYMapStep pYMap image array line step in bytes.
+ * \param pDst \ref destination_planar_image_pointer_array.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oDstSizeROI Region of interest size in the destination image.
+ * \param eInterpolation The type of eInterpolation to perform resampling.
+ * \return \ref image_data_error_codes, \ref roi_error_codes, \ref remap_error_codes
+ *
  * @{
  *
  */
@@ -1539,19 +1093,8 @@ nppiResizeBatch_32f_AC4R(NppiSize oSmallestSrcSize, NppiRect oSrcRectROI, NppiSi
 /**
  * 1 channel 8-bit unsigned image remap.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pXMap Device memory pointer to 2D image array of X coordinate values to be used when sampling source image. 
- * \param nXMapStep pXMap image array line step in bytes.
- * \param pYMap Device memory pointer to 2D image array of Y coordinate values to be used when sampling source image. 
- * \param nYMapStep pYMap image array line step in bytes.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSizeROI Region of interest size in the destination image.
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref remap_error_codes
+ * For common parameter descriptions, see <a href="#CommonRemapPackedPixelParameters">Common parameters for nppiRemap packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiRemap_8u_C1R(const Npp8u  * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -1561,19 +1104,8 @@ nppiRemap_8u_C1R(const Npp8u  * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect 
 /**
  * 3 channel 8-bit unsigned image remap.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pXMap Device memory pointer to 2D image array of X coordinate values to be used when sampling source image. 
- * \param nXMapStep pXMap image array line step in bytes.
- * \param pYMap Device memory pointer to 2D image array of Y coordinate values to be used when sampling source image. 
- * \param nYMapStep pYMap image array line step in bytes.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSizeROI Region of interest size in the destination image.
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref remap_error_codes
+ * For common parameter descriptions, see <a href="#CommonRemapPackedPixelParameters">Common parameters for nppiRemap packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiRemap_8u_C3R(const Npp8u  * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -1583,19 +1115,8 @@ nppiRemap_8u_C3R(const Npp8u  * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect 
 /**
  * 4 channel 8-bit unsigned image remap.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pXMap Device memory pointer to 2D image array of X coordinate values to be used when sampling source image. 
- * \param nXMapStep pXMap image array line step in bytes.
- * \param pYMap Device memory pointer to 2D image array of Y coordinate values to be used when sampling source image. 
- * \param nYMapStep pYMap image array line step in bytes.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSizeROI Region of interest size in the destination image.
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref remap_error_codes
+ * For common parameter descriptions, see <a href="#CommonRemapPackedPixelParameters">Common parameters for nppiRemap packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiRemap_8u_C4R(const Npp8u  * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -1605,19 +1126,8 @@ nppiRemap_8u_C4R(const Npp8u  * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect 
 /**
  * 4 channel 8-bit unsigned image remap not affecting alpha.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pXMap Device memory pointer to 2D image array of X coordinate values to be used when sampling source image. 
- * \param nXMapStep pXMap image array line step in bytes.
- * \param pYMap Device memory pointer to 2D image array of Y coordinate values to be used when sampling source image. 
- * \param nYMapStep pYMap image array line step in bytes.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSizeROI Region of interest size in the destination image.
- * \param eInterpolation The type of interpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref remap_error_codes
+ * For common parameter descriptions, see <a href="#CommonRemapPackedPixelParameters">Common parameters for nppiRemap packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiRemap_8u_AC4R(const Npp8u  * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -1627,19 +1137,8 @@ nppiRemap_8u_AC4R(const Npp8u  * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect
 /**
  * 3 channel 8-bit unsigned planar image remap.
  *
- * \param pSrc \ref source_planar_image_pointer_array.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pXMap Device memory pointer to 2D image array of X coordinate values to be used when sampling source image. 
- * \param nXMapStep pXMap image array line step in bytes.
- * \param pYMap Device memory pointer to 2D image array of Y coordinate values to be used when sampling source image. 
- * \param nYMapStep pYMap image array line step in bytes.
- * \param pDst \ref destination_planar_image_pointer_array.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSizeROI Region of interest size in the destination image.
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref remap_error_codes
+ * For common parameter descriptions, see <a href="#CommonRemapPlanarPixelParameters">Common parameters for nppiRemap planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiRemap_8u_P3R(const Npp8u  * const pSrc[3], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -1649,19 +1148,8 @@ nppiRemap_8u_P3R(const Npp8u  * const pSrc[3], NppiSize oSrcSize, int nSrcStep, 
 /**
  * 4 channel 8-bit unsigned planar image remap.
  *
- * \param pSrc \ref source_planar_image_pointer_array.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pXMap Device memory pointer to 2D image array of X coordinate values to be used when sampling source image. 
- * \param nXMapStep pXMap image array line step in bytes.
- * \param pYMap Device memory pointer to 2D image array of Y coordinate values to be used when sampling source image. 
- * \param nYMapStep pYMap image array line step in bytes.
- * \param pDst \ref destination_planar_image_pointer_array.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSizeROI Region of interest size in the destination image.
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref remap_error_codes
+ * For common parameter descriptions, see <a href="#CommonRemapPlanarPixelParameters">Common parameters for nppiRemap planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiRemap_8u_P4R(const Npp8u  * const pSrc[4], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -1671,19 +1159,8 @@ nppiRemap_8u_P4R(const Npp8u  * const pSrc[4], NppiSize oSrcSize, int nSrcStep, 
 /**
  * 1 channel 16-bit unsigned image remap.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pXMap Device memory pointer to 2D image array of X coordinate values to be used when sampling source image. 
- * \param nXMapStep pXMap image array line step in bytes.
- * \param pYMap Device memory pointer to 2D image array of Y coordinate values to be used when sampling source image. 
- * \param nYMapStep pYMap image array line step in bytes.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSizeROI Region of interest size in the destination image.
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref remap_error_codes
+ * For common parameter descriptions, see <a href="#CommonRemapPackedPixelParameters">Common parameters for nppiRemap packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiRemap_16u_C1R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -1693,19 +1170,8 @@ nppiRemap_16u_C1R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect
 /**
  * 3 channel 16-bit unsigned image remap.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pXMap Device memory pointer to 2D image array of X coordinate values to be used when sampling source image. 
- * \param nXMapStep pXMap image array line step in bytes.
- * \param pYMap Device memory pointer to 2D image array of Y coordinate values to be used when sampling source image. 
- * \param nYMapStep pYMap image array line step in bytes.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSizeROI Region of interest size in the destination image.
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref remap_error_codes
+ * For common parameter descriptions, see <a href="#CommonRemapPackedPixelParameters">Common parameters for nppiRemap packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiRemap_16u_C3R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -1715,19 +1181,8 @@ nppiRemap_16u_C3R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect
 /**
  * 4 channel 16-bit unsigned image remap.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pXMap Device memory pointer to 2D image array of X coordinate values to be used when sampling source image. 
- * \param nXMapStep pXMap image array line step in bytes.
- * \param pYMap Device memory pointer to 2D image array of Y coordinate values to be used when sampling source image. 
- * \param nYMapStep pYMap image array line step in bytes.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSizeROI Region of interest size in the destination image.
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref remap_error_codes
+ * For common parameter descriptions, see <a href="#CommonRemapPackedPixelParameters">Common parameters for nppiRemap packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiRemap_16u_C4R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -1737,19 +1192,8 @@ nppiRemap_16u_C4R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect
 /**
  * 4 channel 16-bit unsigned image remap not affecting alpha.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pXMap Device memory pointer to 2D image array of X coordinate values to be used when sampling source image. 
- * \param nXMapStep pXMap image array line step in bytes.
- * \param pYMap Device memory pointer to 2D image array of Y coordinate values to be used when sampling source image. 
- * \param nYMapStep pYMap image array line step in bytes.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSizeROI Region of interest size in the destination image.
- * \param eInterpolation The type of interpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref remap_error_codes
+ * For common parameter descriptions, see <a href="#CommonRemapPackedPixelParameters">Common parameters for nppiRemap packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiRemap_16u_AC4R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -1759,19 +1203,8 @@ nppiRemap_16u_AC4R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRec
 /**
  * 3 channel 16-bit unsigned planar image remap.
  *
- * \param pSrc \ref source_planar_image_pointer_array.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pXMap Device memory pointer to 2D image array of X coordinate values to be used when sampling source image. 
- * \param nXMapStep pXMap image array line step in bytes.
- * \param pYMap Device memory pointer to 2D image array of Y coordinate values to be used when sampling source image. 
- * \param nYMapStep pYMap image array line step in bytes.
- * \param pDst \ref destination_planar_image_pointer_array.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSizeROI Region of interest size in the destination image.
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref remap_error_codes
+ * For common parameter descriptions, see <a href="#CommonRemapPlanarPixelParameters">Common parameters for nppiRemap planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiRemap_16u_P3R(const Npp16u * const pSrc[3], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -1781,19 +1214,8 @@ nppiRemap_16u_P3R(const Npp16u * const pSrc[3], NppiSize oSrcSize, int nSrcStep,
 /**
  * 4 channel 16-bit unsigned planar image remap.
  *
- * \param pSrc \ref source_planar_image_pointer_array.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pXMap Device memory pointer to 2D image array of X coordinate values to be used when sampling source image. 
- * \param nXMapStep pXMap image array line step in bytes.
- * \param pYMap Device memory pointer to 2D image array of Y coordinate values to be used when sampling source image. 
- * \param nYMapStep pYMap image array line step in bytes.
- * \param pDst \ref destination_planar_image_pointer_array.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSizeROI Region of interest size in the destination image.
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref remap_error_codes
+ * For common parameter descriptions, see <a href="#CommonRemapPlanarPixelParameters">Common parameters for nppiRemap planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiRemap_16u_P4R(const Npp16u * const pSrc[4], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -1803,19 +1225,8 @@ nppiRemap_16u_P4R(const Npp16u * const pSrc[4], NppiSize oSrcSize, int nSrcStep,
 /**
  * 1 channel 16-bit signed image remap.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pXMap Device memory pointer to 2D image array of X coordinate values to be used when sampling source image. 
- * \param nXMapStep pXMap image array line step in bytes.
- * \param pYMap Device memory pointer to 2D image array of Y coordinate values to be used when sampling source image. 
- * \param nYMapStep pYMap image array line step in bytes.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSizeROI Region of interest size in the destination image.
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref remap_error_codes
+ * For common parameter descriptions, see <a href="#CommonRemapPackedPixelParameters">Common parameters for nppiRemap packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiRemap_16s_C1R(const Npp16s * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -1825,19 +1236,8 @@ nppiRemap_16s_C1R(const Npp16s * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect
 /**
  * 3 channel 16-bit signed image remap.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pXMap Device memory pointer to 2D image array of X coordinate values to be used when sampling source image. 
- * \param nXMapStep pXMap image array line step in bytes.
- * \param pYMap Device memory pointer to 2D image array of Y coordinate values to be used when sampling source image. 
- * \param nYMapStep pYMap image array line step in bytes.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSizeROI Region of interest size in the destination image.
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref remap_error_codes
+ * For common parameter descriptions, see <a href="#CommonRemapPackedPixelParameters">Common parameters for nppiRemap packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiRemap_16s_C3R(const Npp16s * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -1847,19 +1247,8 @@ nppiRemap_16s_C3R(const Npp16s * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect
 /**
  * 4 channel 16-bit signed image remap.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pXMap Device memory pointer to 2D image array of X coordinate values to be used when sampling source image. 
- * \param nXMapStep pXMap image array line step in bytes.
- * \param pYMap Device memory pointer to 2D image array of Y coordinate values to be used when sampling source image. 
- * \param nYMapStep pYMap image array line step in bytes.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSizeROI Region of interest size in the destination image.
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref remap_error_codes
+ * For common parameter descriptions, see <a href="#CommonRemapPackedPixelParameters">Common parameters for nppiRemap packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiRemap_16s_C4R(const Npp16s * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -1869,19 +1258,8 @@ nppiRemap_16s_C4R(const Npp16s * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect
 /**
  * 4 channel 16-bit signed image remap not affecting alpha.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pXMap Device memory pointer to 2D image array of X coordinate values to be used when sampling source image. 
- * \param nXMapStep pXMap image array line step in bytes.
- * \param pYMap Device memory pointer to 2D image array of Y coordinate values to be used when sampling source image. 
- * \param nYMapStep pYMap image array line step in bytes.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSizeROI Region of interest size in the destination image.
- * \param eInterpolation The type of interpolation to perform resampling
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref remap_error_codes
+ * For common parameter descriptions, see <a href="#CommonRemapPackedPixelParameters">Common parameters for nppiRemap packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiRemap_16s_AC4R(const Npp16s * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -1891,19 +1269,8 @@ nppiRemap_16s_AC4R(const Npp16s * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRec
 /**
  * 3 channel 16-bit signed planar image remap.
  *
- * \param pSrc \ref source_planar_image_pointer_array.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pXMap Device memory pointer to 2D image array of X coordinate values to be used when sampling source image. 
- * \param nXMapStep pXMap image array line step in bytes.
- * \param pYMap Device memory pointer to 2D image array of Y coordinate values to be used when sampling source image. 
- * \param nYMapStep pYMap image array line step in bytes.
- * \param pDst \ref destination_planar_image_pointer_array.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSizeROI Region of interest size in the destination image.
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref remap_error_codes
+ * For common parameter descriptions, see <a href="#CommonRemapPlanarPixelParameters">Common parameters for nppiRemap planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiRemap_16s_P3R(const Npp16s * const pSrc[3], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -1913,19 +1280,8 @@ nppiRemap_16s_P3R(const Npp16s * const pSrc[3], NppiSize oSrcSize, int nSrcStep,
 /**
  * 4 channel 16-bit signed planar image remap.
  *
- * \param pSrc \ref source_planar_image_pointer_array.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pXMap Device memory pointer to 2D image array of X coordinate values to be used when sampling source image. 
- * \param nXMapStep pXMap image array line step in bytes.
- * \param pYMap Device memory pointer to 2D image array of Y coordinate values to be used when sampling source image. 
- * \param nYMapStep pYMap image array line step in bytes.
- * \param pDst \ref destination_planar_image_pointer_array.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSizeROI Region of interest size in the destination image.
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref remap_error_codes
+ * For common parameter descriptions, see <a href="#CommonRemapPlanarPixelParameters">Common parameters for nppiRemap planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiRemap_16s_P4R(const Npp16s * const pSrc[4], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -1935,19 +1291,8 @@ nppiRemap_16s_P4R(const Npp16s * const pSrc[4], NppiSize oSrcSize, int nSrcStep,
 /**
  * 1 channel 32-bit floating point image remap.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pXMap Device memory pointer to 2D image array of X coordinate values to be used when sampling source image. 
- * \param nXMapStep pXMap image array line step in bytes.
- * \param pYMap Device memory pointer to 2D image array of Y coordinate values to be used when sampling source image. 
- * \param nYMapStep pYMap image array line step in bytes.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSizeROI Region of interest size in the destination image.
- * \param eInterpolation The type of eInterpolation to perform resampling
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref remap_error_codes
+ * For common parameter descriptions, see <a href="#CommonRemapPackedPixelParameters">Common parameters for nppiRemap packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiRemap_32f_C1R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -1957,19 +1302,8 @@ nppiRemap_32f_C1R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect
 /**
  * 3 channel 32-bit floating point image remap.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pXMap Device memory pointer to 2D image array of X coordinate values to be used when sampling source image. 
- * \param nXMapStep pXMap image array line step in bytes.
- * \param pYMap Device memory pointer to 2D image array of Y coordinate values to be used when sampling source image. 
- * \param nYMapStep pYMap image array line step in bytes.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSizeROI Region of interest size in the destination image.
- * \param eInterpolation The type of eInterpolation to perform resampling
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref remap_error_codes
+ * For common parameter descriptions, see <a href="#CommonRemapPackedPixelParameters">Common parameters for nppiRemap packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiRemap_32f_C3R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -1979,19 +1313,8 @@ nppiRemap_32f_C3R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect
 /**
  * 4 channel 32-bit floating point image remap.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pXMap Device memory pointer to 2D image array of X coordinate values to be used when sampling source image. 
- * \param nXMapStep pXMap image array line step in bytes.
- * \param pYMap Device memory pointer to 2D image array of Y coordinate values to be used when sampling source image. 
- * \param nYMapStep pYMap image array line step in bytes.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSizeROI Region of interest size in the destination image.
- * \param eInterpolation The type of eInterpolation to perform resampling
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref remap_error_codes
+ * For common parameter descriptions, see <a href="#CommonRemapPackedPixelParameters">Common parameters for nppiRemap packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiRemap_32f_C4R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -2001,19 +1324,8 @@ nppiRemap_32f_C4R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect
 /**
  * 4 channel 32-bit floating point image remap not affecting alpha.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pXMap Device memory pointer to 2D image array of X coordinate values to be used when sampling source image. 
- * \param nXMapStep pXMap image array line step in bytes.
- * \param pYMap Device memory pointer to 2D image array of Y coordinate values to be used when sampling source image. 
- * \param nYMapStep pYMap image array line step in bytes.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSizeROI Region of interest size in the destination image.
- * \param eInterpolation The type of interpolation to perform resampling
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref remap_error_codes
+ * For common parameter descriptions, see <a href="#CommonRemapPackedPixelParameters">Common parameters for nppiRemap packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiRemap_32f_AC4R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -2023,19 +1335,8 @@ nppiRemap_32f_AC4R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRec
 /**
  * 3 channel 32-bit floating point planar image remap.
  *
- * \param pSrc \ref source_planar_image_pointer_array.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pXMap Device memory pointer to 2D image array of X coordinate values to be used when sampling source image. 
- * \param nXMapStep pXMap image array line step in bytes.
- * \param pYMap Device memory pointer to 2D image array of Y coordinate values to be used when sampling source image. 
- * \param nYMapStep pYMap image array line step in bytes.
- * \param pDst \ref destination_planar_image_pointer_array.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSizeROI Region of interest size in the destination image.
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref remap_error_codes
+ * For common parameter descriptions, see <a href="#CommonRemapPlanarPixelParameters">Common parameters for nppiRemap planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiRemap_32f_P3R(const Npp32f * const pSrc[3], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -2045,19 +1346,8 @@ nppiRemap_32f_P3R(const Npp32f * const pSrc[3], NppiSize oSrcSize, int nSrcStep,
 /**
  * 4 channel 32-bit floating point planar image remap.
  *
- * \param pSrc \ref source_planar_image_pointer_array.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pXMap Device memory pointer to 2D image array of X coordinate values to be used when sampling source image. 
- * \param nXMapStep pXMap image array line step in bytes.
- * \param pYMap Device memory pointer to 2D image array of Y coordinate values to be used when sampling source image. 
- * \param nYMapStep pYMap image array line step in bytes.
- * \param pDst \ref destination_planar_image_pointer_array.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSizeROI Region of interest size in the destination image.
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref remap_error_codes
+ * For common parameter descriptions, see <a href="#CommonRemapPlanarPixelParameters">Common parameters for nppiRemap planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiRemap_32f_P4R(const Npp32f * const pSrc[4], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -2067,19 +1357,8 @@ nppiRemap_32f_P4R(const Npp32f * const pSrc[4], NppiSize oSrcSize, int nSrcStep,
 /**
  * 1 channel 64-bit floating point image remap.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pXMap Device memory pointer to 2D image array of X coordinate values to be used when sampling source image. 
- * \param nXMapStep pXMap image array line step in bytes.
- * \param pYMap Device memory pointer to 2D image array of Y coordinate values to be used when sampling source image. 
- * \param nYMapStep pYMap image array line step in bytes.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSizeROI Region of interest size in the destination image.
- * \param eInterpolation The type of eInterpolation to perform resampling
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref remap_error_codes
+ * For common parameter descriptions, see <a href="#CommonRemapPackedPixelParameters">Common parameters for nppiRemap packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiRemap_64f_C1R(const Npp64f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -2089,19 +1368,8 @@ nppiRemap_64f_C1R(const Npp64f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect
 /**
  * 3 channel 64-bit floating point image remap.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pXMap Device memory pointer to 2D image array of X coordinate values to be used when sampling source image. 
- * \param nXMapStep pXMap image array line step in bytes.
- * \param pYMap Device memory pointer to 2D image array of Y coordinate values to be used when sampling source image. 
- * \param nYMapStep pYMap image array line step in bytes.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSizeROI Region of interest size in the destination image.
- * \param eInterpolation The type of eInterpolation to perform resampling
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref remap_error_codes
+ * For common parameter descriptions, see <a href="#CommonRemapPackedPixelParameters">Common parameters for nppiRemap packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiRemap_64f_C3R(const Npp64f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -2111,19 +1379,8 @@ nppiRemap_64f_C3R(const Npp64f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect
 /**
  * 4 channel 64-bit floating point image remap.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pXMap Device memory pointer to 2D image array of X coordinate values to be used when sampling source image. 
- * \param nXMapStep pXMap image array line step in bytes.
- * \param pYMap Device memory pointer to 2D image array of Y coordinate values to be used when sampling source image. 
- * \param nYMapStep pYMap image array line step in bytes.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSizeROI Region of interest size in the destination image.
- * \param eInterpolation The type of eInterpolation to perform resampling
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref remap_error_codes
+ * For common parameter descriptions, see <a href="#CommonRemapPackedPixelParameters">Common parameters for nppiRemap packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiRemap_64f_C4R(const Npp64f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -2133,19 +1390,8 @@ nppiRemap_64f_C4R(const Npp64f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect
 /**
  * 4 channel 64-bit floating point image remap not affecting alpha.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pXMap Device memory pointer to 2D image array of X coordinate values to be used when sampling source image. 
- * \param nXMapStep pXMap image array line step in bytes.
- * \param pYMap Device memory pointer to 2D image array of Y coordinate values to be used when sampling source image. 
- * \param nYMapStep pYMap image array line step in bytes.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSizeROI Region of interest size in the destination image.
- * \param eInterpolation The type of interpolation to perform resampling
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref remap_error_codes
+ * For common parameter descriptions, see <a href="#CommonRemapPackedPixelParameters">Common parameters for nppiRemap packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiRemap_64f_AC4R(const Npp64f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -2155,19 +1401,8 @@ nppiRemap_64f_AC4R(const Npp64f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRec
 /**
  * 3 channel 64-bit floating point planar image remap.
  *
- * \param pSrc \ref source_planar_image_pointer_array.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pXMap Device memory pointer to 2D image array of X coordinate values to be used when sampling source image. 
- * \param nXMapStep pXMap image array line step in bytes.
- * \param pYMap Device memory pointer to 2D image array of Y coordinate values to be used when sampling source image. 
- * \param nYMapStep pYMap image array line step in bytes.
- * \param pDst \ref destination_planar_image_pointer_array.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSizeROI Region of interest size in the destination image.
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref remap_error_codes
+ * For common parameter descriptions, see <a href="#CommonRemapPlanarPixelParameters">Common parameters for nppiRemap planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiRemap_64f_P3R(const Npp64f * const pSrc[3], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -2177,19 +1412,8 @@ nppiRemap_64f_P3R(const Npp64f * const pSrc[3], NppiSize oSrcSize, int nSrcStep,
 /**
  * 4 channel 64-bit floating point planar image remap.
  *
- * \param pSrc \ref source_planar_image_pointer_array.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image.
- * \param oSrcROI Region of interest in the source image.
- * \param pXMap Device memory pointer to 2D image array of X coordinate values to be used when sampling source image. 
- * \param nXMapStep pXMap image array line step in bytes.
- * \param pYMap Device memory pointer to 2D image array of Y coordinate values to be used when sampling source image. 
- * \param nYMapStep pYMap image array line step in bytes.
- * \param pDst \ref destination_planar_image_pointer_array.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstSizeROI Region of interest size in the destination image.
- * \param eInterpolation The type of eInterpolation to perform resampling.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref remap_error_codes
+ * For common parameter descriptions, see <a href="#CommonRemapPlanarPixelParameters">Common parameters for nppiRemap planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiRemap_64f_P4R(const Npp64f * const pSrc[4], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -2258,12 +1482,7 @@ nppiGetRotateBound(NppiRect oSrcROI, double aBoundingBox[2][2], double nAngle, d
 
 /** @defgroup rotate_ Rotate
  *
- * @{
- *
- */
-
-/**
- * 8-bit unsigned image rotate.
+ * <h3><a name="CommonRotateParameters">Common parameters for nppiRotate functions include:</a></h3>
  *
  * \param pSrc \ref source_image_pointer.
  * \param nSrcStep \ref source_image_line_step.
@@ -2277,6 +1496,16 @@ nppiGetRotateBound(NppiRect oSrcROI, double aBoundingBox[2][2], double nAngle, d
  * \param nShiftY Shift along vertical axis 
  * \param eInterpolation The type of interpolation to perform resampling
  * \return \ref image_data_error_codes, \ref roi_error_codes, \ref rotate_error_codes
+ *
+ * @{
+ *
+ */
+
+/**
+ * 8-bit unsigned image rotate.
+ *
+ * For common parameter descriptions, see <a href="#CommonRotateParameters">Common parameters for nppiRotate functions</a>.
+ *
  */
 NppStatus 
 nppiRotate_8u_C1R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -2286,18 +1515,8 @@ nppiRotate_8u_C1R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect 
 /**
  * 3 channel 8-bit unsigned image rotate.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image
- * \param oSrcROI Region of interest in the source image.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Region of interest in the destination image.
- * \param nAngle The angle of rotation in degrees.
- * \param nShiftX Shift along horizontal axis 
- * \param nShiftY Shift along vertical axis 
- * \param eInterpolation The type of interpolation to perform resampling
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref rotate_error_codes
+ * For common parameter descriptions, see <a href="#CommonRotateParameters">Common parameters for nppiRotate functions</a>.
+ *
  */
 NppStatus 
 nppiRotate_8u_C3R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -2307,18 +1526,8 @@ nppiRotate_8u_C3R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect 
 /**
  * 4 channel 8-bit unsigned image rotate.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image
- * \param oSrcROI Region of interest in the source image.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Region of interest in the destination image.
- * \param nAngle The angle of rotation in degrees.
- * \param nShiftX Shift along horizontal axis 
- * \param nShiftY Shift along vertical axis 
- * \param eInterpolation The type of interpolation to perform resampling
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref rotate_error_codes
+ * For common parameter descriptions, see <a href="#CommonRotateParameters">Common parameters for nppiRotate functions</a>.
+ *
  */
 NppStatus 
 nppiRotate_8u_C4R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -2328,18 +1537,8 @@ nppiRotate_8u_C4R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect 
 /**
  * 4 channel 8-bit unsigned image rotate ignoring alpha channel.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image
- * \param oSrcROI Region of interest in the source image.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Region of interest in the destination image.
- * \param nAngle The angle of rotation in degrees.
- * \param nShiftX Shift along horizontal axis 
- * \param nShiftY Shift along vertical axis 
- * \param eInterpolation The type of interpolation to perform resampling
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref rotate_error_codes
+ * For common parameter descriptions, see <a href="#CommonRotateParameters">Common parameters for nppiRotate functions</a>.
+ *
  */
 NppStatus 
 nppiRotate_8u_AC4R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -2349,18 +1548,8 @@ nppiRotate_8u_AC4R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect
 /**
  * 16-bit unsigned image rotate.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image
- * \param oSrcROI Region of interest in the source image.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Region of interest in the destination image.
- * \param nAngle The angle of rotation in degrees.
- * \param nShiftX Shift along horizontal axis 
- * \param nShiftY Shift along vertical axis 
- * \param eInterpolation The type of interpolation to perform resampling
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref rotate_error_codes
+ * For common parameter descriptions, see <a href="#CommonRotateParameters">Common parameters for nppiRotate functions</a>.
+ *
  */
 NppStatus 
 nppiRotate_16u_C1R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -2370,18 +1559,8 @@ nppiRotate_16u_C1R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRec
 /**
  * 3 channel 16-bit unsigned image rotate.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image
- * \param oSrcROI Region of interest in the source image.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Region of interest in the destination image.
- * \param nAngle The angle of rotation in degrees.
- * \param nShiftX Shift along horizontal axis 
- * \param nShiftY Shift along vertical axis 
- * \param eInterpolation The type of interpolation to perform resampling
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref rotate_error_codes
+ * For common parameter descriptions, see <a href="#CommonRotateParameters">Common parameters for nppiRotate functions</a>.
+ *
  */
 NppStatus 
 nppiRotate_16u_C3R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -2391,18 +1570,8 @@ nppiRotate_16u_C3R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRec
 /**
  * 4 channel 16-bit unsigned image rotate.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image
- * \param oSrcROI Region of interest in the source image.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Region of interest in the destination image.
- * \param nAngle The angle of rotation in degrees.
- * \param nShiftX Shift along horizontal axis 
- * \param nShiftY Shift along vertical axis 
- * \param eInterpolation The type of interpolation to perform resampling
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref rotate_error_codes
+ * For common parameter descriptions, see <a href="#CommonRotateParameters">Common parameters for nppiRotate functions</a>.
+ *
  */
 NppStatus 
 nppiRotate_16u_C4R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -2412,18 +1581,8 @@ nppiRotate_16u_C4R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRec
 /**
  * 4 channel 16-bit unsigned image rotate ignoring alpha channel.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image
- * \param oSrcROI Region of interest in the source image.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Region of interest in the destination image.
- * \param nAngle The angle of rotation in degrees.
- * \param nShiftX Shift along horizontal axis 
- * \param nShiftY Shift along vertical axis 
- * \param eInterpolation The type of interpolation to perform resampling
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref rotate_error_codes
+ * For common parameter descriptions, see <a href="#CommonRotateParameters">Common parameters for nppiRotate functions</a>.
+ *
  */
 NppStatus 
 nppiRotate_16u_AC4R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -2433,18 +1592,8 @@ nppiRotate_16u_AC4R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRe
 /**
  * 32-bit float image rotate.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image
- * \param oSrcROI Region of interest in the source image.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Region of interest in the destination image.
- * \param nAngle The angle of rotation in degrees.
- * \param nShiftX Shift along horizontal axis 
- * \param nShiftY Shift along vertical axis 
- * \param eInterpolation The type of interpolation to perform resampling
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref rotate_error_codes
+ * For common parameter descriptions, see <a href="#CommonRotateParameters">Common parameters for nppiRotate functions</a>.
+ *
  */
 NppStatus 
 nppiRotate_32f_C1R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -2454,18 +1603,8 @@ nppiRotate_32f_C1R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRec
 /**
  * 3 channel 32-bit float image rotate.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image
- * \param oSrcROI Region of interest in the source image.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Region of interest in the destination image.
- * \param nAngle The angle of rotation in degrees.
- * \param nShiftX Shift along horizontal axis 
- * \param nShiftY Shift along vertical axis 
- * \param eInterpolation The type of interpolation to perform resampling
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref rotate_error_codes
+ * For common parameter descriptions, see <a href="#CommonRotateParameters">Common parameters for nppiRotate functions</a>.
+ *
  */
 NppStatus 
 nppiRotate_32f_C3R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -2475,18 +1614,8 @@ nppiRotate_32f_C3R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRec
 /**
  * 4 channel 32-bit float image rotate.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image
- * \param oSrcROI Region of interest in the source image.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Region of interest in the destination image.
- * \param nAngle The angle of rotation in degrees.
- * \param nShiftX Shift along horizontal axis 
- * \param nShiftY Shift along vertical axis 
- * \param eInterpolation The type of interpolation to perform resampling
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref rotate_error_codes
+ * For common parameter descriptions, see <a href="#CommonRotateParameters">Common parameters for nppiRotate functions</a>.
+ *
  */
 NppStatus 
 nppiRotate_32f_C4R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -2496,18 +1625,8 @@ nppiRotate_32f_C4R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRec
 /**
  * 4 channel 32-bit float image rotate ignoring alpha channel.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcSize Size in pixels of the source image
- * \param oSrcROI Region of interest in the source image.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Region of interest in the destination image.
- * \param nAngle The angle of rotation in degrees.
- * \param nShiftX Shift along horizontal axis 
- * \param nShiftY Shift along vertical axis 
- * \param eInterpolation The type of interpolation to perform resampling
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref rotate_error_codes
+ * For common parameter descriptions, see <a href="#CommonRotateParameters">Common parameters for nppiRotate functions</a>.
+ *
  */
 NppStatus 
 nppiRotate_32f_AC4R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -2523,6 +1642,18 @@ nppiRotate_32f_AC4R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRe
  * \section mirror_error_codes Mirror Error Codes
  *         - ::NPP_MIRROR_FLIP_ERROR if flip has an illegal value.
  *
+ * <h3><a name="CommonMirrorParameters">Common parameters for nppiMirror non-inplace and inplace functions include:</a></h3>
+ *
+ * \param pSrcDst \ref in_place_image_pointer for inplace functions.
+ * \param nSrcDstStep \ref in_place_image_line_step for inplace functions.
+ * \param pSrc \ref source_image_pointer for non-inplace functions.
+ * \param nSrcStep \ref source_image_line_step for non-inplace functions.
+ * \param pDst \ref destination_image_pointer for non-inplace functions.
+ * \param nDstStep \ref destination_image_line_step for non-inplace functions.
+ * \param oROI \ref roi_specification.
+ * \param flip Specifies the axis about which the image is to be mirrored.
+ * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ *
  * @{
  *
  */
@@ -2530,13 +1661,8 @@ nppiRotate_32f_AC4R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRe
 /**
  * 1 channel 8-bit unsigned image mirror.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oROI \ref roi_specification.
- * \param flip Specifies the axis about which the image is to be mirrored.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorParameters">Common parameters for nppiMirror functions</a>.
+ *
  */
 NppStatus 
 nppiMirror_8u_C1R(const Npp8u * pSrc, int nSrcStep, 
@@ -2546,11 +1672,8 @@ nppiMirror_8u_C1R(const Npp8u * pSrc, int nSrcStep,
 /**
  * 1 channel 8-bit unsigned in place image mirror.
  *
- * \param pSrcDst \ref in_place_image_pointer.
- * \param nSrcDstStep \ref in_place_image_line_step.
- * \param oROI \ref roi_specification.
- * \param flip Specifies the axis about which the image is to be mirrored.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorParameters">Common parameters for nppiMirror functions</a>.
+ *
  */
 NppStatus 
 nppiMirror_8u_C1IR(Npp8u * pSrcDst, int nSrcDstStep, 
@@ -2559,13 +1682,8 @@ nppiMirror_8u_C1IR(Npp8u * pSrcDst, int nSrcDstStep,
 /**
  * 3 channel 8-bit unsigned image mirror.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oROI \ref roi_specification.
- * \param flip Specifies the axis about which the image is to be mirrored.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorParameters">Common parameters for nppiMirror functions</a>.
+ *
  */
 NppStatus 
 nppiMirror_8u_C3R(const Npp8u * pSrc, int nSrcStep, 
@@ -2575,11 +1693,8 @@ nppiMirror_8u_C3R(const Npp8u * pSrc, int nSrcStep,
 /**
  * 3 channel 8-bit unsigned in place image mirror.
  *
- * \param pSrcDst \ref in_place_image_pointer.
- * \param nSrcDstStep \ref in_place_image_line_step.
- * \param oROI \ref roi_specification.
- * \param flip Specifies the axis about which the image is to be mirrored.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorParameters">Common parameters for nppiMirror functions</a>.
+ *
  */
 NppStatus 
 nppiMirror_8u_C3IR(Npp8u * pSrcDst, int nSrcDstStep, 
@@ -2588,14 +1703,8 @@ nppiMirror_8u_C3IR(Npp8u * pSrcDst, int nSrcDstStep,
 /**
  * 4 channel 8-bit unsigned image mirror.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep Distance in bytes between starts of consecutive lines of the
- *        destination image.
- * \param oROI \ref roi_specification.
- * \param flip Specifies the axis about which the image is to be mirrored.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorParameters">Common parameters for nppiMirror functions</a>.
+ *
  */
 NppStatus 
 nppiMirror_8u_C4R(const Npp8u * pSrc, int nSrcStep, 
@@ -2605,11 +1714,8 @@ nppiMirror_8u_C4R(const Npp8u * pSrc, int nSrcStep,
 /**
  * 4 channel 8-bit unsigned in place image mirror.
  *
- * \param pSrcDst \ref in_place_image_pointer.
- * \param nSrcDstStep \ref in_place_image_line_step.
- * \param oROI \ref roi_specification.
- * \param flip Specifies the axis about which the image is to be mirrored.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorParameters">Common parameters for nppiMirror functions</a>.
+ *
  */
 NppStatus 
 nppiMirror_8u_C4IR(Npp8u * pSrcDst, int nSrcDstStep, 
@@ -2618,14 +1724,8 @@ nppiMirror_8u_C4IR(Npp8u * pSrcDst, int nSrcDstStep,
 /**
  * 4 channel 8-bit unsigned image mirror not affecting alpha.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep Distance in bytes between starts of consecutive lines of the
- *        destination image.
- * \param oROI \ref roi_specification.
- * \param flip Specifies the axis about which the image is to be mirrored.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorParameters">Common parameters for nppiMirror functions</a>.
+ *
  */
 NppStatus 
 nppiMirror_8u_AC4R(const Npp8u * pSrc, int nSrcStep, 
@@ -2635,11 +1735,8 @@ nppiMirror_8u_AC4R(const Npp8u * pSrc, int nSrcStep,
 /**
  * 4 channel 8-bit unsigned in place image mirror not affecting alpha.
  *
- * \param pSrcDst \ref in_place_image_pointer.
- * \param nSrcDstStep \ref in_place_image_line_step.
- * \param oROI \ref roi_specification.
- * \param flip Specifies the axis about which the image is to be mirrored.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorParameters">Common parameters for nppiMirror functions</a>.
+ *
  */
 NppStatus 
 nppiMirror_8u_AC4IR(Npp8u * pSrcDst, int nSrcDstStep, 
@@ -2647,13 +1744,8 @@ nppiMirror_8u_AC4IR(Npp8u * pSrcDst, int nSrcDstStep,
 /**
  * 1 channel 16-bit unsigned image mirror.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oROI \ref roi_specification.
- * \param flip Specifies the axis about which the image is to be mirrored.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorParameters">Common parameters for nppiMirror functions</a>.
+ *
  */
 NppStatus 
 nppiMirror_16u_C1R(const Npp16u * pSrc, int nSrcStep, 
@@ -2663,11 +1755,8 @@ nppiMirror_16u_C1R(const Npp16u * pSrc, int nSrcStep,
 /**
  * 1 channel 16-bit unsigned in place image mirror.
  *
- * \param pSrcDst \ref in_place_image_pointer.
- * \param nSrcDstStep \ref in_place_image_line_step.
- * \param oROI \ref roi_specification.
- * \param flip Specifies the axis about which the image is to be mirrored.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorParameters">Common parameters for nppiMirror functions</a>.
+ *
  */
 NppStatus 
 nppiMirror_16u_C1IR(Npp16u * pSrcDst, int nSrcDstStep, 
@@ -2676,13 +1765,8 @@ nppiMirror_16u_C1IR(Npp16u * pSrcDst, int nSrcDstStep,
 /**
  * 3 channel 16-bit unsigned image mirror.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oROI \ref roi_specification.
- * \param flip Specifies the axis about which the image is to be mirrored.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorParameters">Common parameters for nppiMirror functions</a>.
+ *
  */
 NppStatus 
 nppiMirror_16u_C3R(const Npp16u * pSrc, int nSrcStep, 
@@ -2692,11 +1776,8 @@ nppiMirror_16u_C3R(const Npp16u * pSrc, int nSrcStep,
 /**
  * 3 channel 16-bit unsigned in place image mirror.
  *
- * \param pSrcDst \ref in_place_image_pointer.
- * \param nSrcDstStep \ref in_place_image_line_step.
- * \param oROI \ref roi_specification.
- * \param flip Specifies the axis about which the image is to be mirrored.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorParameters">Common parameters for nppiMirror functions</a>.
+ *
  */
 NppStatus 
 nppiMirror_16u_C3IR(Npp16u * pSrcDst, int nSrcDstStep, 
@@ -2705,14 +1786,8 @@ nppiMirror_16u_C3IR(Npp16u * pSrcDst, int nSrcDstStep,
 /**
  * 4 channel 16-bit unsigned image mirror.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep Distance in bytes between starts of consecutive lines of the
- *        destination image.
- * \param oROI \ref roi_specification.
- * \param flip Specifies the axis about which the image is to be mirrored.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorParameters">Common parameters for nppiMirror functions</a>.
+ *
  */
 NppStatus 
 nppiMirror_16u_C4R(const Npp16u * pSrc, int nSrcStep, 
@@ -2722,11 +1797,8 @@ nppiMirror_16u_C4R(const Npp16u * pSrc, int nSrcStep,
 /**
  * 4 channel 16-bit unsigned in place image mirror.
  *
- * \param pSrcDst \ref in_place_image_pointer.
- * \param nSrcDstStep \ref in_place_image_line_step.
- * \param oROI \ref roi_specification.
- * \param flip Specifies the axis about which the image is to be mirrored.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorParameters">Common parameters for nppiMirror functions</a>.
+ *
  */
 NppStatus 
 nppiMirror_16u_C4IR(Npp16u * pSrcDst, int nSrcDstStep, 
@@ -2735,14 +1807,8 @@ nppiMirror_16u_C4IR(Npp16u * pSrcDst, int nSrcDstStep,
 /**
  * 4 channel 16-bit unsigned image mirror not affecting alpha.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep Distance in bytes between starts of consecutive lines of the
- *        destination image.
- * \param oROI \ref roi_specification.
- * \param flip Specifies the axis about which the image is to be mirrored.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorParameters">Common parameters for nppiMirror functions</a>.
+ *
  */
 NppStatus 
 nppiMirror_16u_AC4R(const Npp16u * pSrc, int nSrcStep, 
@@ -2752,11 +1818,8 @@ nppiMirror_16u_AC4R(const Npp16u * pSrc, int nSrcStep,
 /**
  * 4 channel 16-bit unsigned in place image mirror not affecting alpha.
  *
- * \param pSrcDst \ref in_place_image_pointer.
- * \param nSrcDstStep \ref in_place_image_line_step.
- * \param oROI \ref roi_specification.
- * \param flip Specifies the axis about which the image is to be mirrored.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorParameters">Common parameters for nppiMirror functions</a>.
+ *
  */
 NppStatus 
 nppiMirror_16u_AC4IR(Npp16u * pSrcDst, int nSrcDstStep, 
@@ -2765,13 +1828,8 @@ nppiMirror_16u_AC4IR(Npp16u * pSrcDst, int nSrcDstStep,
 /**
  * 1 channel 16-bit signed image mirror.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oROI \ref roi_specification.
- * \param flip Specifies the axis about which the image is to be mirrored.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorParameters">Common parameters for nppiMirror functions</a>.
+ *
  */
 NppStatus 
 nppiMirror_16s_C1R(const Npp16s * pSrc, int nSrcStep, 
@@ -2781,11 +1839,8 @@ nppiMirror_16s_C1R(const Npp16s * pSrc, int nSrcStep,
 /**
  * 1 channel 16-bit signed in place image mirror.
  *
- * \param pSrcDst \ref in_place_image_pointer.
- * \param nSrcDstStep \ref in_place_image_line_step.
- * \param oROI \ref roi_specification.
- * \param flip Specifies the axis about which the image is to be mirrored.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorParameters">Common parameters for nppiMirror functions</a>.
+ *
  */
 NppStatus 
 nppiMirror_16s_C1IR(Npp16s * pSrcDst, int nSrcDstStep, 
@@ -2794,13 +1849,8 @@ nppiMirror_16s_C1IR(Npp16s * pSrcDst, int nSrcDstStep,
 /**
  * 3 channel 16-bit signed image mirror.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oROI \ref roi_specification.
- * \param flip Specifies the axis about which the image is to be mirrored.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorParameters">Common parameters for nppiMirror functions</a>.
+ *
  */
 NppStatus 
 nppiMirror_16s_C3R(const Npp16s * pSrc, int nSrcStep, 
@@ -2810,11 +1860,8 @@ nppiMirror_16s_C3R(const Npp16s * pSrc, int nSrcStep,
 /**
  * 3 channel 16-bit signed in place image mirror.
  *
- * \param pSrcDst \ref in_place_image_pointer.
- * \param nSrcDstStep \ref in_place_image_line_step.
- * \param oROI \ref roi_specification.
- * \param flip Specifies the axis about which the image is to be mirrored.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorParameters">Common parameters for nppiMirror functions</a>.
+ *
  */
 NppStatus 
 nppiMirror_16s_C3IR(Npp16s * pSrcDst, int nSrcDstStep, 
@@ -2823,14 +1870,8 @@ nppiMirror_16s_C3IR(Npp16s * pSrcDst, int nSrcDstStep,
 /**
  * 4 channel 16-bit signed image mirror.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep Distance in bytes between starts of consecutive lines of the
- *        destination image.
- * \param oROI \ref roi_specification.
- * \param flip Specifies the axis about which the image is to be mirrored.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorParameters">Common parameters for nppiMirror functions</a>.
+ *
  */
 NppStatus 
 nppiMirror_16s_C4R(const Npp16s * pSrc, int nSrcStep, 
@@ -2840,11 +1881,8 @@ nppiMirror_16s_C4R(const Npp16s * pSrc, int nSrcStep,
 /**
  * 4 channel 16-bit signed in place image mirror.
  *
- * \param pSrcDst \ref in_place_image_pointer.
- * \param nSrcDstStep \ref in_place_image_line_step.
- * \param oROI \ref roi_specification.
- * \param flip Specifies the axis about which the image is to be mirrored.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorParameters">Common parameters for nppiMirror functions</a>.
+ *
  */
 NppStatus 
 nppiMirror_16s_C4IR(Npp16s * pSrcDst, int nSrcDstStep, 
@@ -2853,14 +1891,8 @@ nppiMirror_16s_C4IR(Npp16s * pSrcDst, int nSrcDstStep,
 /**
  * 4 channel 16-bit signed image mirror not affecting alpha.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep Distance in bytes between starts of consecutive lines of the
- *        destination image.
- * \param oROI \ref roi_specification.
- * \param flip Specifies the axis about which the image is to be mirrored.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorParameters">Common parameters for nppiMirror functions</a>.
+ *
  */
 NppStatus 
 nppiMirror_16s_AC4R(const Npp16s * pSrc, int nSrcStep, 
@@ -2870,11 +1902,8 @@ nppiMirror_16s_AC4R(const Npp16s * pSrc, int nSrcStep,
 /**
  * 4 channel 16-bit signed in place image mirror not affecting alpha.
  *
- * \param pSrcDst \ref in_place_image_pointer.
- * \param nSrcDstStep \ref in_place_image_line_step.
- * \param oROI \ref roi_specification.
- * \param flip Specifies the axis about which the image is to be mirrored.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorParameters">Common parameters for nppiMirror functions</a>.
+ *
  */
 NppStatus 
 nppiMirror_16s_AC4IR(Npp16s * pSrcDst, int nSrcDstStep, 
@@ -2883,13 +1912,8 @@ nppiMirror_16s_AC4IR(Npp16s * pSrcDst, int nSrcDstStep,
 /**
  * 1 channel 32-bit image mirror.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oROI \ref roi_specification.
- * \param flip Specifies the axis about which the image is to be mirrored.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorParameters">Common parameters for nppiMirror functions</a>.
+ *
  */
 NppStatus 
 nppiMirror_32s_C1R(const Npp32s * pSrc, int nSrcStep, 
@@ -2899,11 +1923,8 @@ nppiMirror_32s_C1R(const Npp32s * pSrc, int nSrcStep,
 /**
  * 1 channel 32-bit signed in place image mirror.
  *
- * \param pSrcDst \ref in_place_image_pointer.
- * \param nSrcDstStep \ref in_place_image_line_step.
- * \param oROI \ref roi_specification.
- * \param flip Specifies the axis about which the image is to be mirrored.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorParameters">Common parameters for nppiMirror functions</a>.
+ *
  */
 NppStatus 
 nppiMirror_32s_C1IR(Npp32s * pSrcDst, int nSrcDstStep, 
@@ -2912,13 +1933,8 @@ nppiMirror_32s_C1IR(Npp32s * pSrcDst, int nSrcDstStep,
 /**
  * 3 channel 32-bit image mirror.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oROI \ref roi_specification.
- * \param flip Specifies the axis about which the image is to be mirrored.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorParameters">Common parameters for nppiMirror functions</a>.
+ *
  */
 NppStatus 
 nppiMirror_32s_C3R(const Npp32s * pSrc, int nSrcStep, 
@@ -2928,11 +1944,8 @@ nppiMirror_32s_C3R(const Npp32s * pSrc, int nSrcStep,
 /**
  * 3 channel 32-bit signed in place image mirror.
  *
- * \param pSrcDst \ref in_place_image_pointer.
- * \param nSrcDstStep \ref in_place_image_line_step.
- * \param oROI \ref roi_specification.
- * \param flip Specifies the axis about which the image is to be mirrored.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorParameters">Common parameters for nppiMirror functions</a>.
+ *
  */
 NppStatus 
 nppiMirror_32s_C3IR(Npp32s * pSrcDst, int nSrcDstStep, 
@@ -2941,14 +1954,8 @@ nppiMirror_32s_C3IR(Npp32s * pSrcDst, int nSrcDstStep,
 /**
  * 4 channel 32-bit image mirror.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep Distance in bytes between starts of consecutive lines of the
- *        destination image.
- * \param oROI \ref roi_specification.
- * \param flip Specifies the axis about which the image is to be mirrored.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorParameters">Common parameters for nppiMirror functions</a>.
+ *
  */
 NppStatus 
 nppiMirror_32s_C4R(const Npp32s * pSrc, int nSrcStep, 
@@ -2958,11 +1965,8 @@ nppiMirror_32s_C4R(const Npp32s * pSrc, int nSrcStep,
 /**
  * 4 channel 32-bit signed in place image mirror.
  *
- * \param pSrcDst \ref in_place_image_pointer.
- * \param nSrcDstStep \ref in_place_image_line_step.
- * \param oROI \ref roi_specification.
- * \param flip Specifies the axis about which the image is to be mirrored.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorParameters">Common parameters for nppiMirror functions</a>.
+ *
  */
 NppStatus 
 nppiMirror_32s_C4IR(Npp32s * pSrcDst, int nSrcDstStep, 
@@ -2972,14 +1976,8 @@ nppiMirror_32s_C4IR(Npp32s * pSrcDst, int nSrcDstStep,
 /**
  * 4 channel 32-bit image mirror not affecting alpha.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep Distance in bytes between starts of consecutive lines of the
- *        destination image.
- * \param oROI \ref roi_specification.
- * \param flip Specifies the axis about which the image is to be mirrored.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorParameters">Common parameters for nppiMirror functions</a>.
+ *
  */
 NppStatus 
 nppiMirror_32s_AC4R(const Npp32s * pSrc, int nSrcStep, 
@@ -2989,11 +1987,8 @@ nppiMirror_32s_AC4R(const Npp32s * pSrc, int nSrcStep,
 /**
  * 4 channel 32-bit signed in place image mirror not affecting alpha.
  *
- * \param pSrcDst \ref in_place_image_pointer.
- * \param nSrcDstStep \ref in_place_image_line_step.
- * \param oROI \ref roi_specification.
- * \param flip Specifies the axis about which the image is to be mirrored.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorParameters">Common parameters for nppiMirror functions</a>.
+ *
  */
 NppStatus 
 nppiMirror_32s_AC4IR(Npp32s * pSrcDst, int nSrcDstStep, 
@@ -3003,13 +1998,8 @@ nppiMirror_32s_AC4IR(Npp32s * pSrcDst, int nSrcDstStep,
 /**
  * 1 channel 32-bit float image mirror.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oROI \ref roi_specification.
- * \param flip Specifies the axis about which the image is to be mirrored.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorParameters">Common parameters for nppiMirror functions</a>.
+ *
  */
 NppStatus 
 nppiMirror_32f_C1R(const Npp32f * pSrc, int nSrcStep, 
@@ -3019,11 +2009,8 @@ nppiMirror_32f_C1R(const Npp32f * pSrc, int nSrcStep,
 /**
  * 1 channel 32-bit float in place image mirror.
  *
- * \param pSrcDst \ref in_place_image_pointer.
- * \param nSrcDstStep \ref in_place_image_line_step.
- * \param oROI \ref roi_specification.
- * \param flip Specifies the axis about which the image is to be mirrored.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorParameters">Common parameters for nppiMirror functions</a>.
+ *
  */
 NppStatus 
 nppiMirror_32f_C1IR(Npp32f * pSrcDst, int nSrcDstStep, 
@@ -3033,13 +2020,8 @@ nppiMirror_32f_C1IR(Npp32f * pSrcDst, int nSrcDstStep,
 /**
  * 3 channel 32-bit float image mirror.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oROI \ref roi_specification.
- * \param flip Specifies the axis about which the image is to be mirrored.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorParameters">Common parameters for nppiMirror functions</a>.
+ *
  */
 NppStatus 
 nppiMirror_32f_C3R(const Npp32f * pSrc, int nSrcStep, 
@@ -3049,11 +2031,8 @@ nppiMirror_32f_C3R(const Npp32f * pSrc, int nSrcStep,
 /**
  * 3 channel 32-bit float in place image mirror.
  *
- * \param pSrcDst \ref in_place_image_pointer.
- * \param nSrcDstStep \ref in_place_image_line_step.
- * \param oROI \ref roi_specification.
- * \param flip Specifies the axis about which the image is to be mirrored.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorParameters">Common parameters for nppiMirror functions</a>.
+ *
  */
 NppStatus 
 nppiMirror_32f_C3IR(Npp32f * pSrcDst, int nSrcDstStep, 
@@ -3062,14 +2041,8 @@ nppiMirror_32f_C3IR(Npp32f * pSrcDst, int nSrcDstStep,
 /**
  * 4 channel 32-bit float image mirror.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep Distance in bytes between starts of consecutive lines of the
- *        destination image.
- * \param oROI \ref roi_specification.
- * \param flip Specifies the axis about which the image is to be mirrored.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorParameters">Common parameters for nppiMirror functions</a>.
+ *
  */
 NppStatus 
 nppiMirror_32f_C4R(const Npp32f * pSrc, int nSrcStep, 
@@ -3079,11 +2052,8 @@ nppiMirror_32f_C4R(const Npp32f * pSrc, int nSrcStep,
 /**
  * 4 channel 32-bit float in place image mirror.
  *
- * \param pSrcDst \ref in_place_image_pointer.
- * \param nSrcDstStep \ref in_place_image_line_step.
- * \param oROI \ref roi_specification.
- * \param flip Specifies the axis about which the image is to be mirrored.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorParameters">Common parameters for nppiMirror functions</a>.
+ *
  */
 NppStatus 
 nppiMirror_32f_C4IR(Npp32f * pSrcDst, int nSrcDstStep, 
@@ -3092,14 +2062,8 @@ nppiMirror_32f_C4IR(Npp32f * pSrcDst, int nSrcDstStep,
 /**
  * 4 channel 32-bit float image mirror not affecting alpha.
  *
- * \param pSrc \ref source_image_pointer.
- * \param nSrcStep \ref source_image_line_step.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep Distance in bytes between starts of consecutive lines of the
- *        destination image.
- * \param oROI \ref roi_specification.
- * \param flip Specifies the axis about which the image is to be mirrored.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorParameters">Common parameters for nppiMirror functions</a>.
+ *
  */
 NppStatus 
 nppiMirror_32f_AC4R(const Npp32f * pSrc, int nSrcStep, 
@@ -3109,11 +2073,8 @@ nppiMirror_32f_AC4R(const Npp32f * pSrc, int nSrcStep,
 /**
  * 4 channel 32-bit float in place image mirror not affecting alpha.
  *
- * \param pSrcDst \ref in_place_image_pointer.
- * \param nSrcDstStep \ref in_place_image_line_step.
- * \param oROI \ref roi_specification.
- * \param flip Specifies the axis about which the image is to be mirrored.
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorParameters">Common parameters for nppiMirror functions</a>.
+ *
  */
 NppStatus 
 nppiMirror_32f_AC4IR(Npp32f * pSrcDst, int nSrcDstStep, 
@@ -3132,6 +2093,14 @@ nppiMirror_32f_AC4IR(Npp32f * pSrcDst, int nSrcDstStep,
  * that the function not be used for very large images as there may not be resources available for processing several large images
  * simultaneously.  
  *
+ * <h3><a name="CommonMirrorBatchParameters">Common parameters for nppiMirrorBatch non-inplace and inplace functions include:</a></h3>
+ *
+ * \param oSizeROI \ref roi_specification.
+ * \param flip Specifies the axis about which the images are to be mirrored.
+ * \param pBatchList Device memory pointer to nBatchSize list of NppiMirrorBatchCXR structures.
+ * \param nBatchSize Number of NppiMirrorBatchCXR structures in this call (must be > 1).
+ * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ *
  * @{
  *
  */
@@ -3147,11 +2116,8 @@ typedef struct
 /**
  * 1 channel 32-bit float image mirror batch.
  *
- * \param oSizeROI \ref roi_specification.
- * \param flip Specifies the axis about which the images are to be mirrored.
- * \param pBatchList Device memory pointer to nBatchSize list of NppiMirrorBatchCXR structures.
- * \param nBatchSize Number of NppiMirrorBatchCXR structures in this call (must be > 1).
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorBatchParameters">Common parameters for nppiMirrorBatch functions</a>.
+ *
  */
 NppStatus 
 nppiMirrorBatch_32f_C1R(NppiSize oSizeROI, NppiAxis flip, NppiMirrorBatchCXR * pBatchList, int nBatchSize);
@@ -3159,11 +2125,8 @@ nppiMirrorBatch_32f_C1R(NppiSize oSizeROI, NppiAxis flip, NppiMirrorBatchCXR * p
 /**
  * 1 channel 32-bit float in place image mirror batch.
  *
- * \param oSizeROI \ref roi_specification.
- * \param flip Specifies the axis about which the images are to be mirrored.
- * \param pBatchList Device memory pointer to nBatchSize list of NppiMirrorBatchCXR structures.
- * \param nBatchSize Number of NppiMirrorBatchCXR structures in this call (must be > 1).
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorBatchParameters">Common parameters for nppiMirrorBatch functions</a>.
+ *
  */
 NppStatus 
 nppiMirrorBatch_32f_C1IR(NppiSize oSizeROI, NppiAxis flip, NppiMirrorBatchCXR * pBatchList, int nBatchSize);
@@ -3171,11 +2134,8 @@ nppiMirrorBatch_32f_C1IR(NppiSize oSizeROI, NppiAxis flip, NppiMirrorBatchCXR * 
 /**
  * 3 channel 32-bit float image mirror batch.
  *
- * \param oSizeROI \ref roi_specification.
- * \param flip Specifies the axis about which the images are to be mirrored.
- * \param pBatchList Device memory pointer to nBatchSize list of NppiMirrorBatchCXR structures.
- * \param nBatchSize Number of NppiMirrorBatchCXR structures in this call (must be > 1).
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorBatchParameters">Common parameters for nppiMirrorBatch functions</a>.
+ *
  */
 NppStatus 
 nppiMirrorBatch_32f_C3R(NppiSize oSizeROI, NppiAxis flip, NppiMirrorBatchCXR * pBatchList, int nBatchSize);
@@ -3183,11 +2143,8 @@ nppiMirrorBatch_32f_C3R(NppiSize oSizeROI, NppiAxis flip, NppiMirrorBatchCXR * p
 /**
  * 3 channel 32-bit float in place image mirror batch.
  *
- * \param oSizeROI \ref roi_specification.
- * \param flip Specifies the axis about which the images are to be mirrored.
- * \param pBatchList Device memory pointer to nBatchSize list of NppiMirrorBatchCXR structures.
- * \param nBatchSize Number of NppiMirrorBatchCXR structures in this call (must be > 1).
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorBatchParameters">Common parameters for nppiMirrorBatch functions</a>.
+ *
  */
 NppStatus 
 nppiMirrorBatch_32f_C3IR(NppiSize oSizeROI, NppiAxis flip, NppiMirrorBatchCXR * pBatchList, int nBatchSize);
@@ -3195,11 +2152,8 @@ nppiMirrorBatch_32f_C3IR(NppiSize oSizeROI, NppiAxis flip, NppiMirrorBatchCXR * 
 /**
  * 4 channel 32-bit float image mirror batch.
  *
- * \param oSizeROI \ref roi_specification.
- * \param flip Specifies the axis about which the images are to be mirrored.
- * \param pBatchList Device memory pointer to nBatchSize list of NppiMirrorBatchCXR structures.
- * \param nBatchSize Number of NppiMirrorBatchCXR structures in this call (must be > 1).
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorBatchParameters">Common parameters for nppiMirrorBatch functions</a>.
+ *
  */
 NppStatus 
 nppiMirrorBatch_32f_C4R(NppiSize oSizeROI, NppiAxis flip, NppiMirrorBatchCXR * pBatchList, int nBatchSize);
@@ -3207,11 +2161,8 @@ nppiMirrorBatch_32f_C4R(NppiSize oSizeROI, NppiAxis flip, NppiMirrorBatchCXR * p
 /**
  * 4 channel 32-bit float in place image mirror batch.
  *
- * \param oSizeROI \ref roi_specification.
- * \param flip Specifies the axis about which the images are to be mirrored.
- * \param pBatchList Device memory pointer to nBatchSize list of NppiMirrorBatchCXR structures.
- * \param nBatchSize Number of NppiMirrorBatchCXR structures in this call (must be > 1).
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorBatchParameters">Common parameters for nppiMirrorBatch functions</a>.
+ *
  */
 NppStatus 
 nppiMirrorBatch_32f_C4IR(NppiSize oSizeROI, NppiAxis flip, NppiMirrorBatchCXR * pBatchList, int nBatchSize);
@@ -3219,11 +2170,8 @@ nppiMirrorBatch_32f_C4IR(NppiSize oSizeROI, NppiAxis flip, NppiMirrorBatchCXR * 
 /**
  * 4 channel 32-bit float image mirror batch not affecting alpha.
  *
- * \param oSizeROI \ref roi_specification.
- * \param flip Specifies the axis about which the images are to be mirrored.
- * \param pBatchList Device memory pointer to nBatchSize list of NppiMirrorBatchCXR structures.
- * \param nBatchSize Number of NppiMirrorBatchCXR structures in this call (must be > 1).
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorBatchParameters">Common parameters for nppiMirrorBatch functions</a>.
+ *
  */
 NppStatus 
 nppiMirrorBatch_32f_AC4R(NppiSize oSizeROI, NppiAxis flip, NppiMirrorBatchCXR * pBatchList, int nBatchSize);
@@ -3231,11 +2179,8 @@ nppiMirrorBatch_32f_AC4R(NppiSize oSizeROI, NppiAxis flip, NppiMirrorBatchCXR * 
 /**
  * 4 channel 32-bit float in place image mirror batch not affecting alpha.
  *
- * \param oSizeROI \ref roi_specification.
- * \param flip Specifies the axis about which the images are to be mirrored.
- * \param pBatchList Device memory pointer to nBatchSize list of NppiMirrorBatchCXR structures.
- * \param nBatchSize Number of NppiMirrorBatchCXR structures in this call (must be > 1).
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref mirror_error_codes
+ * For common parameter descriptions, see <a href="#CommonMirrorBatchParameters">Common parameters for nppiMirrorBatch functions</a>.
+ *
  */
 NppStatus 
 nppiMirrorBatch_32f_AC4IR(NppiSize oSizeROI, NppiAxis flip, NppiMirrorBatchCXR * pBatchList, int nBatchSize);
@@ -3381,25 +2326,43 @@ nppiGetAffineBound(NppiRect oSrcROI, double aBound[2][2], const double aCoeffs[2
  * represents the post-transform shift, i.e. after the pixel location is transformed
  * by \f$L\f$ it is translated by \f$v\f$.
  * 
+ * <h3><a name="CommonWarpAffinePackedPixelParameters">Common parameters for nppiWarpAffine packed pixel functions include:</a></h3>
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param oSrcSize Size of source image in pixels.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcROI Source ROI.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oDstROI Destination ROI.
+ * \param aCoeffs Affine transform coefficients.
+ * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
+ *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC.
+ * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ *
+ * <h3><a name="CommonWarpAffinePlanarPixelParameters">Common parameters for nppiWarpAffine planar pixel functions include:</a></h3>
+ *
+ * \param pSrc \ref source_planar_image_pointer_array (host memory array containing device memory image plane pointers).
+ * \param oSrcSize Size of source image in pixels.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcROI Source ROI.
+ * \param pDst \ref destination_planar_image_pointer_array. (host memory array containing device memory image plane pointers)
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oDstROI Destination ROI.
+ * \param aCoeffs Affine transform coefficients.
+ * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
+ *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC.
+ * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ *
  * @{
  *
  */
 
-
 /**
  * Single-channel 8-bit unsigned affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffinePackedPixelParameters">Common parameters for nppiWarpAffine packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffine_8u_C1R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI,
@@ -3409,17 +2372,8 @@ nppiWarpAffine_8u_C1R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiR
 /**
  * Three-channel 8-bit unsigned affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffinePackedPixelParameters">Common parameters for nppiWarpAffine packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffine_8u_C3R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -3430,17 +2384,8 @@ nppiWarpAffine_8u_C3R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiR
 /**
  * Four-channel 8-bit unsigned affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffinePackedPixelParameters">Common parameters for nppiWarpAffine packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffine_8u_C4R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -3451,17 +2396,8 @@ nppiWarpAffine_8u_C4R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiR
 /**
  * Four-channel 8-bit unsigned affine warp, ignoring alpha channel.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffinePackedPixelParameters">Common parameters for nppiWarpAffine packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffine_8u_AC4R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -3472,17 +2408,8 @@ nppiWarpAffine_8u_AC4R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, Nppi
 /**
  * Three-channel planar 8-bit unsigned affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffinePlanarPixelParameters">Common parameters for nppiWarpAffine planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffine_8u_P3R(const Npp8u * pSrc[3], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -3492,17 +2419,8 @@ nppiWarpAffine_8u_P3R(const Npp8u * pSrc[3], NppiSize oSrcSize, int nSrcStep, Np
 /**
  * Four-channel planar 8-bit unsigned affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffinePlanarPixelParameters">Common parameters for nppiWarpAffine planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffine_8u_P4R(const Npp8u * pSrc[4], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -3512,17 +2430,8 @@ nppiWarpAffine_8u_P4R(const Npp8u * pSrc[4], NppiSize oSrcSize, int nSrcStep, Np
 /**
  * Single-channel 16-bit unsigned affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffinePackedPixelParameters">Common parameters for nppiWarpAffine packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffine_16u_C1R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI,
@@ -3532,17 +2441,8 @@ nppiWarpAffine_16u_C1R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, Npp
 /**
  * Three-channel 16-bit unsigned affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffinePackedPixelParameters">Common parameters for nppiWarpAffine packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffine_16u_C3R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -3552,17 +2452,8 @@ nppiWarpAffine_16u_C3R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, Npp
 /**
  * Four-channel 16-bit unsigned affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffinePackedPixelParameters">Common parameters for nppiWarpAffine packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffine_16u_C4R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -3572,17 +2463,8 @@ nppiWarpAffine_16u_C4R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, Npp
 /**
  * Four-channel 16-bit unsigned affine warp, ignoring alpha channel.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffinePackedPixelParameters">Common parameters for nppiWarpAffine packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffine_16u_AC4R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -3592,17 +2474,8 @@ nppiWarpAffine_16u_AC4R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, Np
 /**
  * Three-channel planar 16-bit unsigned affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffinePlanarPixelParameters">Common parameters for nppiWarpAffine planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffine_16u_P3R(const Npp16u * pSrc[3], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -3612,17 +2485,8 @@ nppiWarpAffine_16u_P3R(const Npp16u * pSrc[3], NppiSize oSrcSize, int nSrcStep, 
 /**
  * Four-channel planar 16-bit unsigned affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffinePlanarPixelParameters">Common parameters for nppiWarpAffine planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffine_16u_P4R(const Npp16u * pSrc[4], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -3632,17 +2496,8 @@ nppiWarpAffine_16u_P4R(const Npp16u * pSrc[4], NppiSize oSrcSize, int nSrcStep, 
 /**
  * Single-channel 32-bit signed affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffinePackedPixelParameters">Common parameters for nppiWarpAffine packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffine_32s_C1R(const Npp32s * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -3652,17 +2507,8 @@ nppiWarpAffine_32s_C1R(const Npp32s * pSrc, NppiSize oSrcSize, int nSrcStep, Npp
 /**
  * Three-channel 32-bit signed affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffinePackedPixelParameters">Common parameters for nppiWarpAffine packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffine_32s_C3R(const Npp32s * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -3672,17 +2518,8 @@ nppiWarpAffine_32s_C3R(const Npp32s * pSrc, NppiSize oSrcSize, int nSrcStep, Npp
 /**
  * Four-channel 32-bit signed affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffinePackedPixelParameters">Common parameters for nppiWarpAffine packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffine_32s_C4R(const Npp32s * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -3692,17 +2529,8 @@ nppiWarpAffine_32s_C4R(const Npp32s * pSrc, NppiSize oSrcSize, int nSrcStep, Npp
 /**
  * Four-channel 32-bit signed affine warp, ignoring alpha channel.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffinePackedPixelParameters">Common parameters for nppiWarpAffine packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffine_32s_AC4R(const Npp32s * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -3712,17 +2540,8 @@ nppiWarpAffine_32s_AC4R(const Npp32s * pSrc, NppiSize oSrcSize, int nSrcStep, Np
 /**
  * Three-channel planar 32-bit signed affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffinePlanarPixelParameters">Common parameters for nppiWarpAffine planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffine_32s_P3R(const Npp32s * pSrc[3], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -3732,17 +2551,8 @@ nppiWarpAffine_32s_P3R(const Npp32s * pSrc[3], NppiSize oSrcSize, int nSrcStep, 
 /**
  * Four-channel planar 32-bit signed affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffinePlanarPixelParameters">Common parameters for nppiWarpAffine planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffine_32s_P4R(const Npp32s * pSrc[4], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -3752,17 +2562,8 @@ nppiWarpAffine_32s_P4R(const Npp32s * pSrc[4], NppiSize oSrcSize, int nSrcStep, 
 /**
  * Single-channel 32-bit floating-point affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffinePackedPixelParameters">Common parameters for nppiWarpAffine packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffine_32f_C1R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -3772,17 +2573,8 @@ nppiWarpAffine_32f_C1R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, Npp
 /**
  * Three-channel 32-bit floating-point affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffinePackedPixelParameters">Common parameters for nppiWarpAffine packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffine_32f_C3R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -3792,17 +2584,8 @@ nppiWarpAffine_32f_C3R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, Npp
 /**
  * Four-channel 32-bit floating-point affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffinePackedPixelParameters">Common parameters for nppiWarpAffine packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffine_32f_C4R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -3812,17 +2595,8 @@ nppiWarpAffine_32f_C4R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, Npp
 /**
  * Four-channel 32-bit floating-point affine warp, ignoring alpha channel.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffinePackedPixelParameters">Common parameters for nppiWarpAffine packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffine_32f_AC4R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -3832,17 +2606,8 @@ nppiWarpAffine_32f_AC4R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, Np
 /**
  * Three-channel planar 32-bit floating-point affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffinePlanarPixelParameters">Common parameters for nppiWarpAffine planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffine_32f_P3R(const Npp32f * pSrc[3], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -3852,17 +2617,8 @@ nppiWarpAffine_32f_P3R(const Npp32f * pSrc[3], NppiSize oSrcSize, int nSrcStep, 
 /**
  * Four-channel planar 32-bit floating-point affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffinePlanarPixelParameters">Common parameters for nppiWarpAffine planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffine_32f_P4R(const Npp32f * pSrc[4], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI,
@@ -3873,17 +2629,8 @@ nppiWarpAffine_32f_P4R(const Npp32f * pSrc[4], NppiSize oSrcSize, int nSrcStep, 
 /**
  * Single-channel 64-bit floating-point affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffinePackedPixelParameters">Common parameters for nppiWarpAffine packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffine_64f_C1R(const Npp64f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -3893,17 +2640,8 @@ nppiWarpAffine_64f_C1R(const Npp64f * pSrc, NppiSize oSrcSize, int nSrcStep, Npp
 /**
  * Three-channel 64-bit floating-point affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffinePackedPixelParameters">Common parameters for nppiWarpAffine packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffine_64f_C3R(const Npp64f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -3913,17 +2651,8 @@ nppiWarpAffine_64f_C3R(const Npp64f * pSrc, NppiSize oSrcSize, int nSrcStep, Npp
 /**
  * Four-channel 64-bit floating-point affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffinePackedPixelParameters">Common parameters for nppiWarpAffine packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffine_64f_C4R(const Npp64f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -3933,17 +2662,8 @@ nppiWarpAffine_64f_C4R(const Npp64f * pSrc, NppiSize oSrcSize, int nSrcStep, Npp
 /**
  * Four-channel 64-bit floating-point affine warp, ignoring alpha channel.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffinePackedPixelParameters">Common parameters for nppiWarpAffine packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffine_64f_AC4R(const Npp64f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -3953,17 +2673,8 @@ nppiWarpAffine_64f_AC4R(const Npp64f * pSrc, NppiSize oSrcSize, int nSrcStep, Np
 /**
  * Three-channel planar 64-bit floating-point affine warp.
  * 
- * \param aSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffinePlanarPixelParameters">Common parameters for nppiWarpAffine planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffine_64f_P3R(const Npp64f * aSrc[3], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI,
@@ -3973,17 +2684,8 @@ nppiWarpAffine_64f_P3R(const Npp64f * aSrc[3], NppiSize oSrcSize, int nSrcStep, 
 /**
  * Four-channel planar 64-bit floating-point affine warp.
  * 
- * \param aSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffinePlanarPixelParameters">Common parameters for nppiWarpAffine planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffine_64f_P4R(const Npp64f * aSrc[4], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI,
@@ -4029,6 +2731,16 @@ nppiWarpAffine_64f_P4R(const Npp64f * aSrc[4], NppiSize oSrcSize, int nSrcStep, 
  *         - ::NPP_INTERPOLATION_ERROR if eInterpolation has an illegal value.
  *         - ::NPP_SIZE_ERROR if source size width or height is less than 2 pixels.
  *
+ * <h3><a name="CommonWarpAffineBatchParameters">Common parameters for nppiWarpAffineBatch functions include:</a></h3>
+ *
+ * \param oSmallestSrcSize Size in pixels of the entire smallest source image width and height, may be from different images.
+ * \param oSrcRectROI Region of interest in the source images.
+ * \param oDstRectROI Region of interest in the destination images.
+ * \param eInterpolation The type of eInterpolation to perform resampling. Currently limited to NPPI_INTER_NN, NPPI_INTER_LINEAR, or NPPI_INTER_CUBIC. 
+ * \param pBatchList Device memory pointer to nBatchSize list of NppiWarpAffineBatchCXR structures.
+ * \param nBatchSize Number of NppiWarpAffineBatchCXR structures in this call (must be > 1).
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ *
  * @{
  *
  */
@@ -4057,13 +2769,8 @@ nppiWarpAffineBatchInit(NppiWarpAffineBatchCXR * pBatchList, unsigned int nBatch
 /**
  * 1 channel 32-bit floating point image warp affine batch.
  *
- * \param oSmallestSrcSize Size in pixels of the entire smallest source image width and height, may be from different images.
- * \param oSrcRectROI Region of interest in the source images.
- * \param oDstRectROI Region of interest in the destination images.
- * \param eInterpolation The type of eInterpolation to perform resampling. Currently limited to NPPI_INTER_NN, NPPI_INTER_LINEAR, or NPPI_INTER_CUBIC. 
- * \param pBatchList Device memory pointer to nBatchSize list of NppiWarpAffineBatchCXR structures.
- * \param nBatchSize Number of NppiWarpAffineBatchCXR structures in this call (must be > 1).
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineBatchParameters">Common parameters for nppiWarpAffineBatch functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineBatch_32f_C1R(NppiSize oSmallestSrcSize, NppiRect oSrcRectROI, NppiRect oDstRectROI, 
@@ -4072,13 +2779,8 @@ nppiWarpAffineBatch_32f_C1R(NppiSize oSmallestSrcSize, NppiRect oSrcRectROI, Npp
 /**
  * 3 channel 32-bit floating point image warp affine batch.
  *
- * \param oSmallestSrcSize Size in pixels of the entire smallest source image width and height, may be from different images.
- * \param oSrcRectROI Region of interest in the source images.
- * \param oDstRectROI Region of interest in the destination images.
- * \param eInterpolation The type of eInterpolation to perform resampling. Currently limited to NPPI_INTER_NN, NPPI_INTER_LINEAR, or NPPI_INTER_CUBIC. 
- * \param pBatchList Device memory pointer to nBatchSize list of NppiWarpAffineBatchCXR structures.
- * \param nBatchSize Number of NppiWarpAffineBatchCXR structures in this call (must be > 1).
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineBatchParameters">Common parameters for nppiWarpAffineBatch functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineBatch_32f_C3R(NppiSize oSmallestSrcSize, NppiRect oSrcRectROI, NppiRect oDstRectROI, 
@@ -4087,13 +2789,8 @@ nppiWarpAffineBatch_32f_C3R(NppiSize oSmallestSrcSize, NppiRect oSrcRectROI, Npp
 /**
  * 4 channel 32-bit floating point image warp affine batch.
  *
- * \param oSmallestSrcSize Size in pixels of the entire smallest source image width and height, may be from different images.
- * \param oSrcRectROI Region of interest in the source images.
- * \param oDstRectROI Region of interest in the destination images.
- * \param eInterpolation The type of eInterpolation to perform resampling. Currently limited to NPPI_INTER_NN, NPPI_INTER_LINEAR, or NPPI_INTER_CUBIC. 
- * \param pBatchList Device memory pointer to nBatchSize list of NppiWarpAffineBatchCXR structures.
- * \param nBatchSize Number of NppiWarpAffineBatchCXR structures in this call (must be > 1).
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineBatchParameters">Common parameters for nppiWarpAffineBatch functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineBatch_32f_C4R(NppiSize oSmallestSrcSize, NppiRect oSrcRectROI, NppiRect oDstRectROI, 
@@ -4102,13 +2799,8 @@ nppiWarpAffineBatch_32f_C4R(NppiSize oSmallestSrcSize, NppiRect oSrcRectROI, Npp
 /**
  * 4 channel 32-bit floating point image warp affine batch not affecting alpha.
  *
- * \param oSmallestSrcSize Size in pixels of the entire smallest source image width and height, may be from different images.
- * \param oSrcRectROI Region of interest in the source images.
- * \param oDstRectROI Region of interest in the destination images.
- * \param eInterpolation The type of eInterpolation to perform resampling. Currently limited to NPPI_INTER_NN, NPPI_INTER_LINEAR, or NPPI_INTER_CUBIC. 
- * \param pBatchList Device memory pointer to nBatchSize list of NppiWarpAffineBatchCXR structures.
- * \param nBatchSize Number of NppiWarpAffineBatchCXR structures in this call (must be > 1).
- * \return \ref image_data_error_codes, \ref roi_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineBatchParameters">Common parameters for nppiWarpAffineBatch functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineBatch_32f_AC4R(NppiSize oSmallestSrcSize, NppiRect oSrcRectROI, NppiRect oDstRectROI, 
@@ -4137,6 +2829,34 @@ nppiWarpAffineBatch_32f_AC4R(NppiSize oSmallestSrcSize, NppiRect oSrcRectROI, Np
  * y' = m_{10} * x + m_{11} * y + m_{12} \qquad
  * \f]
  *
+ * <h3><a name="CommonWarpAffineBackPackedPixelParameters">Common parameters for nppiWarpAffineBack packed pixel functions include:</a></h3>
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param oSrcSize Size of source image in pixels.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcROI Source ROI.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oDstROI Destination ROI.
+ * \param aCoeffs Affine transform coefficients.
+ * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
+ *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC.
+ * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ *
+ * <h3><a name="CommonWarpAffineBackPlanarPixelParameters">Common parameters for nppiWarpAffineBack planar pixel functions include:</a></h3>
+ *
+ * \param pSrc \ref source_planar_image_pointer_array (host memory array containing device memory image plane pointers).
+ * \param oSrcSize Size of source image in pixels.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcROI Source ROI.
+ * \param pDst \ref destination_planar_image_pointer_array (host memory array containing device memory image plane pointers).
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oDstROI Destination ROI.
+ * \param aCoeffs Affine transform coefficients.
+ * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
+ *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC.
+ * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ *
  * @{
  *
  */
@@ -4144,17 +2864,8 @@ nppiWarpAffineBatch_32f_AC4R(NppiSize oSmallestSrcSize, NppiRect oSrcRectROI, Np
 /**
  * Single-channel 8-bit unsigned integer backwards affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineBackPackedPixelParameters">Common parameters for nppiWarpAffineBack packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineBack_8u_C1R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -4164,17 +2875,8 @@ nppiWarpAffineBack_8u_C1R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, N
 /**
  * Three-channel 8-bit unsigned integer backwards affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineBackPackedPixelParameters">Common parameters for nppiWarpAffineBack packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineBack_8u_C3R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -4184,17 +2886,8 @@ nppiWarpAffineBack_8u_C3R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, N
 /**
  * Four-channel 8-bit unsigned integer backwards affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineBackPackedPixelParameters">Common parameters for nppiWarpAffineBack packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineBack_8u_C4R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -4204,17 +2897,8 @@ nppiWarpAffineBack_8u_C4R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, N
 /**
  * Four-channel 8-bit unsigned integer backwards affine warp, ignoring alpha channel.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineBackPackedPixelParameters">Common parameters for nppiWarpAffineBack packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineBack_8u_AC4R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -4224,17 +2908,8 @@ nppiWarpAffineBack_8u_AC4R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, 
 /**
  * Three-channel planar 8-bit unsigned integer backwards affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineBackPlanarPixelParameters">Common parameters for nppiWarpAffineBack planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineBack_8u_P3R(const Npp8u * pSrc[3], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -4244,17 +2919,8 @@ nppiWarpAffineBack_8u_P3R(const Npp8u * pSrc[3], NppiSize oSrcSize, int nSrcStep
 /**
  * Four-channel planar 8-bit unsigned integer backwards affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineBackPlanarPixelParameters">Common parameters for nppiWarpAffineBack planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineBack_8u_P4R(const Npp8u * pSrc[4], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -4264,17 +2930,8 @@ nppiWarpAffineBack_8u_P4R(const Npp8u * pSrc[4], NppiSize oSrcSize, int nSrcStep
 /**
  * Single-channel 16-bit unsigned integer backwards affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineBackPackedPixelParameters">Common parameters for nppiWarpAffineBack packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineBack_16u_C1R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -4284,17 +2941,8 @@ nppiWarpAffineBack_16u_C1R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep,
 /**
  * Three-channel 16-bit unsigned integer backwards affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineBackPackedPixelParameters">Common parameters for nppiWarpAffineBack packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineBack_16u_C3R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -4304,17 +2952,8 @@ nppiWarpAffineBack_16u_C3R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep,
 /**
  * Four-channel 16-bit unsigned integer backwards affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineBackPackedPixelParameters">Common parameters for nppiWarpAffineBack packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineBack_16u_C4R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -4324,17 +2963,8 @@ nppiWarpAffineBack_16u_C4R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep,
 /**
  * Four-channel 16-bit unsigned integer backwards affine warp, ignoring alpha channel.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineBackPackedPixelParameters">Common parameters for nppiWarpAffineBack packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineBack_16u_AC4R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -4344,17 +2974,8 @@ nppiWarpAffineBack_16u_AC4R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep
 /**
  * Three-channel planar 16-bit unsigned integer backwards affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineBackPlanarPixelParameters">Common parameters for nppiWarpAffineBack planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineBack_16u_P3R(const Npp16u * pSrc[3], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -4364,17 +2985,8 @@ nppiWarpAffineBack_16u_P3R(const Npp16u * pSrc[3], NppiSize oSrcSize, int nSrcSt
 /**
  * Four-channel planar 16-bit unsigned integer backwards affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineBackPlanarPixelParameters">Common parameters for nppiWarpAffineBack planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineBack_16u_P4R(const Npp16u * pSrc[4], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -4384,17 +2996,8 @@ nppiWarpAffineBack_16u_P4R(const Npp16u * pSrc[4], NppiSize oSrcSize, int nSrcSt
 /**
  * Single-channel 32-bit signed integer backwards affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineBackPackedPixelParameters">Common parameters for nppiWarpAffineBack packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineBack_32s_C1R(const Npp32s * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -4404,17 +3007,8 @@ nppiWarpAffineBack_32s_C1R(const Npp32s * pSrc, NppiSize oSrcSize, int nSrcStep,
 /**
  * Three-channel 32-bit signed integer backwards affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineBackPackedPixelParameters">Common parameters for nppiWarpAffineBack packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineBack_32s_C3R(const Npp32s * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -4424,17 +3018,8 @@ nppiWarpAffineBack_32s_C3R(const Npp32s * pSrc, NppiSize oSrcSize, int nSrcStep,
 /**
  * Four-channel 32-bit signed integer backwards affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineBackPackedPixelParameters">Common parameters for nppiWarpAffineBack packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineBack_32s_C4R(const Npp32s * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -4444,17 +3029,8 @@ nppiWarpAffineBack_32s_C4R(const Npp32s * pSrc, NppiSize oSrcSize, int nSrcStep,
 /**
  * Four-channel 32-bit signed integer backwards affine warp, ignoring alpha channel.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineBackPackedPixelParameters">Common parameters for nppiWarpAffineBack packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineBack_32s_AC4R(const Npp32s * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -4464,17 +3040,8 @@ nppiWarpAffineBack_32s_AC4R(const Npp32s * pSrc, NppiSize oSrcSize, int nSrcStep
 /**
  * Three-channel planar 32-bit signed integer backwards affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineBackPlanarPixelParameters">Common parameters for nppiWarpAffineBack planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineBack_32s_P3R(const Npp32s * pSrc[3], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -4484,17 +3051,8 @@ nppiWarpAffineBack_32s_P3R(const Npp32s * pSrc[3], NppiSize oSrcSize, int nSrcSt
 /**
  * Four-channel planar 32-bit signed integer backwards affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineBackPlanarPixelParameters">Common parameters for nppiWarpAffineBack planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineBack_32s_P4R(const Npp32s * pSrc[4], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -4504,17 +3062,8 @@ nppiWarpAffineBack_32s_P4R(const Npp32s * pSrc[4], NppiSize oSrcSize, int nSrcSt
 /**
  * Single-channel 32-bit floating-point backwards affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineBackPackedPixelParameters">Common parameters for nppiWarpAffineBack packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineBack_32f_C1R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -4524,17 +3073,8 @@ nppiWarpAffineBack_32f_C1R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep,
 /**
  * Three-channel 32-bit floating-point backwards affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineBackPackedPixelParameters">Common parameters for nppiWarpAffineBack packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineBack_32f_C3R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -4544,17 +3084,8 @@ nppiWarpAffineBack_32f_C3R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep,
 /**
  * Four-channel 32-bit floating-point backwards affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineBackPackedPixelParameters">Common parameters for nppiWarpAffineBack packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineBack_32f_C4R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -4564,17 +3095,8 @@ nppiWarpAffineBack_32f_C4R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep,
 /**
  * Four-channel 32-bit floating-point backwards affine warp, ignoring alpha channel.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineBackPackedPixelParameters">Common parameters for nppiWarpAffineBack packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineBack_32f_AC4R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -4584,17 +3106,8 @@ nppiWarpAffineBack_32f_AC4R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep
 /**
  * Three-channel planar 32-bit floating-point backwards affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineBackPlanarPixelParameters">Common parameters for nppiWarpAffineBack planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineBack_32f_P3R(const Npp32f * pSrc[3], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -4604,17 +3117,8 @@ nppiWarpAffineBack_32f_P3R(const Npp32f * pSrc[3], NppiSize oSrcSize, int nSrcSt
 /**
  * Four-channel planar 32-bit floating-point backwards affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Affine transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineBackPlanarPixelParameters">Common parameters for nppiWarpAffineBack planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineBack_32f_P4R(const Npp32f * pSrc[4], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -4636,6 +3140,35 @@ nppiWarpAffineBack_32f_P4R(const Npp32f * pSrc[4], NppiSize oSrcSize, int nSrcSt
  * vertices of the destination image quad. If the fourth vertices do not match
  * the transform, an ::NPP_AFFINE_QUAD_INCORRECT_WARNING is returned by the primitive.
  *
+ * <h3><a name="CommonWarpAffineQuadPackedPixelParameters">Common parameters for nppiWarpAffineQuad packed pixel functions include:</a></h3>
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param oSrcSize Size of source image in pixels.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcROI Source ROI.
+ * \param aSrcQuad Source quad.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oDstROI Destination ROI.
+ * \param aDstQuad Destination quad.
+ * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
+ *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC.
+ * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ *
+ * <h3><a name="CommonWarpAffineQuadPlanarPixelParameters">Common parameters for nppiWarpAffineQuad planar pixel functions include:</a></h3>
+ *
+ * \param pSrc \ref source_planar_image_pointer_array (host memory array containing device memory image plane pointers).
+ * \param oSrcSize Size of source image in pixels.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcROI Source ROI
+ * \param aSrcQuad Source quad.
+ * \param pDst \ref destination_planar_image_pointer_array (host memory array containing device memory image plane pointers).
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oDstROI Destination ROI
+ * \param aDstQuad Destination quad.
+ * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
+ *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
+ * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
  *
  * @{
  *
@@ -4644,18 +3177,8 @@ nppiWarpAffineBack_32f_P4R(const Npp32f * pSrc[4], NppiSize oSrcSize, int nSrcSt
 /**
  * Single-channel 32-bit floating-point quad-based affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineQuadPackedPixelParameters">Common parameters for nppiWarpAffineQuad packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineQuad_8u_C1R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2], 
@@ -4666,18 +3189,8 @@ nppiWarpAffineQuad_8u_C1R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, N
 /**
  * Three-channel 8-bit unsigned integer quad-based affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineQuadPackedPixelParameters">Common parameters for nppiWarpAffineQuad packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineQuad_8u_C3R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2], 
@@ -4687,18 +3200,8 @@ nppiWarpAffineQuad_8u_C3R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, N
 /**
  * Four-channel 8-bit unsigned integer quad-based affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineQuadPackedPixelParameters">Common parameters for nppiWarpAffineQuad packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineQuad_8u_C4R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2], 
@@ -4708,18 +3211,8 @@ nppiWarpAffineQuad_8u_C4R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, N
 /**
  * Four-channel 8-bit unsigned integer quad-based affine warp, ignoring alpha channel.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineQuadPackedPixelParameters">Common parameters for nppiWarpAffineQuad packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineQuad_8u_AC4R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2], 
@@ -4729,18 +3222,8 @@ nppiWarpAffineQuad_8u_AC4R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, 
 /**
  * Three-channel planar 8-bit unsigned integer quad-based affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineQuadPlanarPixelParameters">Common parameters for nppiWarpAffineQuad planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineQuad_8u_P3R(const Npp8u * pSrc[3], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2], 
@@ -4750,18 +3233,8 @@ nppiWarpAffineQuad_8u_P3R(const Npp8u * pSrc[3], NppiSize oSrcSize, int nSrcStep
 /**
  * Four-channel planar 8-bit unsigned integer quad-based affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineQuadPlanarPixelParameters">Common parameters for nppiWarpAffineQuad planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineQuad_8u_P4R(const Npp8u * pSrc[4], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2], 
@@ -4771,18 +3244,8 @@ nppiWarpAffineQuad_8u_P4R(const Npp8u * pSrc[4], NppiSize oSrcSize, int nSrcStep
 /**
  * Single-channel 16-bit unsigned integer quad-based affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineQuadPackedPixelParameters">Common parameters for nppiWarpAffineQuad packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineQuad_16u_C1R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2], 
@@ -4792,18 +3255,8 @@ nppiWarpAffineQuad_16u_C1R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep,
 /**
  * Three-channel 16-bit unsigned integer quad-based affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineQuadPackedPixelParameters">Common parameters for nppiWarpAffineQuad packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineQuad_16u_C3R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2], 
@@ -4813,18 +3266,8 @@ nppiWarpAffineQuad_16u_C3R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep,
 /**
  * Four-channel 16-bit unsigned integer quad-based affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineQuadPackedPixelParameters">Common parameters for nppiWarpAffineQuad packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineQuad_16u_C4R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2], 
@@ -4834,18 +3277,8 @@ nppiWarpAffineQuad_16u_C4R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep,
 /**
  * Four-channel 16-bit unsigned integer quad-based affine warp, ignoring alpha channel.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineQuadPackedPixelParameters">Common parameters for nppiWarpAffineQuad packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineQuad_16u_AC4R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2], 
@@ -4855,18 +3288,8 @@ nppiWarpAffineQuad_16u_AC4R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep
 /**
  * Three-channel planar 16-bit unsigned integer quad-based affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineQuadPlanarPixelParameters">Common parameters for nppiWarpAffineQuad planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineQuad_16u_P3R(const Npp16u * pSrc[3], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2], 
@@ -4876,18 +3299,8 @@ nppiWarpAffineQuad_16u_P3R(const Npp16u * pSrc[3], NppiSize oSrcSize, int nSrcSt
 /**
  * Four-channel planar 16-bit unsigned integer quad-based affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineQuadPlanarPixelParameters">Common parameters for nppiWarpAffineQuad planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineQuad_16u_P4R(const Npp16u * pSrc[4], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2], 
@@ -4897,18 +3310,8 @@ nppiWarpAffineQuad_16u_P4R(const Npp16u * pSrc[4], NppiSize oSrcSize, int nSrcSt
 /**
  * Single-channel 32-bit signed integer quad-based affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineQuadPackedPixelParameters">Common parameters for nppiWarpAffineQuad packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineQuad_32s_C1R(const Npp32s * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2], 
@@ -4918,18 +3321,8 @@ nppiWarpAffineQuad_32s_C1R(const Npp32s * pSrc, NppiSize oSrcSize, int nSrcStep,
 /**
  * Three-channel 32-bit signed integer quad-based affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineQuadPackedPixelParameters">Common parameters for nppiWarpAffineQuad packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineQuad_32s_C3R(const Npp32s * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2], 
@@ -4939,18 +3332,8 @@ nppiWarpAffineQuad_32s_C3R(const Npp32s * pSrc, NppiSize oSrcSize, int nSrcStep,
 /**
  * Four-channel 32-bit signed integer quad-based affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineQuadPackedPixelParameters">Common parameters for nppiWarpAffineQuad packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineQuad_32s_C4R(const Npp32s * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2], 
@@ -4960,18 +3343,8 @@ nppiWarpAffineQuad_32s_C4R(const Npp32s * pSrc, NppiSize oSrcSize, int nSrcStep,
 /**
  * Four-channel 32-bit signed integer quad-based affine warp, ignoring alpha channel.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineQuadPackedPixelParameters">Common parameters for nppiWarpAffineQuad packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineQuad_32s_AC4R(const Npp32s * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2], 
@@ -4981,18 +3354,8 @@ nppiWarpAffineQuad_32s_AC4R(const Npp32s * pSrc, NppiSize oSrcSize, int nSrcStep
 /**
  * Three-channel planar 32-bit signed integer quad-based affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineQuadPlanarPixelParameters">Common parameters for nppiWarpAffineQuad planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineQuad_32s_P3R(const Npp32s * pSrc[3], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2], 
@@ -5002,18 +3365,8 @@ nppiWarpAffineQuad_32s_P3R(const Npp32s * pSrc[3], NppiSize oSrcSize, int nSrcSt
 /**
  * Four-channel planar 32-bit signed integer quad-based affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineQuadPlanarPixelParameters">Common parameters for nppiWarpAffineQuad planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineQuad_32s_P4R(const Npp32s * pSrc[4], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2], 
@@ -5023,18 +3376,8 @@ nppiWarpAffineQuad_32s_P4R(const Npp32s * pSrc[4], NppiSize oSrcSize, int nSrcSt
 /**
  * Single-channel 32-bit floating-point quad-based affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineQuadPackedPixelParameters">Common parameters for nppiWarpAffineQuad packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineQuad_32f_C1R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2], 
@@ -5044,18 +3387,8 @@ nppiWarpAffineQuad_32f_C1R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep,
 /**
  * Three-channel 32-bit floating-point quad-based affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineQuadPackedPixelParameters">Common parameters for nppiWarpAffineQuad packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineQuad_32f_C3R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2], 
@@ -5065,18 +3398,8 @@ nppiWarpAffineQuad_32f_C3R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep,
 /**
  * Four-channel 32-bit floating-point quad-based affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineQuadPackedPixelParameters">Common parameters for nppiWarpAffineQuad packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineQuad_32f_C4R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2],
@@ -5086,18 +3409,8 @@ nppiWarpAffineQuad_32f_C4R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep,
 /**
  * Four-channel 32-bit floating-point quad-based affine warp, ignoring alpha channel.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineQuadPackedPixelParameters">Common parameters for nppiWarpAffineQuad packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineQuad_32f_AC4R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2], 
@@ -5107,18 +3420,8 @@ nppiWarpAffineQuad_32f_AC4R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep
 /**
  * Three-channel planar 32-bit floating-point quad-based affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineQuadPlanarPixelParameters">Common parameters for nppiWarpAffineQuad planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineQuad_32f_P3R(const Npp32f * pSrc[3], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2], 
@@ -5128,18 +3431,8 @@ nppiWarpAffineQuad_32f_P3R(const Npp32f * pSrc[3], NppiSize oSrcSize, int nSrcSt
 /**
  * Four-channel planar 32-bit floating-point quad-based affine warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref affine_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpAffineQuadPlanarPixelParameters">Common parameters for nppiWarpAffineQuad planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpAffineQuad_32f_P4R(const Npp32f * pSrc[4], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2], 
@@ -5255,6 +3548,34 @@ nppiGetPerspectiveBound(NppiRect oSrcROI, double bound[2][2], const double aCoef
                       c_{20} & c_{21} & c_{22} } \right]
  * \f]
  *
+ * <h3><a name="CommonWarpPerspectivePackedPixelParameters">Common parameters for nppiWarpPerspective packed pixel functions include:</a></h3>
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param oSrcSize Size of source image in pixels.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcROI Source ROI.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oDstROI Destination ROI.
+ * \param aCoeffs Perspective transform coefficients.
+ * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
+ *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC.
+ * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ *
+ * <h3><a name="CommonWarpPerspectivePlanarPixelParameters">Common parameters for nppiWarpPerspective planar pixel functions include:</a></h3>
+ *
+ * \param pSrc \ref source_planar_image_pointer_array (host memory array containing device memory image plane pointers).
+ * \param oSrcSize Size of source image in pixels.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcROI Source ROI.
+ * \param pDst \ref destination_planar_image_pointer_array (host memory array containing device memory image plane pointers).
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oDstROI Destination ROI.
+ * \param aCoeffs Perspective transform coefficients.
+ * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
+ *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC.
+ * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ *
  * @{
  *
  */
@@ -5262,17 +3583,8 @@ nppiGetPerspectiveBound(NppiRect oSrcROI, double bound[2][2], const double aCoef
 /**
  * Single-channel 8-bit unsigned integer perspective warp.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectivePackedPixelParameters">Common parameters for nppiWarpPerspective packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspective_8u_C1R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -5282,17 +3594,8 @@ nppiWarpPerspective_8u_C1R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, 
 /**
  * Three-channel 8-bit unsigned integer perspective warp.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectivePackedPixelParameters">Common parameters for nppiWarpPerspective packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspective_8u_C3R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -5302,17 +3605,8 @@ nppiWarpPerspective_8u_C3R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, 
 /**
  * Four-channel 8-bit unsigned integer perspective warp.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectivePackedPixelParameters">Common parameters for nppiWarpPerspective packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspective_8u_C4R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -5322,17 +3616,8 @@ nppiWarpPerspective_8u_C4R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, 
 /**
  * Four-channel 8-bit unsigned integer perspective warp, ignoring alpha channel.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectivePackedPixelParameters">Common parameters for nppiWarpPerspective packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspective_8u_AC4R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -5342,17 +3627,8 @@ nppiWarpPerspective_8u_AC4R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep,
 /**
  * Three-channel planar 8-bit unsigned integer perspective warp.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectivePlanarPixelParameters">Common parameters for nppiWarpPerspective planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspective_8u_P3R(const Npp8u * pSrc[3], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -5362,17 +3638,8 @@ nppiWarpPerspective_8u_P3R(const Npp8u * pSrc[3], NppiSize oSrcSize, int nSrcSte
 /**
  * Four-channel planar 8-bit unsigned integer perspective warp.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectivePlanarPixelParameters">Common parameters for nppiWarpPerspective planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspective_8u_P4R(const Npp8u * pSrc[4], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -5382,17 +3649,8 @@ nppiWarpPerspective_8u_P4R(const Npp8u * pSrc[4], NppiSize oSrcSize, int nSrcSte
 /**
  * Single-channel 16-bit unsigned integer perspective warp.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectivePackedPixelParameters">Common parameters for nppiWarpPerspective packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspective_16u_C1R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -5402,17 +3660,8 @@ nppiWarpPerspective_16u_C1R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep
 /**
  * Three-channel 16-bit unsigned integer perspective warp.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectivePackedPixelParameters">Common parameters for nppiWarpPerspective packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspective_16u_C3R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -5422,17 +3671,8 @@ nppiWarpPerspective_16u_C3R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep
 /**
  * Four-channel 16-bit unsigned integer perspective warp.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectivePackedPixelParameters">Common parameters for nppiWarpPerspective packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspective_16u_C4R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -5442,17 +3682,8 @@ nppiWarpPerspective_16u_C4R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep
 /**
  * Four-channel 16-bit unsigned integer perspective warp, igoring alpha channel.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectivePackedPixelParameters">Common parameters for nppiWarpPerspective packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspective_16u_AC4R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -5462,17 +3693,8 @@ nppiWarpPerspective_16u_AC4R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcSte
 /**
  * Three-channel planar 16-bit unsigned integer perspective warp.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectivePlanarPixelParameters">Common parameters for nppiWarpPerspective planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspective_16u_P3R(const Npp16u * pSrc[3], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -5482,17 +3704,8 @@ nppiWarpPerspective_16u_P3R(const Npp16u * pSrc[3], NppiSize oSrcSize, int nSrcS
 /**
  * Four-channel planar 16-bit unsigned integer perspective warp.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectivePlanarPixelParameters">Common parameters for nppiWarpPerspective planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspective_16u_P4R(const Npp16u * pSrc[4], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -5502,17 +3715,8 @@ nppiWarpPerspective_16u_P4R(const Npp16u * pSrc[4], NppiSize oSrcSize, int nSrcS
 /**
  * Single-channel 32-bit signed integer perspective warp.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectivePackedPixelParameters">Common parameters for nppiWarpPerspective packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspective_32s_C1R(const Npp32s * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -5522,17 +3726,8 @@ nppiWarpPerspective_32s_C1R(const Npp32s * pSrc, NppiSize oSrcSize, int nSrcStep
 /**
  * Three-channel 32-bit signed integer perspective warp.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectivePackedPixelParameters">Common parameters for nppiWarpPerspective packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspective_32s_C3R(const Npp32s * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -5542,17 +3737,8 @@ nppiWarpPerspective_32s_C3R(const Npp32s * pSrc, NppiSize oSrcSize, int nSrcStep
 /**
  * Four-channel 32-bit signed integer perspective warp.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectivePackedPixelParameters">Common parameters for nppiWarpPerspective packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspective_32s_C4R(const Npp32s * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -5562,17 +3748,8 @@ nppiWarpPerspective_32s_C4R(const Npp32s * pSrc, NppiSize oSrcSize, int nSrcStep
 /**
  * Four-channel 32-bit signed integer perspective warp, igoring alpha channel.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectivePackedPixelParameters">Common parameters for nppiWarpPerspective packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspective_32s_AC4R(const Npp32s * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -5582,17 +3759,8 @@ nppiWarpPerspective_32s_AC4R(const Npp32s * pSrc, NppiSize oSrcSize, int nSrcSte
 /**
  * Three-channel planar 32-bit signed integer perspective warp.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectivePlanarPixelParameters">Common parameters for nppiWarpPerspective planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspective_32s_P3R(const Npp32s * pSrc[3], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -5602,17 +3770,8 @@ nppiWarpPerspective_32s_P3R(const Npp32s * pSrc[3], NppiSize oSrcSize, int nSrcS
 /**
  * Four-channel planar 32-bit signed integer perspective warp.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectivePlanarPixelParameters">Common parameters for nppiWarpPerspective planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspective_32s_P4R(const Npp32s * pSrc[4], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -5622,17 +3781,8 @@ nppiWarpPerspective_32s_P4R(const Npp32s * pSrc[4], NppiSize oSrcSize, int nSrcS
 /**
  * Single-channel 32-bit floating-point perspective warp.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectivePackedPixelParameters">Common parameters for nppiWarpPerspective packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspective_32f_C1R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -5642,17 +3792,8 @@ nppiWarpPerspective_32f_C1R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep
 /**
  * Three-channel 32-bit floating-point perspective warp.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectivePackedPixelParameters">Common parameters for nppiWarpPerspective packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspective_32f_C3R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -5662,17 +3803,8 @@ nppiWarpPerspective_32f_C3R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep
 /**
  * Four-channel 32-bit floating-point perspective warp.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectivePackedPixelParameters">Common parameters for nppiWarpPerspective packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspective_32f_C4R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -5682,17 +3814,8 @@ nppiWarpPerspective_32f_C4R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep
 /**
  * Four-channel 32-bit floating-point perspective warp, ignoring alpha channel.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectivePackedPixelParameters">Common parameters for nppiWarpPerspective packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspective_32f_AC4R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -5702,17 +3825,8 @@ nppiWarpPerspective_32f_AC4R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcSte
 /**
  * Three-channel planar 32-bit floating-point perspective warp.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectivePlanarPixelParameters">Common parameters for nppiWarpPerspective planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspective_32f_P3R(const Npp32f * pSrc[3], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -5722,17 +3836,8 @@ nppiWarpPerspective_32f_P3R(const Npp32f * pSrc[3], NppiSize oSrcSize, int nSrcS
 /**
  * Four-channel planar 32-bit floating-point perspective warp.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectivePlanarPixelParameters">Common parameters for nppiWarpPerspective planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspective_32f_P4R(const Npp32f * pSrc[4], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -5740,6 +3845,119 @@ nppiWarpPerspective_32f_P4R(const Npp32f * pSrc[4], NppiSize oSrcSize, int nSrcS
                             const double aCoeffs[3][3], int eInterpolation);
 
 /** @} perspective_transform */
+
+/** @defgroup perspective_transform_batch Perspective Transform Batch
+ *
+ * Details of the warp perspective operation are described above in the WarpPerspective section. WarpPerspectiveBatch generally takes the same parameter list as 
+ * WarpPerspective except that there is a list of N instances of those parameters (N > 1) and that list is passed in device memory. A convenient
+ * data structure is provided that allows for easy initialization of the parameter lists.  The aTransformedCoeffs array is for internal use only
+ * and should not be directly initialized by the application.  The only restriction on these functions is
+ * that there is one single source ROI rectangle and one single destination ROI rectangle which are applied respectively to each image 
+ * in the batch.  The primary purpose of this function is to provide improved performance for batches of smaller images as long as GPU 
+ * resources are available.  Therefore it is recommended that the function not be used for very large images as there may not be resources 
+ * available for processing several large images simultaneously.  
+ * A single set of oSrcRectROI and oDstRectROI values are applied to each source image and destination image in the batch.
+ * Source and destination image sizes may vary but oSmallestSrcSize must be set to the smallest
+ * source and image size in the batch. The parameters in the NppiWarpPerspectiveBatchCXR structure represent the corresponding
+ * per-image nppiWarpPerspective parameters for each image in the batch.  The NppiWarpPerspectiveBatchCXR array must be in device memory.
+ * The nppiWarpPerspectiveBatchInit function MUST be called AFTER the application has initialized the array of NppiWarpPerspectiveBatchCXR structures
+ * and BEFORE calling any of the nppiWarpPerspectiveBatch functions to so that the aTransformedCoeffs array can be internally pre-initialized
+ * for each image in the batch. The batch size passed to nppiWarpPerspectiveBatchInit must match the batch size passed to the corresponding
+ * warp perspective batch function.
+ *
+ *
+ * WarpPerspectiveBatch supports the following interpolation modes:
+ *
+ * \code
+ *   NPPI_INTER_NN
+ *   NPPI_INTER_LINEAR
+ *   NPPI_INTER_CUBIC
+ * \endcode
+ *
+ * \section Error Codes
+ * The warp perspective primitives return the following error codes:
+ *
+ *         - ::NPP_RECTANGLE_ERROR if either destination ROI width or
+ *           height is less than 1 pixel.
+ *         - ::NPP_INTERPOLATION_ERROR if eInterpolation has an illegal value.
+ *         - ::NPP_SIZE_ERROR if source size width or height is less than 2 pixels.
+ *
+ * <h3><a name="CommonWarpPerspectiveBatchParameters">Common parameters for nppiWarpPerspectiveBatch functions include:</a></h3>
+ *
+ * \param oSmallestSrcSize Size in pixels of the entire smallest source image width and height, may be from different images.
+ * \param oSrcRectROI Region of interest in the source images.
+ * \param oDstRectROI Region of interest in the destination images.
+ * \param eInterpolation The type of eInterpolation to perform resampling. Currently limited to NPPI_INTER_NN, NPPI_INTER_LINEAR, or NPPI_INTER_CUBIC. 
+ * \param pBatchList Device memory pointer to nBatchSize list of NppiWarpPerspectiveBatchCXR structures.
+ * \param nBatchSize Number of NppiWarpPerspectiveBatchCXR structures in this call (must be > 1).
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ *
+ * @{
+ *
+ */
+
+typedef struct
+{
+    const void * pSrc;  /* device memory pointer */
+    int nSrcStep;
+    void * pDst;        /* device memory pointer */
+    int nDstStep;
+    Npp64f * pCoeffs;   /* device memory pointer to the tranformation matrix with double precision floating-point coefficient values to be used for this image */
+    Npp64f aTransformedCoeffs[3][3]; /* FOR INTERNAL USE, DO NOT INITIALIZE  */
+} NppiWarpPerspectiveBatchCXR;
+
+
+/**
+ * Initializes the aTransformdedCoeffs array in pBatchList for each image in the list. 
+ * MUST be called before calling the corresponding warp perspective batch function whenever any of the transformation matrices in the list have changed.
+ *
+ * \param pBatchList Device memory pointer to nBatchSize list of NppiWarpPerspectiveBatchCXR structures.
+ * \param nBatchSize Number of NppiWarpPerspectiveBatchCXR structures in this call (must be > 1).
+ */
+NppStatus 
+nppiWarpPerspectiveBatchInit(NppiWarpPerspectiveBatchCXR * pBatchList, unsigned int nBatchSize);
+
+/**
+ * 1 channel 32-bit floating point image warp perspective batch.
+ *
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveBatchParameters">Common parameters for nppiWarpPerspectiveBatch functions</a>.
+ *
+ */
+NppStatus 
+nppiWarpPerspectiveBatch_32f_C1R(NppiSize oSmallestSrcSize, NppiRect oSrcRectROI, NppiRect oDstRectROI, 
+                            int eInterpolation, NppiWarpPerspectiveBatchCXR * pBatchList, unsigned int nBatchSize);
+
+/**
+ * 3 channel 32-bit floating point image warp perspective batch.
+ *
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveBatchParameters">Common parameters for nppiWarpPerspectiveBatch functions</a>.
+ *
+ */
+NppStatus 
+nppiWarpPerspectiveBatch_32f_C3R(NppiSize oSmallestSrcSize, NppiRect oSrcRectROI, NppiRect oDstRectROI, 
+                            int eInterpolation, NppiWarpPerspectiveBatchCXR * pBatchList, unsigned int nBatchSize);
+
+/**
+ * 4 channel 32-bit floating point image warp perspective batch.
+ *
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveBatchParameters">Common parameters for nppiWarpPerspectiveBatch functions</a>.
+ *
+ */
+NppStatus 
+nppiWarpPerspectiveBatch_32f_C4R(NppiSize oSmallestSrcSize, NppiRect oSrcRectROI, NppiRect oDstRectROI, 
+                            int eInterpolation, NppiWarpPerspectiveBatchCXR * pBatchList, unsigned int nBatchSize);
+
+/**
+ * 4 channel 32-bit floating point image warp perspective batch not affecting alpha.
+ *
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveBatchParameters">Common parameters for nppiWarpPerspectiveBatch functions</a>.
+ *
+ */
+NppStatus 
+nppiWarpPerspectiveBatch_32f_AC4R(NppiSize oSmallestSrcSize, NppiRect oSrcRectROI, NppiRect oDstRectROI, 
+                             int eInterpolation, NppiWarpPerspectiveBatchCXR * pBatchList, unsigned int nBatchSize);
+
+/** @} perspective_transform_batch */
 
 
 /** @defgroup backwards_perspective_transform Backwards Perspective Transform
@@ -5767,6 +3985,34 @@ nppiWarpPerspective_32f_P4R(const Npp32f * pSrc[4], NppiSize oSrcSize, int nSrcS
  * y' = \frac{c_{10} * x + c_{11} * y + c_{12}}{c_{20} * x + c_{21} * y + c_{22}}
  * \f]
  *
+ * <h3><a name="CommonWarpPerspectiveBackPackedPixelParameters">Common parameters for nppiWarpPerspectiveBack packed pixel functions include:</a></h3>
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param oSrcSize Size of source image in pixels.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcROI Source ROI.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oDstROI Destination ROI.
+ * \param aCoeffs Perspective transform coefficients.
+ * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
+ *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC.
+ * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ *
+ * <h3><a name="CommonWarpPerspectiveBackPlanarPixelParameters">Common parameters for nppiWarpPerspectiveBack planar pixel functions include:</a></h3>
+ *
+ * \param pSrc \ref source_planar_image_pointer_array (host memory array containing device memory image plane pointers).
+ * \param oSrcSize Size of source image in pixels.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcROI Source ROI.
+ * \param pDst \ref destination_planar_image_pointer_array (host memory array containing device memory image plane pointers).
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oDstROI Destination ROI.
+ * \param aCoeffs Perspective transform coefficients.
+ * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
+ *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC.
+ * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ *
  * @{
  *
  */
@@ -5775,17 +4021,8 @@ nppiWarpPerspective_32f_P4R(const Npp32f * pSrc[4], NppiSize oSrcSize, int nSrcS
 /**
  * Single-channel 8-bit unsigned integer backwards perspective warp.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveBackPackedPixelParameters">Common parameters for nppiWarpPerspectiveBack packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspectiveBack_8u_C1R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -5795,17 +4032,8 @@ nppiWarpPerspectiveBack_8u_C1R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcSt
 /**
  * Three-channel 8-bit unsigned integer backwards perspective warp.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveBackPackedPixelParameters">Common parameters for nppiWarpPerspectiveBack packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspectiveBack_8u_C3R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -5815,17 +4043,8 @@ nppiWarpPerspectiveBack_8u_C3R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcSt
 /**
  * Four-channel 8-bit unsigned integer backwards perspective warp.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveBackPackedPixelParameters">Common parameters for nppiWarpPerspectiveBack packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspectiveBack_8u_C4R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI,
@@ -5835,17 +4054,8 @@ nppiWarpPerspectiveBack_8u_C4R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcSt
 /**
  * Four-channel 8-bit unsigned integer backwards perspective warp, igoring alpha channel.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveBackPackedPixelParameters">Common parameters for nppiWarpPerspectiveBack packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspectiveBack_8u_AC4R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -5855,17 +4065,8 @@ nppiWarpPerspectiveBack_8u_AC4R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcS
 /**
  * Three-channel planar 8-bit unsigned integer backwards perspective warp.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveBackPlanarPixelParameters">Common parameters for nppiWarpPerspectiveBack planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspectiveBack_8u_P3R(const Npp8u * pSrc[3], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -5875,17 +4076,8 @@ nppiWarpPerspectiveBack_8u_P3R(const Npp8u * pSrc[3], NppiSize oSrcSize, int nSr
 /**
  * Four-channel planar 8-bit unsigned integer backwards perspective warp.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveBackPlanarPixelParameters">Common parameters for nppiWarpPerspectiveBack planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspectiveBack_8u_P4R(const Npp8u * pSrc[4], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -5896,17 +4088,8 @@ nppiWarpPerspectiveBack_8u_P4R(const Npp8u * pSrc[4], NppiSize oSrcSize, int nSr
 /**
  * Single-channel 16-bit unsigned integer backwards perspective warp.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveBackPackedPixelParameters">Common parameters for nppiWarpPerspectiveBack packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspectiveBack_16u_C1R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -5916,17 +4099,8 @@ nppiWarpPerspectiveBack_16u_C1R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrc
 /**
  * Three-channel 16-bit unsigned integer backwards perspective warp.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveBackPackedPixelParameters">Common parameters for nppiWarpPerspectiveBack packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspectiveBack_16u_C3R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -5936,17 +4110,8 @@ nppiWarpPerspectiveBack_16u_C3R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrc
 /**
  * Four-channel 16-bit unsigned integer backwards perspective warp.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveBackPackedPixelParameters">Common parameters for nppiWarpPerspectiveBack packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspectiveBack_16u_C4R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -5956,17 +4121,8 @@ nppiWarpPerspectiveBack_16u_C4R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrc
 /**
  * Four-channel 16-bit unsigned integer backwards perspective warp, ignoring alpha channel.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveBackPackedPixelParameters">Common parameters for nppiWarpPerspectiveBack packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspectiveBack_16u_AC4R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -5976,17 +4132,8 @@ nppiWarpPerspectiveBack_16u_AC4R(const Npp16u * pSrc, NppiSize oSrcSize, int nSr
 /**
  * Four-channel planar 16-bit unsigned integer backwards perspective warp.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveBackPlanarPixelParameters">Common parameters for nppiWarpPerspectiveBack planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspectiveBack_16u_P3R(const Npp16u * pSrc[3], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -5996,17 +4143,8 @@ nppiWarpPerspectiveBack_16u_P3R(const Npp16u * pSrc[3], NppiSize oSrcSize, int n
 /**
  * Four-channel planar 16-bit unsigned integer backwards perspective warp.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveBackPlanarPixelParameters">Common parameters for nppiWarpPerspectiveBack planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspectiveBack_16u_P4R(const Npp16u * pSrc[4], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -6016,17 +4154,8 @@ nppiWarpPerspectiveBack_16u_P4R(const Npp16u * pSrc[4], NppiSize oSrcSize, int n
 /**
  * Single-channel 32-bit signed integer backwards perspective warp.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveBackPackedPixelParameters">Common parameters for nppiWarpPerspectiveBack packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspectiveBack_32s_C1R(const Npp32s * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -6036,17 +4165,8 @@ nppiWarpPerspectiveBack_32s_C1R(const Npp32s * pSrc, NppiSize oSrcSize, int nSrc
 /**
  * Three-channel 32-bit signed integer backwards perspective warp.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveBackPackedPixelParameters">Common parameters for nppiWarpPerspectiveBack packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspectiveBack_32s_C3R(const Npp32s * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -6056,17 +4176,8 @@ nppiWarpPerspectiveBack_32s_C3R(const Npp32s * pSrc, NppiSize oSrcSize, int nSrc
 /**
  * Four-channel 32-bit signed integer backwards perspective warp.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveBackPackedPixelParameters">Common parameters for nppiWarpPerspectiveBack packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspectiveBack_32s_C4R(const Npp32s * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -6076,17 +4187,8 @@ nppiWarpPerspectiveBack_32s_C4R(const Npp32s * pSrc, NppiSize oSrcSize, int nSrc
 /**
  * Four-channel 32-bit signed integer backwards perspective warp, ignoring alpha channel.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveBackPackedPixelParameters">Common parameters for nppiWarpPerspectiveBack packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspectiveBack_32s_AC4R(const Npp32s * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -6096,17 +4198,8 @@ nppiWarpPerspectiveBack_32s_AC4R(const Npp32s * pSrc, NppiSize oSrcSize, int nSr
 /**
  * Three-channel planar 32-bit signed integer backwards perspective warp.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveBackPlanarPixelParameters">Common parameters for nppiWarpPerspectiveBack planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspectiveBack_32s_P3R(const Npp32s * pSrc[3], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -6116,17 +4209,8 @@ nppiWarpPerspectiveBack_32s_P3R(const Npp32s * pSrc[3], NppiSize oSrcSize, int n
 /**
  * Four-channel planar 32-bit signed integer backwards perspective warp.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveBackPlanarPixelParameters">Common parameters for nppiWarpPerspectiveBack planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspectiveBack_32s_P4R(const Npp32s * pSrc[4], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -6136,17 +4220,8 @@ nppiWarpPerspectiveBack_32s_P4R(const Npp32s * pSrc[4], NppiSize oSrcSize, int n
 /**
  * Single-channel 32-bit floating-point backwards perspective warp.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveBackPackedPixelParameters">Common parameters for nppiWarpPerspectiveBack packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspectiveBack_32f_C1R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -6156,17 +4231,8 @@ nppiWarpPerspectiveBack_32f_C1R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrc
 /**
  * Three-channel 32-bit floating-point backwards perspective warp.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveBackPackedPixelParameters">Common parameters for nppiWarpPerspectiveBack packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspectiveBack_32f_C3R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -6176,17 +4242,8 @@ nppiWarpPerspectiveBack_32f_C3R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrc
 /**
  * Four-channel 32-bit floating-point backwards perspective warp.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveBackPackedPixelParameters">Common parameters for nppiWarpPerspectiveBack packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspectiveBack_32f_C4R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -6196,17 +4253,8 @@ nppiWarpPerspectiveBack_32f_C4R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrc
 /**
  * Four-channel 32-bit floating-point backwards perspective warp, ignorning alpha channel.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveBackPackedPixelParameters">Common parameters for nppiWarpPerspectiveBack packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspectiveBack_32f_AC4R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -6216,17 +4264,8 @@ nppiWarpPerspectiveBack_32f_AC4R(const Npp32f * pSrc, NppiSize oSrcSize, int nSr
 /**
  * Three-channel planar 32-bit floating-point backwards perspective warp.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveBackPlanarPixelParameters">Common parameters for nppiWarpPerspectiveBack planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspectiveBack_32f_P3R(const Npp32f * pSrc[3], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, 
@@ -6236,17 +4275,8 @@ nppiWarpPerspectiveBack_32f_P3R(const Npp32f * pSrc[3], NppiSize oSrcSize, int n
 /**
  * Four-channel planar 32-bit floating-point backwards perspective warp.
  *
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aCoeffs Perspective transform coefficients
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveBackPlanarPixelParameters">Common parameters for nppiWarpPerspectiveBack planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspectiveBack_32f_P4R(const Npp32f * pSrc[4], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI,
@@ -6261,6 +4291,36 @@ nppiWarpPerspectiveBack_32f_P4R(const Npp32f * pSrc[4], NppiSize oSrcSize, int n
  * The perspective transform is computed such that it maps a quadrilateral in source image space to a 
  * quadrilateral in destination image space. 
  *
+ * <h3><a name="CommonWarpPerspectiveQuadPackedPixelParameters">Common parameters for nppiWarpPerspectiveQuad packed pixel functions include:</a></h3>
+ *
+ * \param pSrc \ref source_image_pointer.
+ * \param oSrcSize Size of source image in pixels.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcROI Source ROI.
+ * \param aSrcQuad Source quad.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oDstROI Destination ROI.
+ * \param aDstQuad Destination quad.
+ * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
+ *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC.
+ * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ *
+ * <h3><a name="CommonWarpPerspectiveQuadPlanarPixelParameters">Common parameters for nppiWarpPerspectiveQuad planar pixel functions include:</a></h3>
+ *
+ * \param pSrc \ref source_planar_image_pointer_array (host memory array containing device memory image plane pointers).
+ * \param oSrcSize Size of source image in pixels.
+ * \param nSrcStep \ref source_image_line_step.
+ * \param oSrcROI Source ROI.
+ * \param aSrcQuad Source quad.
+ * \param pDst \ref destination_planar_image_pointer_array (host memory array containing device memory image plane pointers).
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oDstROI Destination ROI.
+ * \param aDstQuad Destination quad.
+ * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
+ *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC.
+ * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ *
  * @{
  *
  */
@@ -6268,18 +4328,8 @@ nppiWarpPerspectiveBack_32f_P4R(const Npp32f * pSrc[4], NppiSize oSrcSize, int n
 /**
  * Single-channel 8-bit unsigned integer quad-based perspective warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveQuadPackedPixelParameters">Common parameters for nppiWarpPerspectiveQuad packed pixel functions</a>.
+ *
  */
  NppStatus 
 nppiWarpPerspectiveQuad_8u_C1R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2], 
@@ -6288,18 +4338,8 @@ nppiWarpPerspectiveQuad_8u_C1R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcSt
 /**
  * Three-channel 8-bit unsigned integer quad-based perspective warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveQuadPackedPixelParameters">Common parameters for nppiWarpPerspectiveQuad packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspectiveQuad_8u_C3R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2], 
@@ -6308,18 +4348,8 @@ nppiWarpPerspectiveQuad_8u_C3R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcSt
 /**
  * Four-channel 8-bit unsigned integer quad-based perspective warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveQuadPackedPixelParameters">Common parameters for nppiWarpPerspectiveQuad packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspectiveQuad_8u_C4R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2], 
@@ -6328,18 +4358,8 @@ nppiWarpPerspectiveQuad_8u_C4R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcSt
 /**
  * Four-channel 8-bit unsigned integer quad-based perspective warp, ignoring alpha channel.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveQuadPackedPixelParameters">Common parameters for nppiWarpPerspectiveQuad packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspectiveQuad_8u_AC4R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2], 
@@ -6348,18 +4368,8 @@ nppiWarpPerspectiveQuad_8u_AC4R(const Npp8u * pSrc, NppiSize oSrcSize, int nSrcS
 /**
  * Three-channel planar 8-bit unsigned integer quad-based perspective warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveQuadPlanarPixelParameters">Common parameters for nppiWarpPerspectiveQuad planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspectiveQuad_8u_P3R(const Npp8u * pSrc[3], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2], 
@@ -6368,18 +4378,8 @@ nppiWarpPerspectiveQuad_8u_P3R(const Npp8u * pSrc[3], NppiSize oSrcSize, int nSr
 /**
  * Four-channel planar 8-bit unsigned integer quad-based perspective warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveQuadPlanarPixelParameters">Common parameters for nppiWarpPerspectiveQuad planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspectiveQuad_8u_P4R(const Npp8u * pSrc[4], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2], 
@@ -6388,18 +4388,8 @@ nppiWarpPerspectiveQuad_8u_P4R(const Npp8u * pSrc[4], NppiSize oSrcSize, int nSr
 /**
  * Single-channel 16-bit unsigned integer quad-based perspective warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveQuadPackedPixelParameters">Common parameters for nppiWarpPerspectiveQuad packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspectiveQuad_16u_C1R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2], 
@@ -6408,18 +4398,8 @@ nppiWarpPerspectiveQuad_16u_C1R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrc
 /**
  * Three-channel 16-bit unsigned integer quad-based perspective warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveQuadPackedPixelParameters">Common parameters for nppiWarpPerspectiveQuad packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspectiveQuad_16u_C3R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2], 
@@ -6428,18 +4408,8 @@ nppiWarpPerspectiveQuad_16u_C3R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrc
 /**
  * Four-channel 16-bit unsigned integer quad-based perspective warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveQuadPackedPixelParameters">Common parameters for nppiWarpPerspectiveQuad packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspectiveQuad_16u_C4R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2], 
@@ -6448,18 +4418,8 @@ nppiWarpPerspectiveQuad_16u_C4R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrc
 /**
  * Four-channel 16-bit unsigned integer quad-based perspective warp, ignoring alpha channel.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveQuadPackedPixelParameters">Common parameters for nppiWarpPerspectiveQuad packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspectiveQuad_16u_AC4R(const Npp16u * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2], 
@@ -6468,18 +4428,8 @@ nppiWarpPerspectiveQuad_16u_AC4R(const Npp16u * pSrc, NppiSize oSrcSize, int nSr
 /**
  * Three-channel planar 16-bit unsigned integer quad-based perspective warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveQuadPlanarPixelParameters">Common parameters for nppiWarpPerspectiveQuad planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspectiveQuad_16u_P3R(const Npp16u * pSrc[3], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2], 
@@ -6488,18 +4438,8 @@ nppiWarpPerspectiveQuad_16u_P3R(const Npp16u * pSrc[3], NppiSize oSrcSize, int n
 /**
  * Four-channel planar 16-bit unsigned integer quad-based perspective warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveQuadPlanarPixelParameters">Common parameters for nppiWarpPerspectiveQuad planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspectiveQuad_16u_P4R(const Npp16u * pSrc[4], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2], 
@@ -6508,18 +4448,8 @@ nppiWarpPerspectiveQuad_16u_P4R(const Npp16u * pSrc[4], NppiSize oSrcSize, int n
 /**
  * Single-channel 32-bit signed integer quad-based perspective warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveQuadPackedPixelParameters">Common parameters for nppiWarpPerspectiveQuad packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspectiveQuad_32s_C1R(const Npp32s * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2], 
@@ -6528,18 +4458,8 @@ nppiWarpPerspectiveQuad_32s_C1R(const Npp32s * pSrc, NppiSize oSrcSize, int nSrc
 /**
  * Three-channel 32-bit signed integer quad-based perspective warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveQuadPackedPixelParameters">Common parameters for nppiWarpPerspectiveQuad packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspectiveQuad_32s_C3R(const Npp32s * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2], 
@@ -6548,18 +4468,8 @@ nppiWarpPerspectiveQuad_32s_C3R(const Npp32s * pSrc, NppiSize oSrcSize, int nSrc
 /**
  * Four-channel 32-bit signed integer quad-based perspective warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveQuadPackedPixelParameters">Common parameters for nppiWarpPerspectiveQuad packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspectiveQuad_32s_C4R(const Npp32s * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2], 
@@ -6568,18 +4478,8 @@ nppiWarpPerspectiveQuad_32s_C4R(const Npp32s * pSrc, NppiSize oSrcSize, int nSrc
 /**
  * Four-channel 32-bit signed integer quad-based perspective warp, ignoring alpha channel.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveQuadPackedPixelParameters">Common parameters for nppiWarpPerspectiveQuad packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspectiveQuad_32s_AC4R(const Npp32s * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2], 
@@ -6588,18 +4488,8 @@ nppiWarpPerspectiveQuad_32s_AC4R(const Npp32s * pSrc, NppiSize oSrcSize, int nSr
 /**
  * Three-channel planar 32-bit signed integer quad-based perspective warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveQuadPlanarPixelParameters">Common parameters for nppiWarpPerspectiveQuad planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspectiveQuad_32s_P3R(const Npp32s * pSrc[3], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2], 
@@ -6608,18 +4498,8 @@ nppiWarpPerspectiveQuad_32s_P3R(const Npp32s * pSrc[3], NppiSize oSrcSize, int n
 /**
  * Four-channel planar 32-bit signed integer quad-based perspective warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveQuadPlanarPixelParameters">Common parameters for nppiWarpPerspectiveQuad planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspectiveQuad_32s_P4R(const Npp32s * pSrc[4], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2], 
@@ -6628,18 +4508,8 @@ nppiWarpPerspectiveQuad_32s_P4R(const Npp32s * pSrc[4], NppiSize oSrcSize, int n
 /**
  * Single-channel 32-bit floating-point quad-based perspective warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveQuadPackedPixelParameters">Common parameters for nppiWarpPerspectiveQuad packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspectiveQuad_32f_C1R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2], 
@@ -6648,18 +4518,8 @@ nppiWarpPerspectiveQuad_32f_C1R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrc
 /**
  * Three-channel 32-bit floating-point quad-based perspective warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveQuadPackedPixelParameters">Common parameters for nppiWarpPerspectiveQuad packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspectiveQuad_32f_C3R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2], 
@@ -6668,18 +4528,8 @@ nppiWarpPerspectiveQuad_32f_C3R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrc
 /**
  * Four-channel 32-bit floating-point quad-based perspective warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveQuadPackedPixelParameters">Common parameters for nppiWarpPerspectiveQuad packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspectiveQuad_32f_C4R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2], 
@@ -6688,18 +4538,8 @@ nppiWarpPerspectiveQuad_32f_C4R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrc
 /**
  * Four-channel 32-bit floating-point quad-based perspective warp, ignoring alpha channel.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveQuadPackedPixelParameters">Common parameters for nppiWarpPerspectiveQuad packed pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspectiveQuad_32f_AC4R(const Npp32f * pSrc, NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2], 
@@ -6708,18 +4548,8 @@ nppiWarpPerspectiveQuad_32f_AC4R(const Npp32f * pSrc, NppiSize oSrcSize, int nSr
 /**
  * Three-channel planar 32-bit floating-point quad-based perspective warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveQuadPlanarPixelParameters">Common parameters for nppiWarpPerspectiveQuad planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspectiveQuad_32f_P3R(const Npp32f * pSrc[3], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2], 
@@ -6728,18 +4558,8 @@ nppiWarpPerspectiveQuad_32f_P3R(const Npp32f * pSrc[3], NppiSize oSrcSize, int n
 /**
  * Four-channel planar 32-bit floating-point quad-based perspective warp.
  * 
- * \param pSrc \ref source_image_pointer.
- * \param oSrcSize Size of source image in pixels
- * \param nSrcStep \ref source_image_line_step.
- * \param oSrcROI Source ROI
- * \param aSrcQuad Source quad.
- * \param pDst \ref destination_image_pointer.
- * \param nDstStep \ref destination_image_line_step.
- * \param oDstROI Destination ROI
- * \param aDstQuad Destination quad.
- * \param eInterpolation Interpolation mode: can be NPPI_INTER_NN,
- *        NPPI_INTER_LINEAR or NPPI_INTER_CUBIC
- * \return \ref image_data_error_codes, \ref roi_error_codes, \ref perspective_transform_error_codes
+ * For common parameter descriptions, see <a href="#CommonWarpPerspectiveQuadPlanarPixelParameters">Common parameters for nppiWarpPerspectiveQuad planar pixel functions</a>.
+ *
  */
 NppStatus 
 nppiWarpPerspectiveQuad_32f_P4R(const Npp32f * pSrc[4], NppiSize oSrcSize, int nSrcStep, NppiRect oSrcROI, const double aSrcQuad[4][2], 

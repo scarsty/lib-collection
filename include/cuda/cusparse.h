@@ -100,6 +100,9 @@ typedef struct cusparseSolveAnalysisInfo *cusparseSolveAnalysisInfo_t;
 struct csrsv2Info;
 typedef struct csrsv2Info *csrsv2Info_t;
 
+struct csrsm2Info;
+typedef struct csrsm2Info *csrsm2Info_t;
+
 struct bsrsv2Info;
 typedef struct bsrsv2Info *bsrsv2Info_t;
 
@@ -208,7 +211,9 @@ typedef enum {
 
 typedef enum {
     CUSPARSE_ALG0 = 0, //default, naive
-    CUSPARSE_ALG1 = 1  //merge path
+    CUSPARSE_ALG1 = 1, //merge path
+    CUSPARSE_ALG_NAIVE = 0,
+    CUSPARSE_ALG_MERGE_PATH = 1 //merge path alias
 } cusparseAlgMode_t;
 
 /* CUSPARSE initialization and managment routines */
@@ -753,7 +758,6 @@ cusparseStatus_t CUSPARSEAPI cusparseZcsrmv_mp(cusparseHandle_t handle,
                                             const cuDoubleComplex *x, 
                                             const cuDoubleComplex *beta, 
                                             cuDoubleComplex *y);  
-
 
 /* Description: Matrix-vector multiplication  y = alpha * op(A) * x  + beta * y, 
    where A is a sparse matrix in HYB storage format, x and y are dense vectors. */    
@@ -1537,7 +1541,7 @@ cusparseStatus_t CUSPARSEAPI cusparseZhybsv_analysis(cusparseHandle_t handle,
 cusparseStatus_t CUSPARSEAPI cusparseShybsv_solve(cusparseHandle_t handle, 
                                                   cusparseOperation_t trans, 
                                                   const float *alpha, 
-                                                  const cusparseMatDescr_t descra,
+                                                  const cusparseMatDescr_t descrA,
                                                   const cusparseHybMat_t hybA,
                                                   cusparseSolveAnalysisInfo_t info,
                                                   const float *f,
@@ -1546,7 +1550,7 @@ cusparseStatus_t CUSPARSEAPI cusparseShybsv_solve(cusparseHandle_t handle,
 cusparseStatus_t CUSPARSEAPI cusparseChybsv_solve(cusparseHandle_t handle, 
                                                   cusparseOperation_t trans,
                                                   const cuComplex *alpha, 
-                                                  const cusparseMatDescr_t descra,
+                                                  const cusparseMatDescr_t descrA,
                                                   const cusparseHybMat_t hybA,
                                                   cusparseSolveAnalysisInfo_t info,
                                                   const cuComplex *f,
@@ -1555,7 +1559,7 @@ cusparseStatus_t CUSPARSEAPI cusparseChybsv_solve(cusparseHandle_t handle,
 cusparseStatus_t CUSPARSEAPI cusparseDhybsv_solve(cusparseHandle_t handle,
                                                   cusparseOperation_t trans,
                                                   const double *alpha, 
-                                                  const cusparseMatDescr_t descra,
+                                                  const cusparseMatDescr_t descrA,
                                                   const cusparseHybMat_t hybA, 
                                                   cusparseSolveAnalysisInfo_t info,
                                                   const double *f,
@@ -1564,7 +1568,7 @@ cusparseStatus_t CUSPARSEAPI cusparseDhybsv_solve(cusparseHandle_t handle,
 cusparseStatus_t CUSPARSEAPI cusparseZhybsv_solve(cusparseHandle_t handle, 
                                                   cusparseOperation_t trans,
                                                   const cuDoubleComplex *alpha, 
-                                                  const cusparseMatDescr_t descra,
+                                                  const cusparseMatDescr_t descrA,
                                                   const cusparseHybMat_t hybA,
                                                   cusparseSolveAnalysisInfo_t info,
                                                   const cuDoubleComplex *f,
@@ -1921,8 +1925,8 @@ cusparseStatus_t CUSPARSEAPI cusparseScsrsm_solve(cusparseHandle_t handle,
                                                   const int *csrSortedRowPtrA, 
                                                   const int *csrSortedColIndA, 
                                                   cusparseSolveAnalysisInfo_t info, 
-                                                  const float *F, 
-                                                  int ldf,
+                                                  const float *B, 
+                                                  int ldb,
                                                   float *X,
                                                   int ldx);
 
@@ -1936,8 +1940,8 @@ cusparseStatus_t CUSPARSEAPI cusparseDcsrsm_solve(cusparseHandle_t handle,
                                                   const int *csrSortedRowPtrA, 
                                                   const int *csrSortedColIndA, 
                                                   cusparseSolveAnalysisInfo_t info, 
-                                                  const double *F, 
-                                                  int ldf,
+                                                  const double *B, 
+                                                  int ldb,
                                                   double *X,
                                                   int ldx);
 
@@ -1951,8 +1955,8 @@ cusparseStatus_t CUSPARSEAPI cusparseCcsrsm_solve(cusparseHandle_t handle,
                                                   const int *csrSortedRowPtrA, 
                                                   const int *csrSortedColIndA, 
                                                   cusparseSolveAnalysisInfo_t info, 
-                                                  const cuComplex *F,
-                                                  int ldf,
+                                                  const cuComplex *B,
+                                                  int ldb,
                                                   cuComplex *X,
                                                   int ldx);
 
@@ -1966,14 +1970,254 @@ cusparseStatus_t CUSPARSEAPI cusparseZcsrsm_solve(cusparseHandle_t handle,
                                                   const int *csrSortedRowPtrA, 
                                                   const int *csrSortedColIndA, 
                                                   cusparseSolveAnalysisInfo_t info, 
-                                                  const cuDoubleComplex *F,
-                                                  int ldf,
+                                                  const cuDoubleComplex *B,
+                                                  int ldb,
                                                   cuDoubleComplex *X,
                                                   int ldx);                                                                 
                     
-/* Description: Solution of triangular linear system op(A) * X = alpha * F, 
+cusparseStatus_t CUSPARSEAPI cusparseCreateCsrsm2Info(
+    csrsm2Info_t *info);
+
+cusparseStatus_t CUSPARSEAPI cusparseDestroyCsrsm2Info(
+    csrsm2Info_t info);
+
+cusparseStatus_t CUSPARSEAPI cusparseXcsrsm2_zeroPivot(
+    cusparseHandle_t handle,
+    csrsm2Info_t info,
+    int *position);
+
+cusparseStatus_t CUSPARSEAPI cusparseScsrsm2_bufferSizeExt(
+    cusparseHandle_t handle,
+    int algo, /* algo = 0, 1 */
+    cusparseOperation_t transA,
+    cusparseOperation_t transB,
+    int m,
+    int nrhs,
+    int nnz,
+    const float *alpha,
+    const cusparseMatDescr_t descrA,
+    const float *csrSortedValA,
+    const int *csrSortedRowPtrA,
+    const int *csrSortedColIndA,
+    const float *B,
+    int ldb,
+    csrsm2Info_t info,
+    cusparseSolvePolicy_t policy,
+    size_t *pBufferSize);
+
+cusparseStatus_t CUSPARSEAPI cusparseDcsrsm2_bufferSizeExt(
+    cusparseHandle_t handle,
+    int algo, /* algo = 0, 1 */
+    cusparseOperation_t transA,
+    cusparseOperation_t transB,
+    int m,
+    int nrhs,
+    int nnz,
+    const double *alpha,
+    const cusparseMatDescr_t descrA,
+    const double *csrSortedValA,
+    const int *csrSortedRowPtrA,
+    const int *csrSortedColIndA,
+    const double *B,
+    int ldb,
+    csrsm2Info_t info,
+    cusparseSolvePolicy_t policy,
+    size_t *pBufferSize);
+
+cusparseStatus_t CUSPARSEAPI cusparseCcsrsm2_bufferSizeExt(
+    cusparseHandle_t handle,
+    int algo, /* algo = 0, 1 */
+    cusparseOperation_t transA,
+    cusparseOperation_t transB,
+    int m,
+    int nrhs,
+    int nnz,
+    const cuComplex *alpha,
+    const cusparseMatDescr_t descrA,
+    const cuComplex *csrSortedValA,
+    const int *csrSortedRowPtrA,
+    const int *csrSortedColIndA,
+    const cuComplex *B,
+    int ldb,
+    csrsm2Info_t info,
+    cusparseSolvePolicy_t policy,
+    size_t *pBufferSize);
+
+cusparseStatus_t CUSPARSEAPI cusparseZcsrsm2_bufferSizeExt(
+    cusparseHandle_t handle,
+    int algo, /* algo = 0, 1 */
+    cusparseOperation_t transA,
+    cusparseOperation_t transB,
+    int m,
+    int nrhs,
+    int nnz,
+    const cuDoubleComplex *alpha,
+    const cusparseMatDescr_t descrA,
+    const cuDoubleComplex *csrSortedValA,
+    const int *csrSortedRowPtrA,
+    const int *csrSortedColIndA,
+    const cuDoubleComplex *B,
+    int ldb,
+    csrsm2Info_t info,
+    cusparseSolvePolicy_t policy,
+    size_t *pBufferSize);
+
+cusparseStatus_t CUSPARSEAPI cusparseScsrsm2_analysis(
+    cusparseHandle_t handle,
+    int algo, /* algo = 0, 1 */
+    cusparseOperation_t transA,
+    cusparseOperation_t transB,
+    int m,
+    int nrhs,
+    int nnz,
+    const float *alpha,
+    const cusparseMatDescr_t descrA,
+    const float *csrSortedValA,
+    const int *csrSortedRowPtrA,
+    const int *csrSortedColIndA,
+    const float *B,
+    int ldb,
+    csrsm2Info_t info,
+    cusparseSolvePolicy_t policy,
+    void *pBuffer);
+
+cusparseStatus_t CUSPARSEAPI cusparseDcsrsm2_analysis(
+    cusparseHandle_t handle,
+    int algo, /* algo = 0, 1 */
+    cusparseOperation_t transA,
+    cusparseOperation_t transB,
+    int m,
+    int nrhs,
+    int nnz,
+    const double *alpha,
+    const cusparseMatDescr_t descrA,
+    const double *csrSortedValA,
+    const int *csrSortedRowPtrA,
+    const int *csrSortedColIndA,
+    const double *B,
+    int ldb,
+    csrsm2Info_t info,
+    cusparseSolvePolicy_t policy,
+    void *pBuffer);
+
+cusparseStatus_t CUSPARSEAPI cusparseCcsrsm2_analysis(
+    cusparseHandle_t handle,
+    int algo, /* algo = 0, 1 */
+    cusparseOperation_t transA,
+    cusparseOperation_t transB,
+    int m,
+    int nrhs,
+    int nnz,
+    const cuComplex *alpha,
+    const cusparseMatDescr_t descrA,
+    const cuComplex *csrSortedValA,
+    const int *csrSortedRowPtrA,
+    const int *csrSortedColIndA,
+    const cuComplex *B,
+    int ldb,
+    csrsm2Info_t info,
+    cusparseSolvePolicy_t policy,
+    void *pBuffer);
+
+cusparseStatus_t CUSPARSEAPI cusparseZcsrsm2_analysis(
+    cusparseHandle_t handle,
+    int algo, /* algo = 0, 1 */
+    cusparseOperation_t transA,
+    cusparseOperation_t transB,
+    int m,
+    int nrhs,
+    int nnz,
+    const cuDoubleComplex *alpha,
+    const cusparseMatDescr_t descrA,
+    const cuDoubleComplex *csrSortedValA,
+    const int *csrSortedRowPtrA,
+    const int *csrSortedColIndA,
+    const cuDoubleComplex *B,
+    int ldb,
+    csrsm2Info_t info,
+    cusparseSolvePolicy_t policy,
+    void *pBuffer);
+
+cusparseStatus_t CUSPARSEAPI cusparseScsrsm2_solve(
+    cusparseHandle_t handle,
+    int algo, /* algo = 0, 1 */
+    cusparseOperation_t transA,
+    cusparseOperation_t transB,
+    int m,
+    int nrhs,
+    int nnz,
+    const float *alpha,
+    const cusparseMatDescr_t descrA,
+    const float *csrSortedValA,
+    const int *csrSortedRowPtrA,
+    const int *csrSortedColIndA,
+    float *B,
+    int ldb,
+    csrsm2Info_t info,
+    cusparseSolvePolicy_t policy,
+    void *pBuffer);
+
+cusparseStatus_t CUSPARSEAPI cusparseDcsrsm2_solve(
+    cusparseHandle_t handle,
+    int algo, /* algo = 0, 1 */
+    cusparseOperation_t transA,
+    cusparseOperation_t transB,
+    int m,
+    int nrhs,
+    int nnz,
+    const double *alpha,
+    const cusparseMatDescr_t descrA,
+    const double *csrSortedValA,
+    const int *csrSortedRowPtrA,
+    const int *csrSortedColIndA,
+    double *B,
+    int ldb,
+    csrsm2Info_t info,
+    cusparseSolvePolicy_t policy,
+    void *pBuffer);
+
+cusparseStatus_t CUSPARSEAPI cusparseCcsrsm2_solve(
+    cusparseHandle_t handle,
+    int algo, /* algo = 0, 1 */
+    cusparseOperation_t transA,
+    cusparseOperation_t transB,
+    int m,
+    int nrhs,
+    int nnz,
+    const cuComplex *alpha,
+    const cusparseMatDescr_t descrA,
+    const cuComplex *csrSortedValA,
+    const int *csrSortedRowPtrA,
+    const int *csrSortedColIndA,
+    cuComplex *B,
+    int ldb,
+    csrsm2Info_t info,
+    cusparseSolvePolicy_t policy,
+    void *pBuffer);
+
+cusparseStatus_t CUSPARSEAPI cusparseZcsrsm2_solve(
+    cusparseHandle_t handle,
+    int algo, /* algo = 0, 1 */
+    cusparseOperation_t transA,
+    cusparseOperation_t transB,
+    int m,
+    int nrhs,
+    int nnz,
+    const cuDoubleComplex *alpha,
+    const cusparseMatDescr_t descrA,
+    const cuDoubleComplex *csrSortedValA,
+    const int *csrSortedRowPtrA,
+    const int *csrSortedColIndA,
+    cuDoubleComplex *B,
+    int ldb,
+    csrsm2Info_t info,
+    cusparseSolvePolicy_t policy,
+    void *pBuffer);
+
+
+/* Description: Solution of triangular linear system op(A) * X = alpha * B, 
    with multiple right-hand-sides, where A is a sparse matrix in CSR storage 
-   format, rhs F and solution X are dense tall matrices.
+   format, rhs B and solution X are dense tall matrices.
    This routine implements algorithm 2 for this problem. */
 cusparseStatus_t CUSPARSEAPI cusparseXbsrsm2_zeroPivot(cusparseHandle_t handle,
                                                        bsrsm2Info_t info,
@@ -2180,8 +2424,8 @@ cusparseStatus_t CUSPARSEAPI cusparseSbsrsm2_solve(cusparseHandle_t handle,
                                                    const int *bsrSortedColInd,
                                                    int blockSize,
                                                    bsrsm2Info_t info,
-                                                   const float *F,
-                                                   int ldf,
+                                                   const float *B,
+                                                   int ldb,
                                                    float *X,
                                                    int ldx,
                                                    cusparseSolvePolicy_t policy,
@@ -2201,8 +2445,8 @@ cusparseStatus_t CUSPARSEAPI cusparseDbsrsm2_solve(cusparseHandle_t handle,
                                                    const int *bsrSortedColInd,
                                                    int blockSize,
                                                    bsrsm2Info_t info,
-                                                   const double *F,
-                                                   int ldf,
+                                                   const double *B,
+                                                   int ldb,
                                                    double *X,
                                                    int ldx,
                                                    cusparseSolvePolicy_t policy,
@@ -2222,8 +2466,8 @@ cusparseStatus_t CUSPARSEAPI cusparseCbsrsm2_solve(cusparseHandle_t handle,
                                                    const int *bsrSortedColInd,
                                                    int blockSize,
                                                    bsrsm2Info_t info,
-                                                   const cuComplex *F,
-                                                   int ldf,
+                                                   const cuComplex *B,
+                                                   int ldb,
                                                    cuComplex *X,
                                                    int ldx,
                                                    cusparseSolvePolicy_t policy,
@@ -2243,8 +2487,8 @@ cusparseStatus_t CUSPARSEAPI cusparseZbsrsm2_solve(cusparseHandle_t handle,
                                                    const int *bsrSortedColInd,
                                                    int blockSize,
                                                    bsrsm2Info_t info,
-                                                   const cuDoubleComplex *F,
-                                                   int ldf,
+                                                   const cuDoubleComplex *B,
+                                                   int ldb,
                                                    cuDoubleComplex *X,
                                                    int ldx,
                                                    cusparseSolvePolicy_t policy,
@@ -2708,7 +2952,7 @@ cusparseStatus_t CUSPARSEAPI cusparseSbsrilu02(cusparseHandle_t handle,
                                                cusparseDirection_t dirA,
                                                int mb,
                                                int nnzb,
-                                               const cusparseMatDescr_t descra,
+                                               const cusparseMatDescr_t descrA,
                                                float *bsrSortedVal,
                                                const int *bsrSortedRowPtr,
                                                const int *bsrSortedColInd,
@@ -2721,7 +2965,7 @@ cusparseStatus_t CUSPARSEAPI cusparseDbsrilu02(cusparseHandle_t handle,
                                                cusparseDirection_t dirA,
                                                int mb,
                                                int nnzb,
-                                               const cusparseMatDescr_t descra,
+                                               const cusparseMatDescr_t descrA,
                                                double *bsrSortedVal,
                                                const int *bsrSortedRowPtr,
                                                const int *bsrSortedColInd,
@@ -2734,7 +2978,7 @@ cusparseStatus_t CUSPARSEAPI cusparseCbsrilu02(cusparseHandle_t handle,
                                                cusparseDirection_t dirA,
                                                int mb,
                                                int nnzb,
-                                               const cusparseMatDescr_t descra,
+                                               const cusparseMatDescr_t descrA,
                                                cuComplex *bsrSortedVal,
                                                const int *bsrSortedRowPtr,
                                                const int *bsrSortedColInd,
@@ -2747,7 +2991,7 @@ cusparseStatus_t CUSPARSEAPI cusparseZbsrilu02(cusparseHandle_t handle,
                                                cusparseDirection_t dirA,
                                                int mb,
                                                int nnzb,
-                                               const cusparseMatDescr_t descra,
+                                               const cusparseMatDescr_t descrA,
                                                cuDoubleComplex *bsrSortedVal,
                                                const int *bsrSortedRowPtr,
                                                const int *bsrSortedColInd,
@@ -3201,10 +3445,10 @@ cusparseStatus_t CUSPARSEAPI cusparseZbsric02(cusparseHandle_t handle,
                                               void *pBuffer);
 
 
-/* Description: Solution of tridiagonal linear system A * X = F, 
+/* Description: Solution of tridiagonal linear system A * X = B, 
    with multiple right-hand-sides. The coefficient matrix A is 
    composed of lower (dl), main (d) and upper (du) diagonals, and 
-   the right-hand-sides F are overwritten with the solution X. 
+   the right-hand-sides B are overwritten with the solution X. 
    These routine use pivoting. */
 cusparseStatus_t CUSPARSEAPI cusparseSgtsv(
     cusparseHandle_t handle,
@@ -3336,10 +3580,10 @@ cusparseStatus_t CUSPARSEAPI cusparseZgtsv2(
     void* pBuffer);
 
 
-/* Description: Solution of tridiagonal linear system A * X = F, 
+/* Description: Solution of tridiagonal linear system A * X = B, 
    with multiple right-hand-sides. The coefficient matrix A is 
    composed of lower (dl), main (d) and upper (du) diagonals, and 
-   the right-hand-sides F are overwritten with the solution X. 
+   the right-hand-sides B are overwritten with the solution X. 
    These routine does not use pivoting. */                               
 cusparseStatus_t CUSPARSEAPI cusparseSgtsv_nopivot(
     cusparseHandle_t handle,
@@ -3603,6 +3847,209 @@ cusparseStatus_t CUSPARSEAPI cusparseZgtsv2StridedBatch(
     int batchCount,
     int batchStride,
     void *pBuffer);
+
+
+cusparseStatus_t CUSPARSEAPI cusparseSgtsvInterleavedBatch_bufferSizeExt(
+    cusparseHandle_t handle,
+    int algo,
+    int m,
+    const float *dl,
+    const float  *d,
+    const float *du,
+    const float *x,
+    int batchCount,
+    size_t *pBufferSizeInBytes);
+
+cusparseStatus_t CUSPARSEAPI cusparseDgtsvInterleavedBatch_bufferSizeExt(
+    cusparseHandle_t handle,
+    int algo,
+    int m,
+    const double *dl,
+    const double  *d,
+    const double *du,
+    const double *x,
+    int batchCount,
+    size_t *pBufferSizeInBytes);
+
+cusparseStatus_t CUSPARSEAPI cusparseCgtsvInterleavedBatch_bufferSizeExt(
+    cusparseHandle_t handle,
+    int algo,
+    int m,
+    const cuComplex *dl,
+    const cuComplex  *d,
+    const cuComplex *du,
+    const cuComplex *x,
+    int batchCount,
+    size_t *pBufferSizeInBytes);
+
+cusparseStatus_t CUSPARSEAPI cusparseZgtsvInterleavedBatch_bufferSizeExt(
+    cusparseHandle_t handle,
+    int algo,
+    int m,
+    const cuDoubleComplex *dl,
+    const cuDoubleComplex  *d,
+    const cuDoubleComplex *du,
+    const cuDoubleComplex *x,
+    int batchCount,
+    size_t *pBufferSizeInBytes);
+
+
+cusparseStatus_t CUSPARSEAPI cusparseSgtsvInterleavedBatch(
+    cusparseHandle_t handle,
+    int algo,
+    int m,
+    float *dl,
+    float  *d,
+    float *du,
+    float *x,
+    int batchCount,
+    void *pBuffer);
+
+cusparseStatus_t CUSPARSEAPI cusparseDgtsvInterleavedBatch(
+    cusparseHandle_t handle,
+    int algo,
+    int m,
+    double *dl,
+    double  *d,
+    double *du,
+    double *x,
+    int batchCount,
+    void *pBuffer);
+
+cusparseStatus_t CUSPARSEAPI cusparseCgtsvInterleavedBatch(
+    cusparseHandle_t handle,
+    int algo,
+    int m,
+    cuComplex *dl,
+    cuComplex  *d,
+    cuComplex *du,
+    cuComplex *x,
+    int batchCount,
+    void *pBuffer);
+
+cusparseStatus_t CUSPARSEAPI cusparseZgtsvInterleavedBatch(
+    cusparseHandle_t handle,
+    int algo,
+    int m,
+    cuDoubleComplex *dl,
+    cuDoubleComplex  *d,
+    cuDoubleComplex *du,
+    cuDoubleComplex *x,
+    int batchCount,
+    void *pBuffer);
+
+
+/* Description: Solution of pentadiagonal linear system A * X = B, 
+   with multiple right-hand-sides. The coefficient matrix A is 
+   composed of lower (ds, dl), main (d) and upper (du, dw) diagonals, and 
+   the right-hand-sides B are overwritten with the solution X. 
+ */
+cusparseStatus_t  CUSPARSEAPI cusparseSgpsvInterleavedBatch_bufferSizeExt(
+    cusparseHandle_t handle, 
+    int algo,
+    int m,
+    const float *ds,
+    const float *dl,
+    const float  *d,
+    const float *du,
+    const float *dw,
+    const float *x,
+    int batchCount,
+    size_t *pBufferSizeInBytes);
+
+cusparseStatus_t  CUSPARSEAPI cusparseDgpsvInterleavedBatch_bufferSizeExt(
+    cusparseHandle_t handle,
+    int algo,
+    int m,
+    const double *ds,
+    const double *dl,
+    const double  *d,
+    const double *du,
+    const double *dw,
+    const double *x,
+    int batchCount,
+    size_t *pBufferSizeInBytes);
+
+cusparseStatus_t  CUSPARSEAPI cusparseCgpsvInterleavedBatch_bufferSizeExt(
+    cusparseHandle_t handle, 
+    int algo,
+    int m,
+    const cuComplex *ds,
+    const cuComplex *dl,
+    const cuComplex  *d,
+    const cuComplex *du,
+    const cuComplex *dw,
+    const cuComplex *x,
+    int batchCount,
+    size_t *pBufferSizeInBytes);
+
+cusparseStatus_t  CUSPARSEAPI cusparseZgpsvInterleavedBatch_bufferSizeExt(
+    cusparseHandle_t handle,
+    int algo,
+    int m,
+    const cuDoubleComplex *ds,
+    const cuDoubleComplex *dl,
+    const cuDoubleComplex  *d,
+    const cuDoubleComplex *du,
+    const cuDoubleComplex *dw,
+    const cuDoubleComplex *x,
+    int batchCount,
+    size_t *pBufferSizeInBytes);
+
+cusparseStatus_t CUSPARSEAPI cusparseSgpsvInterleavedBatch(
+    cusparseHandle_t handle,
+    int algo,
+    int m,
+    float *ds,
+    float *dl,
+    float  *d,
+    float *du,
+    float *dw,
+    float *x,
+    int batchCount,
+    void *pBuffer);
+
+cusparseStatus_t CUSPARSEAPI cusparseDgpsvInterleavedBatch(
+    cusparseHandle_t handle,
+    int algo,
+    int m,
+    double *ds,
+    double *dl,
+    double  *d,
+    double *du,
+    double *dw,
+    double *x,
+    int batchCount,
+    void *pBuffer);
+
+cusparseStatus_t CUSPARSEAPI cusparseCgpsvInterleavedBatch(
+    cusparseHandle_t handle,
+    int algo,
+    int m,
+    cuComplex *ds,
+    cuComplex *dl,
+    cuComplex  *d,
+    cuComplex *du,
+    cuComplex *dw,
+    cuComplex *x,
+    int batchCount,
+    void *pBuffer);
+
+cusparseStatus_t CUSPARSEAPI cusparseZgpsvInterleavedBatch(
+    cusparseHandle_t handle,
+    int algo,
+    int m,
+    cuDoubleComplex *ds,
+    cuDoubleComplex *dl,
+    cuDoubleComplex  *d,
+    cuDoubleComplex *du,
+    cuDoubleComplex *dw,
+    cuDoubleComplex *x,
+    int batchCount,
+    void *pBuffer);
+
+
+
 
 /* --- Sparse Level 4 routines --- */
 
@@ -4037,6 +4484,199 @@ cusparseStatus_t CUSPARSEAPI cusparseZcsrgeam(cusparseHandle_t handle,
                                               int *csrSortedRowPtrC,
                                               int *csrSortedColIndC);
 
+cusparseStatus_t CUSPARSEAPI cusparseScsrgeam2_bufferSizeExt(
+    cusparseHandle_t handle,
+    int m,
+    int n,
+    const float *alpha,
+    const cusparseMatDescr_t descrA,
+    int nnzA,
+    const float *csrSortedValA,
+    const int *csrSortedRowPtrA,
+    const int *csrSortedColIndA,
+    const float *beta,
+    const cusparseMatDescr_t descrB,
+    int nnzB,
+    const float *csrSortedValB,
+    const int *csrSortedRowPtrB,
+    const int *csrSortedColIndB,
+    const cusparseMatDescr_t descrC,
+    const float *csrSortedValC,
+    const int *csrSortedRowPtrC,
+    const int *csrSortedColIndC,
+    size_t *pBufferSizeInBytes );
+
+cusparseStatus_t CUSPARSEAPI cusparseDcsrgeam2_bufferSizeExt(
+    cusparseHandle_t handle,
+    int m,
+    int n,
+    const double *alpha,
+    const cusparseMatDescr_t descrA,
+    int nnzA,
+    const double *csrSortedValA,
+    const int *csrSortedRowPtrA,
+    const int *csrSortedColIndA,
+    const double *beta,
+    const cusparseMatDescr_t descrB,
+    int nnzB,
+    const double *csrSortedValB,
+    const int *csrSortedRowPtrB,
+    const int *csrSortedColIndB,
+    const cusparseMatDescr_t descrC,
+    const double *csrSortedValC,
+    const int *csrSortedRowPtrC,
+    const int *csrSortedColIndC,
+    size_t *pBufferSizeInBytes );
+
+cusparseStatus_t CUSPARSEAPI cusparseCcsrgeam2_bufferSizeExt(
+    cusparseHandle_t handle,
+    int m,
+    int n,
+    const cuComplex *alpha,
+    const cusparseMatDescr_t descrA,
+    int nnzA,
+    const cuComplex *csrSortedValA,
+    const int *csrSortedRowPtrA,
+    const int *csrSortedColIndA,
+    const cuComplex *beta,
+    const cusparseMatDescr_t descrB,
+    int nnzB,
+    const cuComplex *csrSortedValB,
+    const int *csrSortedRowPtrB,
+    const int *csrSortedColIndB,
+    const cusparseMatDescr_t descrC,
+    const cuComplex *csrSortedValC,
+    const int *csrSortedRowPtrC,
+    const int *csrSortedColIndC,
+    size_t *pBufferSizeInBytes );
+
+cusparseStatus_t CUSPARSEAPI cusparseZcsrgeam2_bufferSizeExt(
+    cusparseHandle_t handle,
+    int m,
+    int n,
+    const cuDoubleComplex *alpha,
+    const cusparseMatDescr_t descrA,
+    int nnzA,
+    const cuDoubleComplex *csrSortedValA,
+    const int *csrSortedRowPtrA,
+    const int *csrSortedColIndA,
+    const cuDoubleComplex *beta,
+    const cusparseMatDescr_t descrB,
+    int nnzB,
+    const cuDoubleComplex *csrSortedValB,
+    const int *csrSortedRowPtrB,
+    const int *csrSortedColIndB,
+    const cusparseMatDescr_t descrC,
+    const cuDoubleComplex *csrSortedValC,
+    const int *csrSortedRowPtrC,
+    const int *csrSortedColIndC,
+    size_t *pBufferSizeInBytes );
+
+cusparseStatus_t CUSPARSEAPI cusparseXcsrgeam2Nnz(
+    cusparseHandle_t handle,
+    int m,
+    int n,
+    const cusparseMatDescr_t descrA,
+    int nnzA,
+    const int *csrSortedRowPtrA,
+    const int *csrSortedColIndA,
+    const cusparseMatDescr_t descrB,
+    int nnzB,
+    const int *csrSortedRowPtrB,
+    const int *csrSortedColIndB,
+    const cusparseMatDescr_t descrC,
+    int *csrSortedRowPtrC,
+    int *nnzTotalDevHostPtr,
+    void *workspace );
+
+cusparseStatus_t CUSPARSEAPI cusparseScsrgeam2(
+    cusparseHandle_t handle,
+    int m,
+    int n,
+    const float *alpha,
+    const cusparseMatDescr_t descrA,
+    int nnzA,
+    const float *csrSortedValA,
+    const int   *csrSortedRowPtrA,
+    const int   *csrSortedColIndA,
+    const float *beta,
+    const cusparseMatDescr_t descrB,
+    int nnzB,
+    const float *csrSortedValB,
+    const int   *csrSortedRowPtrB,
+    const int   *csrSortedColIndB,
+    const cusparseMatDescr_t descrC,
+    float       *csrSortedValC,
+    int         *csrSortedRowPtrC,
+    int         *csrSortedColIndC,
+    void *pBuffer );
+
+cusparseStatus_t  CUSPARSEAPI cusparseDcsrgeam2(
+    cusparseHandle_t handle,
+    int m,
+    int n,
+    const double *alpha,
+    const cusparseMatDescr_t descrA,
+    int nnzA,
+    const double *csrSortedValA,
+    const int    *csrSortedRowPtrA,
+    const int    *csrSortedColIndA,
+    const double *beta,
+    const cusparseMatDescr_t descrB,
+    int nnzB,
+    const double *csrSortedValB,
+    const int    *csrSortedRowPtrB,
+    const int    *csrSortedColIndB,
+    const cusparseMatDescr_t descrC,
+    double *csrSortedValC,
+    int    *csrSortedRowPtrC,
+    int    *csrSortedColIndC,
+    void *pBuffer );
+
+cusparseStatus_t CUSPARSEAPI cusparseCcsrgeam2(
+    cusparseHandle_t handle,
+    int m,
+    int n,
+    const cuComplex *alpha,
+    const cusparseMatDescr_t descrA,
+    int nnzA,
+    const cuComplex *csrSortedValA,
+    const int       *csrSortedRowPtrA,
+    const int       *csrSortedColIndA,
+    const cuComplex *beta,
+    const cusparseMatDescr_t descrB,
+    int nnzB,
+    const cuComplex *csrSortedValB,
+    const int       *csrSortedRowPtrB,
+    const int       *csrSortedColIndB,
+    const cusparseMatDescr_t descrC,
+    cuComplex *csrSortedValC,
+    int       *csrSortedRowPtrC,
+    int       *csrSortedColIndC,
+    void *pBuffer );
+
+cusparseStatus_t  CUSPARSEAPI cusparseZcsrgeam2(
+    cusparseHandle_t handle,
+    int m,
+    int n,
+    const cuDoubleComplex *alpha,
+    const cusparseMatDescr_t descrA,
+    int nnzA,
+    const cuDoubleComplex *csrSortedValA,
+    const int *csrSortedRowPtrA,
+    const int *csrSortedColIndA,
+    const cuDoubleComplex *beta,
+    const cusparseMatDescr_t descrB,
+    int nnzB,
+    const cuDoubleComplex *csrSortedValB,
+    const int *csrSortedRowPtrB,
+    const int *csrSortedColIndB,
+    const cusparseMatDescr_t descrC,
+    cuDoubleComplex *csrSortedValC,
+    int *csrSortedRowPtrC,
+    int *csrSortedColIndC,
+    void *pBuffer );
+
 
 /* --- Sparse Matrix Reorderings --- */
 
@@ -4144,8 +4784,8 @@ cusparseStatus_t CUSPARSEAPI cusparseZnnz(cusparseHandle_t handle,
 cusparseStatus_t CUSPARSEAPI cusparseSnnz_compress(cusparseHandle_t handle, 
                                           int m, 
                                           const cusparseMatDescr_t descr,
-                                          const float *csrValA, 
-                                          const int *csrRowPtrA, 
+                                          const float *csrSortedValA, 
+                                          const int *csrSortedRowPtrA, 
                                           int *nnzPerRow, 
                                           int *nnzC,
                                           float tol);
@@ -4153,8 +4793,8 @@ cusparseStatus_t CUSPARSEAPI cusparseSnnz_compress(cusparseHandle_t handle,
 cusparseStatus_t CUSPARSEAPI cusparseDnnz_compress(cusparseHandle_t handle, 
                                           int m, 
                                           const cusparseMatDescr_t descr,
-                                          const double *csrValA, 
-                                          const int *csrRowPtrA, 
+                                          const double *csrSortedValA, 
+                                          const int *csrSortedRowPtrA, 
                                           int *nnzPerRow, 
                                           int *nnzC,
                                           double tol);
@@ -4162,8 +4802,8 @@ cusparseStatus_t CUSPARSEAPI cusparseDnnz_compress(cusparseHandle_t handle,
 cusparseStatus_t CUSPARSEAPI cusparseCnnz_compress(cusparseHandle_t handle, 
                                           int m, 
                                           const cusparseMatDescr_t descr,
-                                          const cuComplex *csrValA, 
-                                          const int *csrRowPtrA, 
+                                          const cuComplex *csrSortedValA, 
+                                          const int *csrSortedRowPtrA, 
                                           int *nnzPerRow, 
                                           int *nnzC,
                                           cuComplex tol);
@@ -4171,8 +4811,8 @@ cusparseStatus_t CUSPARSEAPI cusparseCnnz_compress(cusparseHandle_t handle,
 cusparseStatus_t CUSPARSEAPI cusparseZnnz_compress(cusparseHandle_t handle, 
                                           int m, 
                                           const cusparseMatDescr_t descr,
-                                          const cuDoubleComplex *csrValA, 
-                                          const int *csrRowPtrA, 
+                                          const cuDoubleComplex *csrSortedValA, 
+                                          const int *csrSortedRowPtrA, 
                                           int *nnzPerRow, 
                                           int *nnzC,
                                           cuDoubleComplex tol);
@@ -4181,57 +4821,57 @@ cusparseStatus_t CUSPARSEAPI cusparseZnnz_compress(cusparseHandle_t handle,
 cusparseStatus_t CUSPARSEAPI cusparseScsr2csr_compress(cusparseHandle_t handle,
                                                       int m, 
                                                       int n,
-                                                      const cusparseMatDescr_t descra,
-                                                      const float *csrValA,
-                                                      const int *csrColIndA,
-                                                      const int *csrRowPtrA, 
+                                                      const cusparseMatDescr_t descrA,
+                                                      const float *csrSortedValA,
+                                                      const int *csrSortedColIndA,
+                                                      const int *csrSortedRowPtrA, 
                                                       int nnzA,
                                                       const int *nnzPerRow, 
-                                                      float *csrValC,
-                                                      int *csrColIndC,
-                                                      int *csrRowPtrC,
+                                                      float *csrSortedValC,
+                                                      int *csrSortedColIndC,
+                                                      int *csrSortedRowPtrC,
                                                       float tol);        
 
 cusparseStatus_t CUSPARSEAPI cusparseDcsr2csr_compress(cusparseHandle_t handle,
-                                                      int m, //number of rows
+                                                      int m, 
                                                       int n,
-                                                      const cusparseMatDescr_t descra,
-                                                      const double *csrValA, //csr values array-the elements which are below a certain tolerance will be remvoed
-                                                      const int *csrColIndA,
-                                                      const int * csrRowPtrA,  //corresponding input noncompressed row pointer
+                                                      const cusparseMatDescr_t descrA,
+                                                      const double *csrSortedValA, 
+                                                      const int *csrSortedColIndA,
+                                                      const int * csrSortedRowPtrA, 
                                                       int  nnzA,
                                                       const int *nnzPerRow,  
-                                                      double *csrValC,
-                                                      int *csrColIndC,
-                                                      int *csrRowPtrC,
+                                                      double *csrSortedValC,
+                                                      int *csrSortedColIndC,
+                                                      int *csrSortedRowPtrC,
                                                       double tol);
 
 cusparseStatus_t CUSPARSEAPI cusparseCcsr2csr_compress(cusparseHandle_t handle,
-                                                        int m, //number of rows
+                                                        int m, 
                                                         int n,
-                                                        const cusparseMatDescr_t descra,
-                                                        const cuComplex *csrValA, //csr values array-the elements which are below a certain tolerance will be remvoed
-                                                        const int *csrColIndA,
-                                                        const int * csrRowPtrA,  //corresponding input noncompressed row pointer
+                                                        const cusparseMatDescr_t descrA,
+                                                        const cuComplex *csrSortedValA, 
+                                                        const int *csrSortedColIndA,
+                                                        const int * csrSortedRowPtrA,
                                                         int nnzA,
                                                         const int *nnzPerRow,  
-                                                        cuComplex *csrValC,
-                                                        int *csrColIndC,
-                                                        int *csrRowPtrC,
+                                                        cuComplex *csrSortedValC,
+                                                        int *csrSortedColIndC,
+                                                        int *csrSortedRowPtrC,
                                                         cuComplex tol);                       
 
 cusparseStatus_t CUSPARSEAPI cusparseZcsr2csr_compress(cusparseHandle_t handle,
-                                                      int m, //number of rows
+                                                      int m, 
                                                       int n,
-                                                      const cusparseMatDescr_t descra,
-                                                      const cuDoubleComplex *csrValA, //csr values array-the elements which are below a certain tolerance will be remvoed
-                                                      const int *csrColIndA,
-                                                      const int * csrRowPtrA,  //corresponding input noncompressed row pointer
+                                                      const cusparseMatDescr_t descrA,
+                                                      const cuDoubleComplex *csrSortedValA,
+                                                      const int *csrSortedColIndA,
+                                                      const int * csrSortedRowPtrA,
                                                       int  nnzA,
                                                       const int *nnzPerRow, 
-                                                      cuDoubleComplex *csrValC,
-                                                      int *csrColIndC,
-                                                      int *csrRowPtrC,
+                                                      cuDoubleComplex *csrSortedValC,
+                                                      int *csrSortedColIndC,
+                                                      int *csrSortedRowPtrC,
                                                       cuDoubleComplex tol);                        
                                                                                                         
 /* Description: This routine converts a dense matrix to a sparse matrix 
@@ -5698,9 +6338,9 @@ cusparseStatus_t CUSPARSEAPI cusparseHpruneDense2csr_bufferSizeExt(
     int lda,
     const __half *threshold,
     const cusparseMatDescr_t descrC,
-    const __half *csrValC,
-    const int *csrRowPtrC,
-    const int *csrColIndC,
+    const __half *csrSortedValC,
+    const int *csrSortedRowPtrC,
+    const int *csrSortedColIndC,
     size_t *pBufferSizeInBytes);
 #endif
 
@@ -5712,9 +6352,9 @@ cusparseStatus_t CUSPARSEAPI cusparseSpruneDense2csr_bufferSizeExt(
     int lda,
     const float *threshold,
     const cusparseMatDescr_t descrC,
-    const float *csrValC,
-    const int *csrRowPtrC,
-    const int *csrColIndC,
+    const float *csrSortedValC,
+    const int *csrSortedRowPtrC,
+    const int *csrSortedColIndC,
     size_t *pBufferSizeInBytes);
 
 cusparseStatus_t CUSPARSEAPI cusparseDpruneDense2csr_bufferSizeExt(
@@ -5725,9 +6365,9 @@ cusparseStatus_t CUSPARSEAPI cusparseDpruneDense2csr_bufferSizeExt(
     int lda,
     const double *threshold,
     const cusparseMatDescr_t descrC,
-    const double *csrValC,
-    const int *csrRowPtrC,
-    const int *csrColIndC,
+    const double *csrSortedValC,
+    const int *csrSortedRowPtrC,
+    const int *csrSortedColIndC,
     size_t *pBufferSizeInBytes);
 
 #if defined(__cplusplus)
@@ -5764,7 +6404,7 @@ cusparseStatus_t CUSPARSEAPI cusparseDpruneDense2csrNnz(
     int lda,
     const double *threshold,
     const cusparseMatDescr_t descrC,
-    int *csrRowPtrC,
+    int *csrSortedRowPtrC,
     int *nnzTotalDevHostPtr,
     void *pBuffer);
 
@@ -5777,9 +6417,9 @@ cusparseStatus_t CUSPARSEAPI cusparseHpruneDense2csr(
     int lda,
     const __half *threshold,
     const cusparseMatDescr_t descrC,
-    __half *csrValC,
-    const int *csrRowPtrC,
-    int *csrColIndC,
+    __half *csrSortedValC,
+    const int *csrSortedRowPtrC,
+    int *csrSortedColIndC,
     void *pBuffer);
 #endif
 
@@ -5791,9 +6431,9 @@ cusparseStatus_t CUSPARSEAPI cusparseSpruneDense2csr(
     int lda,
     const float *threshold,
     const cusparseMatDescr_t descrC,
-    float *csrValC,
-    const int *csrRowPtrC,
-    int *csrColIndC,
+    float *csrSortedValC,
+    const int *csrSortedRowPtrC,
+    int *csrSortedColIndC,
     void *pBuffer);
 
 cusparseStatus_t CUSPARSEAPI cusparseDpruneDense2csr(
@@ -5804,9 +6444,9 @@ cusparseStatus_t CUSPARSEAPI cusparseDpruneDense2csr(
     int lda,
     const double *threshold,
     const cusparseMatDescr_t descrC,
-    double *csrValC,
-    const int *csrRowPtrC,
-    int *csrColIndC,
+    double *csrSortedValC,
+    const int *csrSortedRowPtrC,
+    int *csrSortedColIndC,
     void *pBuffer);
 
 /* Description: prune sparse matrix with CSR format to another sparse matrix with CSR format */
@@ -5817,14 +6457,14 @@ cusparseStatus_t CUSPARSEAPI cusparseHpruneCsr2csr_bufferSizeExt(
     int n,
     int nnzA,
     const cusparseMatDescr_t descrA,
-    const __half *csrValA,
-    const int *csrRowPtrA,
-    const int *csrColIndA,
+    const __half *csrSortedValA,
+    const int *csrSortedRowPtrA,
+    const int *csrSortedColIndA,
     const __half *threshold,
     const cusparseMatDescr_t descrC,
-    const __half *csrValC,
-    const int *csrRowPtrC,
-    const int *csrColIndC,
+    const __half *csrSortedValC,
+    const int *csrSortedRowPtrC,
+    const int *csrSortedColIndC,
     size_t *pBufferSizeInBytes);
 #endif
 
@@ -5834,14 +6474,14 @@ cusparseStatus_t CUSPARSEAPI cusparseSpruneCsr2csr_bufferSizeExt(
     int n,
     int nnzA,
     const cusparseMatDescr_t descrA,
-    const float *csrValA,
-    const int *csrRowPtrA,
-    const int *csrColIndA,
+    const float *csrSortedValA,
+    const int *csrSortedRowPtrA,
+    const int *csrSortedColIndA,
     const float *threshold,
     const cusparseMatDescr_t descrC,
-    const float *csrValC,
-    const int *csrRowPtrC,
-    const int *csrColIndC,
+    const float *csrSortedValC,
+    const int *csrSortedRowPtrC,
+    const int *csrSortedColIndC,
     size_t *pBufferSizeInBytes);
 
 cusparseStatus_t CUSPARSEAPI cusparseDpruneCsr2csr_bufferSizeExt(
@@ -5850,14 +6490,14 @@ cusparseStatus_t CUSPARSEAPI cusparseDpruneCsr2csr_bufferSizeExt(
     int n,
     int nnzA,
     const cusparseMatDescr_t descrA,
-    const double *csrValA,
-    const int *csrRowPtrA,
-    const int *csrColIndA,
+    const double *csrSortedValA,
+    const int *csrSortedRowPtrA,
+    const int *csrSortedColIndA,
     const double *threshold,
     const cusparseMatDescr_t descrC,
-    const double *csrValC,
-    const int *csrRowPtrC,
-    const int *csrColIndC,
+    const double *csrSortedValC,
+    const int *csrSortedRowPtrC,
+    const int *csrSortedColIndC,
     size_t *pBufferSizeInBytes);
 
 #if defined(__cplusplus)
@@ -5867,12 +6507,12 @@ cusparseStatus_t CUSPARSEAPI cusparseHpruneCsr2csrNnz(
     int n,
     int nnzA,
     const cusparseMatDescr_t descrA,
-    const __half *csrValA,
-    const int *csrRowPtrA,
-    const int *csrColIndA,
+    const __half *csrSortedValA,
+    const int *csrSortedRowPtrA,
+    const int *csrSortedColIndA,
     const __half *threshold,
     const cusparseMatDescr_t descrC,
-    int *csrRowPtrC,
+    int *csrSortedRowPtrC,
     int *nnzTotalDevHostPtr, /* can be on host or device */
     void *pBuffer);
 #endif
@@ -5883,12 +6523,12 @@ cusparseStatus_t CUSPARSEAPI cusparseSpruneCsr2csrNnz(
     int n,
     int nnzA,
     const cusparseMatDescr_t descrA,
-    const float *csrValA,
-    const int *csrRowPtrA,
-    const int *csrColIndA,
+    const float *csrSortedValA,
+    const int *csrSortedRowPtrA,
+    const int *csrSortedColIndA,
     const float *threshold,
     const cusparseMatDescr_t descrC,
-    int *csrRowPtrC,
+    int *csrSortedRowPtrC,
     int *nnzTotalDevHostPtr, /* can be on host or device */
     void *pBuffer);
 
@@ -5898,12 +6538,12 @@ cusparseStatus_t CUSPARSEAPI cusparseDpruneCsr2csrNnz(
     int n,
     int nnzA,
     const cusparseMatDescr_t descrA,
-    const double *csrValA,
-    const int *csrRowPtrA,
-    const int *csrColIndA,
+    const double *csrSortedValA,
+    const int *csrSortedRowPtrA,
+    const int *csrSortedColIndA,
     const double *threshold,
     const cusparseMatDescr_t descrC,
-    int *csrRowPtrC,
+    int *csrSortedRowPtrC,
     int *nnzTotalDevHostPtr, /* can be on host or device */
     void *pBuffer);
 
@@ -5914,14 +6554,14 @@ cusparseStatus_t CUSPARSEAPI cusparseHpruneCsr2csr(
     int n,
     int nnzA,
     const cusparseMatDescr_t descrA,
-    const __half *csrValA,
-    const int *csrRowPtrA,
-    const int *csrColIndA,
+    const __half *csrSortedValA,
+    const int *csrSortedRowPtrA,
+    const int *csrSortedColIndA,
     const __half *threshold,
     const cusparseMatDescr_t descrC,
-    __half *csrValC,
-    const int *csrRowPtrC,
-    int *csrColIndC,
+    __half *csrSortedValC,
+    const int *csrSortedRowPtrC,
+    int *csrSortedColIndC,
     void *pBuffer);
 #endif
 
@@ -5931,14 +6571,14 @@ cusparseStatus_t CUSPARSEAPI cusparseSpruneCsr2csr(
     int n,
     int nnzA,
     const cusparseMatDescr_t descrA,
-    const float *csrValA,
-    const int *csrRowPtrA,
-    const int *csrColIndA,
+    const float *csrSortedValA,
+    const int *csrSortedRowPtrA,
+    const int *csrSortedColIndA,
     const float *threshold,
     const cusparseMatDescr_t descrC,
-    float *csrValC,
-    const int *csrRowPtrC,
-    int *csrColIndC,
+    float *csrSortedValC,
+    const int *csrSortedRowPtrC,
+    int *csrSortedColIndC,
     void *pBuffer);
 
 cusparseStatus_t CUSPARSEAPI cusparseDpruneCsr2csr(
@@ -5947,14 +6587,14 @@ cusparseStatus_t CUSPARSEAPI cusparseDpruneCsr2csr(
     int n,
     int nnzA,
     const cusparseMatDescr_t descrA,
-    const double *csrValA,
-    const int *csrRowPtrA,
-    const int *csrColIndA,
+    const double *csrSortedValA,
+    const int *csrSortedRowPtrA,
+    const int *csrSortedColIndA,
     const double *threshold,
     const cusparseMatDescr_t descrC,
-    double *csrValC,
-    const int *csrRowPtrC,
-    int *csrColIndC,
+    double *csrSortedValC,
+    const int *csrSortedRowPtrC,
+    int *csrSortedColIndC,
     void *pBuffer);
 
 /* Description: prune dense matrix to a sparse matrix with CSR format by percentage */
@@ -5967,9 +6607,9 @@ cusparseStatus_t CUSPARSEAPI cusparseHpruneDense2csrByPercentage_bufferSizeExt(
     int lda,
     float percentage, /* between 0 to 100 */
     const cusparseMatDescr_t descrC,
-    const __half *csrValC,
-    const int *csrRowPtrC,
-    const int *csrColIndC,
+    const __half *csrSortedValC,
+    const int *csrSortedRowPtrC,
+    const int *csrSortedColIndC,
     pruneInfo_t info,
     size_t *pBufferSizeInBytes);
 #endif
@@ -5982,9 +6622,9 @@ cusparseStatus_t CUSPARSEAPI cusparseSpruneDense2csrByPercentage_bufferSizeExt(
     int lda,
     float percentage, /* between 0 to 100 */
     const cusparseMatDescr_t descrC,
-    const float *csrValC,
-    const int *csrRowPtrC,
-    const int *csrColIndC,
+    const float *csrSortedValC,
+    const int *csrSortedRowPtrC,
+    const int *csrSortedColIndC,
     pruneInfo_t info,
     size_t *pBufferSizeInBytes);
 
@@ -5996,9 +6636,9 @@ cusparseStatus_t CUSPARSEAPI cusparseDpruneDense2csrByPercentage_bufferSizeExt(
     int lda,
     float percentage, /* between 0 to 100 */
     const cusparseMatDescr_t descrC,
-    const double *csrValC,
-    const int *csrRowPtrC,
-    const int *csrColIndC,
+    const double *csrSortedValC,
+    const int *csrSortedRowPtrC,
+    const int *csrSortedColIndC,
     pruneInfo_t info,
     size_t *pBufferSizeInBytes);
 
@@ -6052,9 +6692,9 @@ cusparseStatus_t CUSPARSEAPI cusparseHpruneDense2csrByPercentage(
     int lda,
     float percentage, /* between 0 to 100 */
     const cusparseMatDescr_t descrC,
-    __half *csrValC,
-    const int *csrRowPtrC,
-    int *csrColIndC,
+    __half *csrSortedValC,
+    const int *csrSortedRowPtrC,
+    int *csrSortedColIndC,
     pruneInfo_t info,
     void *pBuffer);
 #endif
@@ -6067,9 +6707,9 @@ cusparseStatus_t CUSPARSEAPI cusparseSpruneDense2csrByPercentage(
     int lda,
     float percentage, /* between 0 to 100 */
     const cusparseMatDescr_t descrC,
-    float *csrValC,
-    const int *csrRowPtrC,
-    int *csrColIndC,
+    float *csrSortedValC,
+    const int *csrSortedRowPtrC,
+    int *csrSortedColIndC,
     pruneInfo_t info,
     void *pBuffer);
 
@@ -6081,9 +6721,9 @@ cusparseStatus_t CUSPARSEAPI cusparseDpruneDense2csrByPercentage(
     int lda,
     float percentage, /* between 0 to 100 */
     const cusparseMatDescr_t descrC,
-    double *csrValC,
-    const int *csrRowPtrC,
-    int *csrColIndC,
+    double *csrSortedValC,
+    const int *csrSortedRowPtrC,
+    int *csrSortedColIndC,
     pruneInfo_t info,
     void *pBuffer);
 
@@ -6096,14 +6736,14 @@ cusparseStatus_t CUSPARSEAPI cusparseHpruneCsr2csrByPercentage_bufferSizeExt(
     int n,
     int nnzA,
     const cusparseMatDescr_t descrA,
-    const __half *csrValA,
-    const int *csrRowPtrA,
-    const int *csrColIndA,
+    const __half *csrSortedValA,
+    const int *csrSortedRowPtrA,
+    const int *csrSortedColIndA,
     float percentage, /* between 0 to 100 */
     const cusparseMatDescr_t descrC,
-    const __half *csrValC,
-    const int *csrRowPtrC,
-    const int *csrColIndC,
+    const __half *csrSortedValC,
+    const int *csrSortedRowPtrC,
+    const int *csrSortedColIndC,
     pruneInfo_t info,
     size_t *pBufferSizeInBytes);
 #endif
@@ -6114,14 +6754,14 @@ cusparseStatus_t CUSPARSEAPI cusparseSpruneCsr2csrByPercentage_bufferSizeExt(
     int n,
     int nnzA,
     const cusparseMatDescr_t descrA,
-    const float *csrValA,
-    const int *csrRowPtrA,
-    const int *csrColIndA,
+    const float *csrSortedValA,
+    const int *csrSortedRowPtrA,
+    const int *csrSortedColIndA,
     float percentage, /* between 0 to 100 */
     const cusparseMatDescr_t descrC,
-    const float *csrValC,
-    const int *csrRowPtrC,
-    const int *csrColIndC,
+    const float *csrSortedValC,
+    const int *csrSortedRowPtrC,
+    const int *csrSortedColIndC,
     pruneInfo_t info,
     size_t *pBufferSizeInBytes);
 
@@ -6131,14 +6771,14 @@ cusparseStatus_t CUSPARSEAPI cusparseDpruneCsr2csrByPercentage_bufferSizeExt(
     int n,
     int nnzA,
     const cusparseMatDescr_t descrA,
-    const double *csrValA,
-    const int *csrRowPtrA,
-    const int *csrColIndA,
+    const double *csrSortedValA,
+    const int *csrSortedRowPtrA,
+    const int *csrSortedColIndA,
     float percentage, /* between 0 to 100 */
     const cusparseMatDescr_t descrC,
-    const double *csrValC,
-    const int *csrRowPtrC,
-    const int *csrColIndC,
+    const double *csrSortedValC,
+    const int *csrSortedRowPtrC,
+    const int *csrSortedColIndC,
     pruneInfo_t info,
     size_t *pBufferSizeInBytes);
 
@@ -6149,12 +6789,12 @@ cusparseStatus_t CUSPARSEAPI cusparseHpruneCsr2csrNnzByPercentage(
     int n,
     int nnzA,
     const cusparseMatDescr_t descrA,
-    const __half *csrValA,
-    const int *csrRowPtrA,
-    const int *csrColIndA,
+    const __half *csrSortedValA,
+    const int *csrSortedRowPtrA,
+    const int *csrSortedColIndA,
     float percentage, /* between 0 to 100 */
     const cusparseMatDescr_t descrC,
-    int *csrRowPtrC,
+    int *csrSortedRowPtrC,
     int *nnzTotalDevHostPtr, /* can be on host or device */
     pruneInfo_t info,
     void *pBuffer);
@@ -6166,12 +6806,12 @@ cusparseStatus_t CUSPARSEAPI cusparseSpruneCsr2csrNnzByPercentage(
     int n,
     int nnzA,
     const cusparseMatDescr_t descrA,
-    const float *csrValA,
-    const int *csrRowPtrA,
-    const int *csrColIndA,
+    const float *csrSortedValA,
+    const int *csrSortedRowPtrA,
+    const int *csrSortedColIndA,
     float percentage, /* between 0 to 100 */
     const cusparseMatDescr_t descrC,
-    int *csrRowPtrC,
+    int *csrSortedRowPtrC,
     int *nnzTotalDevHostPtr, /* can be on host or device */
     pruneInfo_t info,
     void *pBuffer);
@@ -6182,12 +6822,12 @@ cusparseStatus_t CUSPARSEAPI cusparseDpruneCsr2csrNnzByPercentage(
     int n,
     int nnzA,
     const cusparseMatDescr_t descrA,
-    const double *csrValA,
-    const int *csrRowPtrA,
-    const int *csrColIndA,
+    const double *csrSortedValA,
+    const int *csrSortedRowPtrA,
+    const int *csrSortedColIndA,
     float percentage, /* between 0 to 100 */
     const cusparseMatDescr_t descrC,
-    int *csrRowPtrC,
+    int *csrSortedRowPtrC,
     int *nnzTotalDevHostPtr, /* can be on host or device */
     pruneInfo_t info,
     void *pBuffer);
@@ -6199,14 +6839,14 @@ cusparseStatus_t CUSPARSEAPI cusparseHpruneCsr2csrByPercentage(
     int n,
     int nnzA,
     const cusparseMatDescr_t descrA,
-    const __half *csrValA,
-    const int *csrRowPtrA,
-    const int *csrColIndA,
+    const __half *csrSortedValA,
+    const int *csrSortedRowPtrA,
+    const int *csrSortedColIndA,
     float percentage, /* between 0 to 100 */
     const cusparseMatDescr_t descrC,
-    __half *csrValC,
-    const int *csrRowPtrC,
-    int *csrColIndC,
+    __half *csrSortedValC,
+    const int *csrSortedRowPtrC,
+    int *csrSortedColIndC,
     pruneInfo_t info,
     void *pBuffer);
 #endif
@@ -6217,14 +6857,14 @@ cusparseStatus_t CUSPARSEAPI cusparseSpruneCsr2csrByPercentage(
     int n,
     int nnzA,
     const cusparseMatDescr_t descrA,
-    const float *csrValA,
-    const int *csrRowPtrA,
-    const int *csrColIndA,
+    const float *csrSortedValA,
+    const int *csrSortedRowPtrA,
+    const int *csrSortedColIndA,
     float percentage, /* between 0 to 100 */
     const cusparseMatDescr_t descrC,
-    float *csrValC,
-    const int *csrRowPtrC,
-    int *csrColIndC,
+    float *csrSortedValC,
+    const int *csrSortedRowPtrC,
+    int *csrSortedColIndC,
     pruneInfo_t info,
     void *pBuffer);
 
@@ -6234,14 +6874,14 @@ cusparseStatus_t CUSPARSEAPI cusparseDpruneCsr2csrByPercentage(
     int n,
     int nnzA,
     const cusparseMatDescr_t descrA,
-    const double *csrValA,
-    const int *csrRowPtrA,
-    const int *csrColIndA,
+    const double *csrSortedValA,
+    const int *csrSortedRowPtrA,
+    const int *csrSortedColIndA,
     float percentage, /* between 0 to 100 */
     const cusparseMatDescr_t descrC,
-    double *csrValC,
-    const int *csrRowPtrC,
-    int *csrColIndC,
+    double *csrSortedValC,
+    const int *csrSortedRowPtrC,
+    int *csrSortedColIndC,
     pruneInfo_t info,
     void *pBuffer);
 

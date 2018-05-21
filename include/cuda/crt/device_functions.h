@@ -3276,4 +3276,11 @@ __DEVICE_FUNCTIONS_STATIC_DECL__ float uint2float(unsigned int a, enum cudaRound
 #include "texture_indirect_functions.h"
 #include "surface_indirect_functions.h"
 
+#ifdef __CUDACC__
+extern "C" __host__ __device__  unsigned CUDARTAPI __cudaPushCallConfiguration(dim3 gridDim,
+                                      dim3 blockDim, 
+                                      size_t sharedMem = 0, 
+                                      void *stream = 0);
+#endif  /* __CUDACC__ */
+
 #endif /* !__DEVICE_FUNCTIONS_H__ */

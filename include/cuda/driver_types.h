@@ -1157,7 +1157,7 @@ struct __device_builtin__ cudaFuncAttributes
 
    /**
     * On devices where the L1 cache and shared memory use the same hardware resources, 
-    * this sets the shared memory carveout preference, in percent of the total resources. 
+    * this sets the shared memory carveout preference, in percent of the maximum shared memory. 
     * This is only a hint, and the driver can choose a different ratio if required to execute the function.
     */
    int preferredShmemCarveout;
@@ -1221,7 +1221,7 @@ enum __device_builtin__ cudaComputeMode
 enum __device_builtin__ cudaLimit
 {
     cudaLimitStackSize                    = 0x00, /**< GPU thread stack size */
-    cudaLimitPrintfFifoSize               = 0x01, /**< GPU printf/fprintf FIFO size */
+    cudaLimitPrintfFifoSize               = 0x01, /**< GPU printf FIFO size */
     cudaLimitMallocHeapSize               = 0x02, /**< GPU malloc heap size */
     cudaLimitDevRuntimeSyncDepth          = 0x03, /**< GPU device runtime synchronize depth */
     cudaLimitDevRuntimePendingLaunchCount = 0x04  /**< GPU device runtime pending launch count */
@@ -1360,7 +1360,11 @@ enum __device_builtin__ cudaDeviceAttr
     cudaDevAttrReserved94                     = 94,
     cudaDevAttrCooperativeLaunch              = 95, /**< Device supports launching cooperative kernels via ::cudaLaunchCooperativeKernel*/
     cudaDevAttrCooperativeMultiDeviceLaunch   = 96, /**< Device can participate in cooperative kernels launched via ::cudaLaunchCooperativeKernelMultiDevice */
-    cudaDevAttrMaxSharedMemoryPerBlockOptin   = 97 /**< The maximum optin shared memory per block. This value may vary by chip. See ::cudaFuncSetAttribute */
+    cudaDevAttrMaxSharedMemoryPerBlockOptin   = 97, /**< The maximum optin shared memory per block. This value may vary by chip. See ::cudaFuncSetAttribute */
+    cudaDevAttrCanFlushRemoteWrites           = 98, /**< Device supports flushing of outstanding remote writes. */
+    cudaDevAttrHostRegisterSupported          = 99, /**< Device supports host memory registration via ::cudaHostRegister. */
+    cudaDevAttrPageableMemoryAccessUsesHostPageTables = 100, /**< Device accesses pageable memory via the host's page tables. */
+    cudaDevAttrDirectManagedMemAccessFromHost = 101 /**< Host can directly access managed memory on the device without migration. */
 };
 
 /**
@@ -1370,7 +1374,8 @@ enum __device_builtin__ cudaDeviceAttr
 enum __device_builtin__ cudaDeviceP2PAttr {
     cudaDevP2PAttrPerformanceRank              = 1, /**< A relative value indicating the performance of the link between two devices */
     cudaDevP2PAttrAccessSupported              = 2, /**< Peer access is enabled */
-    cudaDevP2PAttrNativeAtomicSupported        = 3  /**< Native atomic operation over the link supported */
+    cudaDevP2PAttrNativeAtomicSupported        = 3, /**< Native atomic operation over the link supported */
+    cudaDevP2PAttrCudaArrayAccessSupported     = 4  /**< Accessing CUDA arrays over the link supported */
 };
 /**
  * CUDA device properties
@@ -1448,6 +1453,8 @@ struct __device_builtin__ cudaDeviceProp
     int    cooperativeLaunch;          /**< Device supports launching cooperative kernels via ::cudaLaunchCooperativeKernel */
     int    cooperativeMultiDeviceLaunch; /**< Device can participate in cooperative kernels launched via ::cudaLaunchCooperativeKernelMultiDevice */
     size_t sharedMemPerBlockOptin;     /**< Per device maximum shared memory per block usable by special opt in */
+    int    pageableMemoryAccessUsesHostPageTables; /**< Device accesses pageable memory via the host's page tables */
+    int    directManagedMemAccessFromHost; /**< Host can directly access managed memory on the device without migration. */
 };
 
 #define cudaDevicePropDontCare                             \
@@ -1523,6 +1530,8 @@ struct __device_builtin__ cudaDeviceProp
           0,         /* int    cooperativeLaunch */ \
           0,         /* int    cooperativeMultiDeviceLaunch */ \
           0,         /* size_t sharedMemPerBlockOptin */ \
+          0,         /* int    pageableMemoryAccessUsesHostPageTables */ \
+          0,         /* int    directManagedMemAccessFromHost */ \
         } /**< Empty device properties */
 
 /**

@@ -257,7 +257,8 @@ typedef enum
     NPP_CUDA_6_1             = 610, /**<  Indicates that CUDA 6.1 capable device is machine's default device */
     NPP_CUDA_6_2             = 620, /**<  Indicates that CUDA 6.2 capable device is machine's default device */
     NPP_CUDA_6_3             = 630, /**<  Indicates that CUDA 6.3 capable device is machine's default device */
-    NPP_CUDA_7_0             = 700  /**<  Indicates that CUDA 7.0 or better is machine's default device */
+    NPP_CUDA_7_0             = 700, /**<  Indicates that CUDA 7.0 capable device is machine's default device */
+    NPP_CUDA_7_2             = 720  /**<  Indicates that CUDA 7.2 or better is machine's default device */
 } NppGpuComputeCapability;
 
 typedef struct 

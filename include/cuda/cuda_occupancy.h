@@ -462,7 +462,8 @@ typedef enum cudaOccCacheConfig_enum {
 typedef enum cudaOccCarveoutConfig_enum {
     SHAREDMEM_CARVEOUT_DEFAULT       = -1,  // no preference for shared memory or L1 (default)
     SHAREDMEM_CARVEOUT_MAX_SHARED    = 100, // prefer maximum available shared memory, minimum L1 cache
-    SHAREDMEM_CARVEOUT_MAX_L1        = 0    // prefer maximum available L1 cache, minimum shared memory
+    SHAREDMEM_CARVEOUT_MAX_L1        = 0,    // prefer maximum available L1 cache, minimum shared memory
+    SHAREDMEM_CARVEOUT_HALF          = 50   // prefer half of maximum available shared memory, with the rest as L1 cache
 } cudaOccCarveoutConfig;
 
 /**
@@ -472,10 +473,10 @@ typedef enum cudaOccCarveoutConfig_enum {
  */
 struct cudaOccDeviceState
 {
-    // Cache / shared memory split preference. Deprecated Volta+ 
+    // Cache / shared memory split preference. Deprecated on Volta 
     cudaOccCacheConfig cacheConfig; 
-    // Shared memory / L1 split preference. Supported on only Volta+
-    cudaOccCarveoutConfig carveoutConfig;
+    // Shared memory / L1 split preference. Supported on only Volta
+    int carveoutConfig;
 
 #ifdef __cplusplus
     __OCC_INLINE
@@ -692,43 +693,108 @@ static __OCC_INLINE cudaOccError cudaOccMaxBlocksPerMultiprocessor(int* limit, c
     return CUDA_OCC_SUCCESS;
 }
 
-/**
- * Shared memory based on config requested by User
+/** 
+ * Align up shared memory based on compute major configurations
  */
-static __OCC_INLINE cudaOccError cudaOccSMemPerMultiprocessor(size_t *limit, const cudaOccDeviceProp *properties, const cudaOccDeviceState *state)
+static __OCC_INLINE cudaOccError cudaOccAlignUpShmemSizeVolta(size_t *shMemSize, const cudaOccDeviceProp *properties)
 {
-    cudaOccCarveoutConfig carveoutConfig  = state->carveoutConfig;
+    // Volta has shared L1 cache / shared memory, and supports cache
+    // configuration to trade one for the other. These values are needed to
+    // map carveout config ratio to the next available architecture size
+    size_t size = *shMemSize;
+    switch (properties->computeMajor) {
+    case 7:
+        // Volta supports 0KB, 8KB, 16KB, 32KB, 64KB, and 96KB shared mem.
+        if (size == 0) {
+            *shMemSize = 0;
+        }
+        else if (size <= 8192) {
+            *shMemSize = 8192;
+        }
+        else if (size <= 16384) {
+            *shMemSize = 16384;
+        }
+        else if (size <= 32768) {
+            *shMemSize = 32768;
+        }
+        else if (size <= 65536) {
+            *shMemSize = 65536;
+        }
+        else {
+            *shMemSize = properties->sharedMemPerMultiprocessor;
+        }
+        break;
+    default:
+        return CUDA_OCC_ERROR_UNKNOWN_DEVICE;
+    }
+
+    return CUDA_OCC_SUCCESS;
+}
+
+/**
+ * Shared memory based on the new carveoutConfig API introduced with Volta
+ */
+static __OCC_INLINE cudaOccError cudaOccSMemPreferenceVolta(size_t *limit, const cudaOccDeviceProp *properties, const cudaOccDeviceState *state)
+{
+    cudaOccError status = CUDA_OCC_SUCCESS;
+    size_t preferenceShmemSize;
+
+    // CUDA 9.0 introduces a new API to set shared memory - L1 configuration on supported
+    // devices. This preference will take precedence over the older cacheConfig setting.
+    // Map cacheConfig to its effective preference value.
+    int effectivePreference = state->carveoutConfig;
+    if ((effectivePreference < SHAREDMEM_CARVEOUT_DEFAULT) || (effectivePreference > SHAREDMEM_CARVEOUT_MAX_SHARED)) {
+        return CUDA_OCC_ERROR_INVALID_INPUT;
+    }
+    
+    if (effectivePreference == SHAREDMEM_CARVEOUT_DEFAULT) {
+        switch (state->cacheConfig)
+        {
+        case CACHE_PREFER_L1:
+            effectivePreference = SHAREDMEM_CARVEOUT_MAX_L1;
+            break;
+        case CACHE_PREFER_SHARED:
+            effectivePreference = SHAREDMEM_CARVEOUT_MAX_SHARED;
+            break;
+        case CACHE_PREFER_EQUAL:
+            effectivePreference = SHAREDMEM_CARVEOUT_HALF;
+            break;
+        default:
+            effectivePreference = SHAREDMEM_CARVEOUT_DEFAULT;
+            break;
+        }
+    }
+
+    if (effectivePreference == SHAREDMEM_CARVEOUT_DEFAULT) {
+        preferenceShmemSize = properties->sharedMemPerMultiprocessor;
+    }
+    else {
+        preferenceShmemSize = (size_t) (effectivePreference * properties->sharedMemPerMultiprocessor) / 100;
+    }
+
+    status = cudaOccAlignUpShmemSizeVolta(&preferenceShmemSize, properties);
+    *limit = preferenceShmemSize;
+    return status;
+}
+
+/**
+ * Shared memory based on the cacheConfig
+ */
+static __OCC_INLINE cudaOccError cudaOccSMemPreference(size_t *limit, const cudaOccDeviceProp *properties, const cudaOccDeviceState *state)
+{
     size_t bytes                          = 0;
     size_t sharedMemPerMultiprocessorHigh = properties->sharedMemPerMultiprocessor;
+    cudaOccCacheConfig cacheConfig        = state->cacheConfig;
 
-    // Fermi, Kepler and Volta have shared L1 cache / shared memory, and support cache
+    // Fermi and Kepler has shared L1 cache / shared memory, and support cache
     // configuration to trade one for the other. These values are needed to
     // calculate the correct shared memory size for user requested cache
     // configuration.
     //
-    size_t minCacheSize                   = (7 == properties->computeMajor)? 32768 : 16384;
-    size_t maxCacheSize                   = (7 == properties->computeMajor)? 98304 : 49152;
+    size_t minCacheSize                   = 16384;
+    size_t maxCacheSize                   = 49152;
     size_t cacheAndSharedTotal            = sharedMemPerMultiprocessorHigh + minCacheSize;
     size_t sharedMemPerMultiprocessorLow  = cacheAndSharedTotal - maxCacheSize;
-
-    // Volta introduces a new API to set shared memory - L1 configuration on supported
-    // devices. Map the new setting to cacheConfig
-    cudaOccCacheConfig cacheConfig;
-    if (carveoutConfig == SHAREDMEM_CARVEOUT_DEFAULT) {
-        cacheConfig = state->cacheConfig;
-    }
-    else {
-        size_t midPoint = SHAREDMEM_CARVEOUT_MAX_SHARED / 2;
-        if ((size_t)carveoutConfig < midPoint) {
-            cacheConfig = CACHE_PREFER_L1;
-        }
-        else if ((size_t)carveoutConfig > midPoint) {
-            cacheConfig = CACHE_PREFER_SHARED;
-        }
-        else {
-            cacheConfig = CACHE_PREFER_EQUAL;
-        }
-    }
 
     switch (properties->computeMajor) {
         case 2:
@@ -774,24 +840,6 @@ static __OCC_INLINE cudaOccError cudaOccSMemPerMultiprocessor(size_t *limit, con
             //
             bytes = sharedMemPerMultiprocessorHigh;
             break;
-        case 7:
-            // Volta (total 128K) supports 0KB, 8KB, 16KB, 32KB, 64KB, and 96KB shared mem.
-            // Thus, map the cache preference (PREFER_SHARED, PREFER_L1, PREFER_EQUAL) to 96K, 32K, 64K.
-            switch (cacheConfig) {
-                default :
-                case CACHE_PREFER_NONE:
-                case CACHE_PREFER_SHARED:
-                    bytes = sharedMemPerMultiprocessorHigh;  // 96K
-                    break;
-                case CACHE_PREFER_L1:
-                    bytes = sharedMemPerMultiprocessorLow;  // 32K
-                    break;
-                case CACHE_PREFER_EQUAL:
-                    // Equal is the mid-point between high and low. It should be 64K.
-                    bytes = (sharedMemPerMultiprocessorHigh + sharedMemPerMultiprocessorLow) / 2;
-                    break;
-            }
-            break;
         default:
             return CUDA_OCC_ERROR_UNKNOWN_DEVICE;
     }
@@ -799,6 +847,19 @@ static __OCC_INLINE cudaOccError cudaOccSMemPerMultiprocessor(size_t *limit, con
     *limit = bytes;
 
     return CUDA_OCC_SUCCESS;
+}
+
+/**
+ * Shared memory based on config requested by User
+ */
+static __OCC_INLINE cudaOccError cudaOccSMemPerMultiprocessor(size_t *limit, const cudaOccDeviceProp *properties, const cudaOccDeviceState *state)
+{
+    // Volta introduces a new API that allows for shared memory carveout preference. Because it is a shared memory preference,
+    // it is handled separately from the cache config preference.
+    if (properties->computeMajor == 7) {
+        return cudaOccSMemPreferenceVolta(limit, properties, state);
+    }
+    return cudaOccSMemPreference(limit, properties, state);
 }
 
 /**
@@ -1029,7 +1090,7 @@ static __OCC_INLINE cudaOccError cudaOccMaxBlocksPerSMSmemLimit(
 {
     cudaOccError status = CUDA_OCC_SUCCESS;
     int allocationGranularity;
-    size_t userSmemPreference;
+    size_t userSmemPreference = 0;
     size_t totalSmemUsagePerCTA;
     size_t maxSmemUsagePerCTA;
     size_t smemAllocatedPerCTA;
@@ -1089,10 +1150,10 @@ static __OCC_INLINE cudaOccError cudaOccMaxBlocksPerSMSmemLimit(
             sharedMemPerMultiprocessor = userSmemPreference;
         }
         else {
-            // On Volta+, user requested shared memory will limit occupancy
+            // On Volta, user requested shared memory will limit occupancy
             // if it's less than shared memory per CTA. Otherwise, the
             // maximum shared memory limit is used.
-            if (properties->computeMajor >= 7) {
+            if (properties->computeMajor == 7) {
                 sharedMemPerMultiprocessor = smemAllocatedPerCTA;
             }
             else {

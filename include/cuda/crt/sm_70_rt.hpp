@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 NVIDIA Corporation.  All rights reserved.
+ * Copyright 2017-2018 NVIDIA Corporation.  All rights reserved.
  *
  * NOTICE TO LICENSEE:
  *
@@ -153,6 +153,10 @@ __SM_70_RT_DECL__ unsigned int __match_all_sync(unsigned mask, float value, int 
 
 __SM_70_RT_DECL__ unsigned int __match_all_sync(unsigned mask, double value, int *pred) {
   return __match64_all_sync(mask, __double_as_longlong(value), pred);
+}
+
+__SM_70_RT_DECL__ void __nanosleep(unsigned int ns) {
+    asm volatile("nanosleep.u32 %0;" :: "r"(ns));
 }
 
 #endif /* !__CUDA_ARCH__ || __CUDA_ARCH__ >= 700 */

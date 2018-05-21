@@ -139,8 +139,7 @@ unsigned __ballot_sync(unsigned mask, int pred) {
 __SM_30_INTRINSICS_DECL__
 unsigned __activemask() {
     unsigned ret;
-    int predicate = 1;
-    asm volatile ("{ .reg .pred p; setp.ne.u32 p, %1, 0; vote.ballot.b32 %0, p; } " : "=r"(ret) : "r"(predicate));
+    asm volatile ("activemask.b32 %0;" : "=r"(ret));
     return ret;
 }
 // Warp register exchange (shuffle) intrinsics.

@@ -50,9 +50,19 @@
 #ifndef CUDAGL_H
 #define CUDAGL_H
 
-/** 
+/**
  * CUDA API versioning support
  */
+#if defined(__CUDA_API_VERSION_INTERNAL) || defined(__DOXYGEN_ONLY__) || defined(CUDA_ENABLE_DEPRECATED)
+#define __CUDA_DEPRECATED
+#elif defined(_MSC_VER)
+#define __CUDA_DEPRECATED __declspec(deprecated)
+#elif defined(__GNUC__)
+#define __CUDA_DEPRECATED __attribute__((deprecated))
+#else
+#define __CUDA_DEPRECATED
+#endif
+
 #if defined(CUDA_FORCE_API_VERSION)
     #if (CUDA_FORCE_API_VERSION == 3010)
         #define __CUDA_API_VERSION 3010
@@ -60,7 +70,7 @@
         #error "Unsupported value of CUDA_FORCE_API_VERSION"
     #endif
 #else
-    #define __CUDA_API_VERSION 6050
+    #define __CUDA_API_VERSION 9000
 #endif /* CUDA_FORCE_API_VERSION */
 
 #if defined(__CUDA_API_VERSION_INTERNAL) || defined(CUDA_API_PER_THREAD_DEFAULT_STREAM)
@@ -330,7 +340,7 @@ typedef enum CUGLmap_flags_enum {
  * ::cuGLUnmapBufferObjectAsync, ::cuGLSetBufferObjectMapFlags,
  * ::cuWGLGetDevice
  */
-CUresult CUDAAPI cuGLCtxCreate(CUcontext *pCtx, unsigned int Flags, CUdevice device );
+__CUDA_DEPRECATED CUresult CUDAAPI cuGLCtxCreate(CUcontext *pCtx, unsigned int Flags, CUdevice device );
 #endif /* __CUDA_API_VERSION >= 3020 */
 
 /**
@@ -356,7 +366,7 @@ CUresult CUDAAPI cuGLCtxCreate(CUcontext *pCtx, unsigned int Flags, CUdevice dev
  * ::cuGLUnmapBufferObjectAsync, ::cuGLSetBufferObjectMapFlags,
  * ::cuWGLGetDevice
  */
-CUresult CUDAAPI cuGLInit(void);
+__CUDA_DEPRECATED CUresult CUDAAPI cuGLInit(void);
 
 /**
  * \brief Registers an OpenGL buffer object
@@ -381,7 +391,7 @@ CUresult CUDAAPI cuGLInit(void);
  *
  * \sa ::cuGraphicsGLRegisterBuffer
  */
-CUresult CUDAAPI cuGLRegisterBufferObject(GLuint buffer);
+__CUDA_DEPRECATED CUresult CUDAAPI cuGLRegisterBufferObject(GLuint buffer);
 
 #if __CUDA_API_VERSION >= 3020
 /**
@@ -416,7 +426,7 @@ CUresult CUDAAPI cuGLRegisterBufferObject(GLuint buffer);
  *
  * \sa ::cuGraphicsMapResources
  */
-CUresult CUDAAPI cuGLMapBufferObject(CUdeviceptr *dptr, size_t *size,  GLuint buffer);  
+__CUDA_DEPRECATED CUresult CUDAAPI cuGLMapBufferObject(CUdeviceptr *dptr, size_t *size,  GLuint buffer);  
 #endif /* __CUDA_API_VERSION >= 3020 */
 
 /**
@@ -446,7 +456,7 @@ CUresult CUDAAPI cuGLMapBufferObject(CUdeviceptr *dptr, size_t *size,  GLuint bu
  *
  * \sa ::cuGraphicsUnmapResources
  */
-CUresult CUDAAPI cuGLUnmapBufferObject(GLuint buffer);
+__CUDA_DEPRECATED CUresult CUDAAPI cuGLUnmapBufferObject(GLuint buffer);
 
 /**
  * \brief Unregister an OpenGL buffer object
@@ -475,7 +485,7 @@ CUresult CUDAAPI cuGLUnmapBufferObject(GLuint buffer);
  *
  * \sa ::cuGraphicsUnregisterResource
  */
-CUresult CUDAAPI cuGLUnregisterBufferObject(GLuint buffer);
+__CUDA_DEPRECATED CUresult CUDAAPI cuGLUnregisterBufferObject(GLuint buffer);
 
 /**
  * \brief Set the map flags for an OpenGL buffer object
@@ -518,7 +528,7 @@ CUresult CUDAAPI cuGLUnregisterBufferObject(GLuint buffer);
  *
  * \sa ::cuGraphicsResourceSetMapFlags
  */
-CUresult CUDAAPI cuGLSetBufferObjectMapFlags(GLuint buffer, unsigned int Flags);
+__CUDA_DEPRECATED CUresult CUDAAPI cuGLSetBufferObjectMapFlags(GLuint buffer, unsigned int Flags);
 
 #if __CUDA_API_VERSION >= 3020
 /**
@@ -554,7 +564,7 @@ CUresult CUDAAPI cuGLSetBufferObjectMapFlags(GLuint buffer, unsigned int Flags);
  *
  * \sa ::cuGraphicsMapResources
  */
-CUresult CUDAAPI cuGLMapBufferObjectAsync(CUdeviceptr *dptr, size_t *size,  GLuint buffer, CUstream hStream);
+__CUDA_DEPRECATED CUresult CUDAAPI cuGLMapBufferObjectAsync(CUdeviceptr *dptr, size_t *size,  GLuint buffer, CUstream hStream);
 #endif /* __CUDA_API_VERSION >= 3020 */
 
 /**
@@ -585,7 +595,7 @@ CUresult CUDAAPI cuGLMapBufferObjectAsync(CUdeviceptr *dptr, size_t *size,  GLui
  *
  * \sa ::cuGraphicsUnmapResources
  */
-CUresult CUDAAPI cuGLUnmapBufferObjectAsync(GLuint buffer, CUstream hStream);
+__CUDA_DEPRECATED CUresult CUDAAPI cuGLUnmapBufferObjectAsync(GLuint buffer, CUstream hStream);
 
 /** @} */ /* END CUDA_GL_DEPRECATED */
 /** @} */ /* END CUDA_GL */
@@ -631,5 +641,6 @@ CUresult CUDAAPI cuGLMapBufferObjectAsync(CUdeviceptr *dptr, unsigned int *size,
 #endif
 
 #undef __CUDA_API_VERSION
+#undef __CUDA_DEPRECATED
 
 #endif

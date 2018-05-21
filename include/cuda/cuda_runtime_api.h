@@ -128,7 +128,7 @@
  */
 
 /** CUDA Runtime API Version */
-#define CUDART_VERSION  9010
+#define CUDART_VERSION  9020
 
 #include "host_defines.h"
 #include "builtin_types.h"
@@ -285,9 +285,9 @@ extern __host__ __cudart_builtin__ cudaError_t CUDARTAPI cudaDeviceSynchronize(v
  * - ::cudaLimitStackSize controls the stack size in bytes of each GPU thread.
  *
  * - ::cudaLimitPrintfFifoSize controls the size in bytes of the shared FIFO
- *   used by the ::printf() and ::fprintf() device system calls. Setting
+ *   used by the ::printf() device system call. Setting
  *   ::cudaLimitPrintfFifoSize must not be performed after launching any kernel
- *   that uses the ::printf() or ::fprintf() device system calls - in such case
+ *   that uses the ::printf() device system call - in such case
  *   ::cudaErrorInvalidValue will be returned.
  *
  * - ::cudaLimitMallocHeapSize controls the size in bytes of the heap used by
@@ -353,7 +353,7 @@ extern __host__ cudaError_t CUDARTAPI cudaDeviceSetLimit(enum cudaLimit limit, s
  * ::cudaLimit values are:
  * - ::cudaLimitStackSize: stack size in bytes of each GPU thread;
  * - ::cudaLimitPrintfFifoSize: size in bytes of the shared FIFO used by the
- *   ::printf() and ::fprintf() device system calls.
+ *   ::printf() device system call.
  * - ::cudaLimitMallocHeapSize: size in bytes of the heap used by the
  *   ::malloc() and ::free() device system calls;
  * - ::cudaLimitDevRuntimeSyncDepth: maximum grid depth at which a
@@ -911,10 +911,10 @@ extern __host__ cudaError_t CUDARTAPI cudaThreadSynchronize(void);
  * - ::cudaLimitStackSize controls the stack size of each GPU thread.
  *
  * - ::cudaLimitPrintfFifoSize controls the size of the shared FIFO
- *   used by the ::printf() and ::fprintf() device system calls.
+ *   used by the ::printf() device system call.
  *   Setting ::cudaLimitPrintfFifoSize must be performed before
- *   launching any kernel that uses the ::printf() or ::fprintf() device
- *   system calls, otherwise ::cudaErrorInvalidValue will be returned.
+ *   launching any kernel that uses the ::printf() device
+ *   system call, otherwise ::cudaErrorInvalidValue will be returned.
  *
  * - ::cudaLimitMallocHeapSize controls the size of the heap used
  *   by the ::malloc() and ::free() device system calls.  Setting
@@ -949,7 +949,7 @@ extern __host__ cudaError_t CUDARTAPI cudaThreadSetLimit(enum cudaLimit limit, s
  * ::cudaLimit values are:
  * - ::cudaLimitStackSize: stack size of each GPU thread;
  * - ::cudaLimitPrintfFifoSize: size of the shared FIFO used by the
- *   ::printf() and ::fprintf() device system calls.
+ *   ::printf() device system call.
  * - ::cudaLimitMallocHeapSize: size of the heap used by the
  *   ::malloc() and ::free() device system calls;
  *
@@ -1275,7 +1275,7 @@ extern __host__ __cudart_builtin__ cudaError_t CUDARTAPI cudaGetDeviceCount(int 
         int localL1CacheSupported;
         size_t sharedMemPerMultiprocessor;
         int regsPerMultiprocessor;
-        int managedMemSupported;
+        int managedMemory;
         int isMultiGpuBoard;
         int multiGpuBoardGroupID;
         int singleToDoublePrecisionPerfRatio;
@@ -1285,6 +1285,8 @@ extern __host__ __cudart_builtin__ cudaError_t CUDARTAPI cudaGetDeviceCount(int 
         int canUseHostPointerForRegisteredMem;
         int cooperativeLaunch;
         int cooperativeMultiDeviceLaunch;
+        int pageableMemoryAccessUsesHostPageTables;
+        int directManagedMemAccessFromHost;
     }
  \endcode
  * where:
@@ -1454,6 +1456,10 @@ extern __host__ __cudart_builtin__ cudaError_t CUDARTAPI cudaGetDeviceCount(int 
  *   cooperative kernels via ::cudaLaunchCooperativeKernel, and 0 otherwise.
  * - \ref ::cudaDeviceProp::cooperativeMultiDeviceLaunch "cooperativeMultiDeviceLaunch" is 1 if the device
  *   supports launching cooperative kernels via ::cudaLaunchCooperativeKernelMultiDevice, and 0 otherwise.
+ * - \ref ::cudaDeviceProp::pageableMemoryAccessUsesHostPageTables "pageableMemoryAccessUsesHostPageTables" is 1 if the device accesses
+ *   pageable memory via the host's page tables, and 0 otherwise.
+ * - \ref ::cudaDeviceProp::directManagedMemAccessFromHost "directManagedMemAccessFromHost" is 1 if the host can directly access managed
+ *   memory on the device without migration, and 0 otherwise.
  *
  * \param prop   - Properties for the specified device
  * \param device - Device number to get properties for
@@ -1608,7 +1614,7 @@ extern __host__ __cudart_builtin__ cudaError_t CUDARTAPI cudaGetDeviceProperties
  * - ::cudaDevAttrMaxRegistersPerMultiprocessor: Maximum number of 32-bit registers 
  *   available to a multiprocessor; this number is shared by all thread blocks
  *   simultaneously resident on a multiprocessor;
- * - ::cudaDevAttrManagedMemSupported: 1 if device supports allocating
+ * - ::cudaDevAttrManagedMemory: 1 if device supports allocating
  *   managed memory, 0 if not;
  * - ::cudaDevAttrIsMultiGpuBoard: 1 if device is on a multi-GPU board, 0 if not;
  * - ::cudaDevAttrMultiGpuBoardGroupID: Unique identifier for a group of devices on the
@@ -1629,6 +1635,14 @@ extern __host__ __cudart_builtin__ cudaError_t CUDARTAPI cudaGetDeviceProperties
  *   via ::cudaLaunchCooperativeKernel, and 0 otherwise.
  * - ::cudaDevAttrCooperativeMultiDeviceLaunch: 1 if the device supports launching cooperative
  *   kernels via ::cudaLaunchCooperativeKernelMultiDevice, and 0 otherwise.
+ * - ::cudaDevAttrCanFlushRemoteWrites: 1 if the device supports flushing of outstanding 
+ *   remote writes, and 0 otherwise.
+ * - ::cudaDevAttrHostRegisterSupported: 1 if the device supports host memory registration
+ *   via ::cudaHostRegister, and 0 otherwise.
+ * - ::cudaDevAttrPageableMemoryAccessUsesHostPageTables: 1 if the device accesses pageable memory via the
+ *   host's page tables, and 0 otherwise.
+ * - ::cudaDevAttrDirectManagedMemAccessFromHost: 1 if the host can directly access managed memory on the device
+ *   without migration, and 0 otherwise.
  *
  * \param value  - Returned device attribute value
  * \param attr   - Device attribute to query
@@ -1651,12 +1665,14 @@ extern __host__ __cudart_builtin__ cudaError_t CUDARTAPI cudaDeviceGetAttribute(
  *
  * Returns in \p *value the value of the requested attribute \p attrib of the
  * link between \p srcDevice and \p dstDevice. The supported attributes are:
- * - ::CudaDevP2PAttrPerformanceRank: A relative value indicating the
+ * - ::cudaDevP2PAttrPerformanceRank: A relative value indicating the
  *   performance of the link between two devices. Lower value means better
  *   performance (0 being the value used for most performant link).
- * - ::CudaDevP2PAttrAccessSupported: 1 if peer access is enabled.
- * - ::CudaDevP2PAttrNativeAtomicSupported: 1 if native atomic operations over
+ * - ::cudaDevP2PAttrAccessSupported: 1 if peer access is enabled.
+ * - ::cudaDevP2PAttrNativeAtomicSupported: 1 if native atomic operations over
  *   the link are supported.
+ * - ::cudaDevP2PAttrCudaArrayAccessSupported: 1 if accessing CUDA arrays over
+ *   the link is supported.
  *
  * Returns ::cudaErrorInvalidDevice if \p srcDevice or \p dstDevice are not valid
  * or if they represent the same device.
@@ -1745,7 +1761,8 @@ extern __host__ cudaError_t CUDARTAPI cudaSetDevice(int device);
  * executes the device code.
  *
  * \return
- * ::cudaSuccess
+ * ::cudaSuccess,
+ * ::cudaErrorInvalidValue
  * \notefnerr
  *
  * \sa ::cudaGetDeviceCount, ::cudaSetDevice, ::cudaGetDeviceProperties,
@@ -1836,7 +1853,7 @@ extern __host__ cudaError_t CUDARTAPI cudaSetValidDevices(int *device_arr, int l
  *
  * \return
  * ::cudaSuccess,
- * ::cudaErrorInvalidDevice,
+ * ::cudaErrorInvalidValue,
  * ::cudaErrorSetOnActiveProcess
  *
  * \sa ::cudaGetDeviceFlags, ::cudaGetDeviceCount, ::cudaGetDevice, ::cudaGetDeviceProperties,
@@ -2165,6 +2182,7 @@ typedef void (CUDART_CB *cudaStreamCallback_t)(cudaStream_t stream, cudaError_t 
  * \return
  * ::cudaSuccess,
  * ::cudaErrorInvalidResourceHandle,
+ * ::cudaErrorInvalidValue,
  * ::cudaErrorNotSupported
  * \note_null_stream
  * \notefnerr
@@ -2228,13 +2246,20 @@ extern __host__ cudaError_t CUDARTAPI cudaStreamQuery(cudaStream_t stream);
  * only take effect when, previous work in stream has completed. Any
  * previous association is automatically replaced.
  *
- * \p devPtr must point to an address within managed memory space declared
- * using the __managed__ keyword or allocated with ::cudaMallocManaged.
+ * \p devPtr must point to an one of the following types of memories:
+ * - managed memory declared using the __managed__ keyword or allocated with
+ *   ::cudaMallocManaged.
+ * - a valid host-accessible region of system-allocated pageable memory. This
+ *   type of memory may only be specified if the device associated with the
+ *   stream reports a non-zero value for the device attribute
+ *   ::cudaDevAttrPageableMemoryAccess.
  *
- * \p length must be zero, to indicate that the entire allocation's
- * stream association is being changed.  Currently, it's not possible
- * to change stream association for a portion of an allocation. The default
- * value for \p length is zero.
+ * For managed allocations, \p length must be either zero or the entire
+ * allocation's size. Both indicate that the entire allocation's stream
+ * association is being changed. Currently, it is not possible to change stream
+ * association for a portion of a managed allocation.
+ *
+ * For pageable allocations, \p length must be non-zero.
  *
  * The stream association is specified using \p flags which must be
  * one of ::cudaMemAttachGlobal, ::cudaMemAttachHost or ::cudaMemAttachSingle.
@@ -2275,8 +2300,10 @@ extern __host__ cudaError_t CUDARTAPI cudaStreamQuery(cudaStream_t stream);
  * happen until all work in the stream has completed.
  *
  * \param stream  - Stream in which to enqueue the attach operation
- * \param devPtr  - Pointer to memory (must be a pointer to managed memory)
- * \param length  - Length of memory (must be zero, defaults to zero)
+ * \param devPtr  - Pointer to memory (must be a pointer to managed memory or
+ *                  to a valid host-accessible region of system-allocated
+ *                  memory)
+ * \param length  - Length of memory (defaults to zero)
  * \param flags   - Must be one of ::cudaMemAttachGlobal, ::cudaMemAttachHost or ::cudaMemAttachSingle (defaults to ::cudaMemAttachSingle)
  *
  * \return
@@ -2657,7 +2684,7 @@ extern __host__ cudaError_t CUDARTAPI cudaLaunchCooperativeKernel(const void *fu
  *
  * No two kernels can be launched on the same device. All the devices targeted by this
  * multi-device launch must be identical. All devices must have a non-zero value for the
- * device attribute ::cudaDevAttrCooperativeLaunch.
+ * device attribute ::cudaDevAttrCooperativeMultiDeviceLaunch.
  *
  * The same kernel must be launched on all devices. Note that any __device__ or __constant__
  * variables are independently instantiated on every device. It is the application's
@@ -2887,19 +2914,19 @@ extern __host__ __cudart_builtin__ cudaError_t CUDARTAPI cudaFuncGetAttributes(s
 /**
  * \brief Set attributes for a given function
  *
- * This function sets the attributes of a function specified via \p entry.
- * The parameter \p entry must be a pointer to a function that executes
- * on the device. The parameter specified by \p entry must be declared as a \p __global__
- * function. The enumeration defined by \p attr is set to the value defined by \p value
+ * This function sets the attributes of a function specified via \p func.
+ * The parameter \p func must be a pointer to a function that executes
+ * on the device. The parameter specified by \p func must be declared as a \p __global__
+ * function. The enumeration defined by \p attr is set to the value defined by \p value.
  * If the specified function does not exist, then ::cudaErrorInvalidDeviceFunction is returned.
  * If the specified attribute cannot be written, or if the value is incorrect, 
  * then ::cudaErrorInvalidValue is returned.
  *
  * Valid values for \p attr are:
- * ::cuFuncAttrMaxDynamicSharedMem - Maximum size of dynamic shared memory per block
- * ::cudaFuncAttributePreferredSharedMemoryCarveout - Preferred shared memory-L1 cache split ratio
+ * - ::cudaFuncAttributeMaxDynamicSharedMemorySize - Maximum size of dynamic shared memory per block
+ * - ::cudaFuncAttributePreferredSharedMemoryCarveout - Preferred shared memory-L1 cache split ratio in percent of maximum shared memory
  *
- * \param entry - Function to get attributes of
+ * \param func  - Function to get attributes of
  * \param attr  - Attribute to set
  * \param value - Value to set
  *
@@ -3502,10 +3529,9 @@ extern __host__ cudaError_t CUDARTAPI cudaFreeHost(void *ptr);
 /**
  * \brief Frees an array on the device
  *
- * Frees the CUDA array \p array, which must have been * returned by a
- * previous call to ::cudaMallocArray(). If ::cudaFreeArray(\p array) has
- * already been called before, ::cudaErrorInvalidValue is returned. If
- * \p devPtr is 0, no operation is performed.
+ * Frees the CUDA array \p array, which must have been returned by a
+ * previous call to ::cudaMallocArray(). If \p devPtr is 0,
+ * no operation is performed.
  *
  * \param array - Pointer to array to free
  *
@@ -3526,9 +3552,8 @@ extern __host__ cudaError_t CUDARTAPI cudaFreeArray(cudaArray_t array);
  * \brief Frees a mipmapped array on the device
  *
  * Frees the CUDA mipmapped array \p mipmappedArray, which must have been 
- * returned by a previous call to ::cudaMallocMipmappedArray(). 
- * If ::cudaFreeMipmappedArray(\p mipmappedArray) has already been called before,
- * ::cudaErrorInvalidValue is returned.
+ * returned by a previous call to ::cudaMallocMipmappedArray(). If \p devPtr
+ * is 0, no operation is performed.
  *
  * \param mipmappedArray - Pointer to mipmapped array to free
  *
@@ -3623,7 +3648,8 @@ extern __host__ cudaError_t CUDARTAPI cudaHostAlloc(void **pHost, size_t size, u
  * best used sparingly to register staging areas for data exchange between
  * host and device.
  *
- * ::cudaHostRegister is not supported on non I/O coherent devices.
+ * ::cudaHostRegister is supported only on I/O coherent devices that have a non-zero
+ * value for the device attribute ::cudaDevAttrHostRegisterSupported.
  *
  * The \p flags parameter enables different options to be specified that
  * affect the allocation, as follows.
@@ -5682,7 +5708,10 @@ extern __host__ cudaError_t CUDARTAPI cudaMemPrefetchAsync(const void *devPtr, s
  * starting at \p devPtr with a size of \p count bytes. The start address and end address of the memory
  * range will be rounded down and rounded up respectively to be aligned to CPU page size before the
  * advice is applied. The memory range must refer to managed memory allocated via ::cudaMallocManaged
- * or declared via __managed__ variables.
+ * or declared via __managed__ variables. The memory range could also refer to system-allocated pageable
+ * memory provided it represents a valid, host-accessible region of memory and all additional constraints
+ * imposed by \p advice as outlined below are also satisfied. Specifying an invalid system-allocated pageable
+ * memory range results in an error being returned.
  *
  * The \p advice parameter can take the following values:
  * - ::cudaMemAdviseSetReadMostly: This implies that the data is mostly going to be read
@@ -5696,11 +5725,18 @@ extern __host__ cudaError_t CUDARTAPI cudaMemPrefetchAsync(const void *devPtr, s
  * Also, if a context is created on a device that does not have the device attribute
  * ::cudaDevAttrConcurrentManagedAccess set, then read-duplication will not occur until
  * all such contexts are destroyed.
+ * If the memory region refers to valid system-allocated pageable memory, then the accessing device must
+ * have a non-zero value for the device attribute ::cudaDevAttrPageableMemoryAccess for a read-only
+ * copy to be created on that device. Note however that if the accessing device also has a non-zero value for the
+ * device attribute ::cudaDevAttrPageableMemoryAccessUsesHostPageTables, then setting this advice
+ * will not create a read-only copy when that device accesses this memory region.
+ *
  * - ::cudaMemAdviceUnsetReadMostly: Undoes the effect of ::cudaMemAdviceReadMostly and also prevents the
  * Unified Memory driver from attempting heuristic read-duplication on the memory range. Any read-duplicated
  * copies of the data will be collapsed into a single copy. The location for the collapsed
  * copy will be the preferred location if the page has a preferred location and one of the read-duplicated
  * copies was resident at that location. Otherwise, the location chosen is arbitrary.
+ *
  * - ::cudaMemAdviseSetPreferredLocation: This advice sets the preferred location for the
  * data to be the memory belonging to \p device. Passing in cudaCpuDeviceId for \p device sets the
  * preferred location as host memory. If \p device is a GPU, then it must have a non-zero value for the
@@ -5717,9 +5753,17 @@ extern __host__ cudaError_t CUDARTAPI cudaMemPrefetchAsync(const void *devPtr, s
  * memory, the page may eventually be pinned to host memory by the Unified Memory driver. But
  * if the preferred location is set as device memory, then the page will continue to thrash indefinitely.
  * If ::cudaMemAdviseSetReadMostly is also set on this memory region or any subset of it, then the
- * policies associated with that advice will override the policies of this advice.
+ * policies associated with that advice will override the policies of this advice, unless read accesses from
+ * \p device will not result in a read-only copy being created on that device as outlined in description for
+ * the advice ::cudaMemAdviseSetReadMostly.
+ * If the memory region refers to valid system-allocated pageable memory, then \p device must have a non-zero
+ * value for the device attribute ::cudaDevAttrPageableMemoryAccess. Additionally, if \p device has
+ * a non-zero value for the device attribute ::cudaDevAttrPageableMemoryAccessUsesHostPageTables,
+ * then this call has no effect. Note however that this behavior may change in the future.
+ *
  * - ::cudaMemAdviseUnsetPreferredLocation: Undoes the effect of ::cudaMemAdviseSetPreferredLocation
  * and changes the preferred location to none.
+ *
  * - ::cudaMemAdviseSetAccessedBy: This advice implies that the data will be accessed by \p device.
  * Passing in ::cudaCpuDeviceId for \p device will set the advice for the CPU. If \p device is a GPU, then
  * the device attribute ::cudaDevAttrConcurrentManagedAccess must be non-zero.
@@ -5740,8 +5784,17 @@ extern __host__ cudaError_t CUDARTAPI cudaMemPrefetchAsync(const void *devPtr, s
  * policies associated with that advice will override the policies of this advice. Additionally, if the
  * preferred location of this memory region or any subset of it is also \p device, then the policies
  * associated with ::cudaMemAdviseSetPreferredLocation will override the policies of this advice.
+ * If the memory region refers to valid system-allocated pageable memory, then \p device must have a non-zero
+ * value for the device attribute ::cudaDevAttrPageableMemoryAccess. Additionally, if \p device has
+ * a non-zero value for the device attribute ::cudaDevAttrPageableMemoryAccessUsesHostPageTables,
+ * then this call has no effect.
+ *
  * - ::cudaMemAdviseUnsetAccessedBy: Undoes the effect of ::cudaMemAdviseSetAccessedBy. Any mappings to
  * the data from \p device may be removed at any time causing accesses to result in non-fatal page faults.
+ * If the memory region refers to valid system-allocated pageable memory, then \p device must have a non-zero
+ * value for the device attribute ::cudaDevAttrPageableMemoryAccess. Additionally, if \p device has
+ * a non-zero value for the device attribute ::cudaDevAttrPageableMemoryAccessUsesHostPageTables,
+ * then this call has no effect.
  *
  * \param devPtr - Pointer to memory to set the advice for
  * \param count  - Size in bytes of the memory range
@@ -6621,12 +6674,13 @@ extern __host__ cudaError_t CUDARTAPI cudaBindTextureToMipmappedArray(const stru
 /**
  * \brief Unbinds a texture
  *
- * Unbinds the texture bound to \p texref.
+ * Unbinds the texture bound to \p texref. If \p texref is not currently bound, no operation is performed.
  *
  * \param texref - Texture to unbind
  *
  * \return
- * ::cudaSuccess
+ * ::cudaSuccess,
+ * ::cudaErrorInvalidTexture
  * \notefnerr
  *
  * \sa \ref ::cudaCreateChannelDesc(int, int, int, int, cudaChannelFormatKind) "cudaCreateChannelDesc (C API)",
@@ -7395,14 +7449,23 @@ extern __host__ cudaError_t CUDARTAPI cudaGetExportTable(const void **ppExportTa
     extern __host__ cudaError_t CUDARTAPI cudaLaunchCooperativeKernel(const void *func, dim3 gridDim, dim3 blockDim, void **args, size_t sharedMem, cudaStream_t stream);
     extern __host__ cudaError_t CUDARTAPI cudaMemPrefetchAsync(const void *devPtr, size_t count, int dstDevice, cudaStream_t stream);
 #elif defined(__CUDART_API_PER_THREAD_DEFAULT_STREAM)
-    // nvcc stubs reference the 'cudaLaunch' identifier even if it was defined
-    // to 'cudaLaunch_ptsz'. Redirect through a static inline function.
+    // nvcc stubs reference the 'cudaLaunch'/'cudaLaunchKernel' identifier even if it was defined
+    // to 'cudaLaunch_ptsz'/'cudaLaunchKernel_ptsz'. Redirect through a static inline function.
     #undef cudaLaunch
+    #undef cudaLaunchKernel
     static __inline__ __host__ cudaError_t cudaLaunch(const void *func)
     {
         return cudaLaunch_ptsz(func);
     }
+    static __inline__ __host__ cudaError_t cudaLaunchKernel(const void *func, 
+                                                            dim3 gridDim, dim3 blockDim, 
+                                                            void **args, size_t sharedMem, 
+                                                            cudaStream_t stream)
+    {
+        return cudaLaunchKernel_ptsz(func, gridDim, blockDim, args, sharedMem, stream);
+    }
     #define cudaLaunch __CUDART_API_PTSZ(cudaLaunch)
+    #define cudaLaunchKernel __CUDART_API_PTSZ(cudaLaunchKernel)
 #endif
 
 #if defined(__cplusplus)

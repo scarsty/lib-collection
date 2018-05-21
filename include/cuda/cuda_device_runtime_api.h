@@ -58,7 +58,7 @@
 
 #if !defined(__CUDACC_RTC__)
 
-#if (__CUDA_ARCH__ >= 350) && !defined(__CUDADEVRT_INTERNAL__)
+#if defined(__CUDA_ARCH__) && (__CUDA_ARCH__ >= 350) && !defined(__CUDADEVRT_INTERNAL__)
 
 #if defined(__cplusplus)
 extern "C" {
@@ -108,7 +108,7 @@ __device__ __NV_WEAK__ cudaError_t CUDARTAPI cudaOccupancyMaxActiveBlocksPerMult
 }
 #endif
 
-#endif /* (__CUDA_ARCH__ >= 350) && !defined(__CUDADEVRT_INTERNAL__) */
+#endif /* defined(__CUDA_ARCH__) && (__CUDA_ARCH__ >= 350) && !defined(__CUDADEVRT_INTERNAL__) */
 
 #endif /* !defined(__CUDACC_RTC__) */
 

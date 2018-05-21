@@ -150,14 +150,31 @@ typedef enum {
     CUBLAS_GEMM_ALGO14              =  14,        
     CUBLAS_GEMM_ALGO15              =  15,        
     CUBLAS_GEMM_ALGO16              =  16,        
-    CUBLAS_GEMM_ALGO17              =  17,        
+    CUBLAS_GEMM_ALGO17              =  17,       
+    CUBLAS_GEMM_ALGO18              =  18, //sliced 32x32    
+    CUBLAS_GEMM_ALGO19              =  19, //sliced 64x32     
+    CUBLAS_GEMM_ALGO20              =  20, //sliced 128x32     
+    CUBLAS_GEMM_ALGO21              =  21, //sliced 32x32  -splitK      
+    CUBLAS_GEMM_ALGO22              =  22, //sliced 64x32  -splitK      
+    CUBLAS_GEMM_ALGO23              =  23, //sliced 128x32 -splitK      
     CUBLAS_GEMM_DEFAULT_TENSOR_OP   =  99,        
     CUBLAS_GEMM_DFALT_TENSOR_OP     =  99,        
     CUBLAS_GEMM_ALGO0_TENSOR_OP     =  100,        
     CUBLAS_GEMM_ALGO1_TENSOR_OP     =  101,        
     CUBLAS_GEMM_ALGO2_TENSOR_OP     =  102,        
     CUBLAS_GEMM_ALGO3_TENSOR_OP     =  103,        
-    CUBLAS_GEMM_ALGO4_TENSOR_OP     =  104        
+    CUBLAS_GEMM_ALGO4_TENSOR_OP     =  104,        
+    CUBLAS_GEMM_ALGO5_TENSOR_OP     =  105,        
+    CUBLAS_GEMM_ALGO6_TENSOR_OP     =  106,        
+    CUBLAS_GEMM_ALGO7_TENSOR_OP     =  107,        
+    CUBLAS_GEMM_ALGO8_TENSOR_OP     =  108,        
+    CUBLAS_GEMM_ALGO9_TENSOR_OP     =  109,        
+    CUBLAS_GEMM_ALGO10_TENSOR_OP     =  110,        
+    CUBLAS_GEMM_ALGO11_TENSOR_OP     =  111,        
+    CUBLAS_GEMM_ALGO12_TENSOR_OP     =  112,        
+    CUBLAS_GEMM_ALGO13_TENSOR_OP     =  113,        
+    CUBLAS_GEMM_ALGO14_TENSOR_OP     =  114,        
+    CUBLAS_GEMM_ALGO15_TENSOR_OP     =  115        
 } cublasGemmAlgo_t;
 
 /*Enum for default math mode/tensor operation*/
@@ -190,6 +207,14 @@ CUBLASAPI cublasStatus_t  CUBLASWINAPI cublasSetAtomicsMode(cublasHandle_t handl
 
 CUBLASAPI cublasStatus_t  CUBLASWINAPI cublasGetMathMode(cublasHandle_t handle, cublasMath_t *mode);
 CUBLASAPI cublasStatus_t  CUBLASWINAPI cublasSetMathMode(cublasHandle_t handle, cublasMath_t mode);         
+
+
+/* Cublas logging */
+typedef void (*cublasLogCallback)(const char *msg);
+
+CUBLASAPI cublasStatus_t CUBLASWINAPI cublasLoggerConfigure(int logIsOn, int logToStdOut, int logToStdErr, const char* logFileName);
+CUBLASAPI cublasStatus_t CUBLASWINAPI cublasSetLoggerCallback(cublasLogCallback userCallback);
+CUBLASAPI cublasStatus_t CUBLASWINAPI cublasGetLoggerCallback(cublasLogCallback* userCallback);
 
 /* 
  * cublasStatus_t 
@@ -2296,12 +2321,12 @@ CUBLASAPI cublasStatus_t CUBLASWINAPI cublasHgemmBatched (cublasHandle_t handle,
                                                           int n,
                                                           int k,
                                                           const __half *alpha,  /* host or device pointer */  
-                                                          const __half *Aarray[], 
+                                                          const __half *const Aarray[], 
                                                           int lda,
-                                                          const __half *Barray[],
+                                                          const __half *const Barray[],
                                                           int ldb, 
                                                           const __half *beta,   /* host or device pointer */  
-                                                          __half *Carray[],
+                                                          __half *const Carray[],
                                                           int ldc,
                                                           int batchCount);
 #endif
@@ -2312,12 +2337,12 @@ CUBLASAPI cublasStatus_t CUBLASWINAPI cublasSgemmBatched (cublasHandle_t handle,
                                                           int n,
                                                           int k,
                                                           const float *alpha,  /* host or device pointer */  
-                                                          const float *Aarray[], 
+                                                          const float *const Aarray[], 
                                                           int lda,
-                                                          const float *Barray[],
+                                                          const float *const Barray[],
                                                           int ldb, 
                                                           const float *beta,   /* host or device pointer */  
-                                                          float *Carray[],
+                                                          float *const Carray[],
                                                           int ldc,
                                                           int batchCount);
 
@@ -2328,12 +2353,12 @@ CUBLASAPI cublasStatus_t CUBLASWINAPI cublasDgemmBatched (cublasHandle_t handle,
                                                           int n,
                                                           int k,
                                                           const double *alpha,  /* host or device pointer */ 
-                                                          const double *Aarray[], 
+                                                          const double *const Aarray[], 
                                                           int lda,
-                                                          const double *Barray[],
+                                                          const double *const Barray[],
                                                           int ldb, 
                                                           const double *beta,  /* host or device pointer */ 
-                                                          double *Carray[],
+                                                          double *const Carray[],
                                                           int ldc,
                                                           int batchCount);
 
@@ -2344,12 +2369,12 @@ CUBLASAPI cublasStatus_t CUBLASWINAPI cublasCgemmBatched (cublasHandle_t handle,
                                                           int n,
                                                           int k,
                                                           const cuComplex *alpha, /* host or device pointer */ 
-                                                          const cuComplex *Aarray[], 
+                                                          const cuComplex *const Aarray[], 
                                                           int lda,
-                                                          const cuComplex *Barray[],
+                                                          const cuComplex *const Barray[],
                                                           int ldb, 
                                                           const cuComplex *beta, /* host or device pointer */ 
-                                                          cuComplex *Carray[],
+                                                          cuComplex *const Carray[],
                                                           int ldc,
                                                           int batchCount);
 
@@ -2360,12 +2385,12 @@ CUBLASAPI cublasStatus_t CUBLASWINAPI cublasCgemm3mBatched (cublasHandle_t handl
                                                           int n,
                                                           int k,
                                                           const cuComplex *alpha, /* host or device pointer */ 
-                                                          const cuComplex *Aarray[], 
+                                                          const cuComplex *const Aarray[], 
                                                           int lda,
-                                                          const cuComplex *Barray[],
+                                                          const cuComplex *const Barray[],
                                                           int ldb, 
                                                           const cuComplex *beta, /* host or device pointer */ 
-                                                          cuComplex *Carray[],
+                                                          cuComplex *const Carray[],
                                                           int ldc,
                                                           int batchCount);
 
@@ -2376,12 +2401,12 @@ CUBLASAPI cublasStatus_t CUBLASWINAPI cublasZgemmBatched (cublasHandle_t handle,
                                                           int n,
                                                           int k,
                                                           const cuDoubleComplex *alpha, /* host or device pointer */ 
-                                                          const cuDoubleComplex *Aarray[], 
+                                                          const cuDoubleComplex *const Aarray[], 
                                                           int lda,
-                                                          const cuDoubleComplex *Barray[],
+                                                          const cuDoubleComplex *const Barray[],
                                                           int ldb, 
                                                           const cuDoubleComplex *beta, /* host or device pointer */ 
-                                                          cuDoubleComplex *Carray[],
+                                                          cuDoubleComplex *const Carray[],
                                                           int ldc,
                                                           int batchCount);
 
@@ -2392,14 +2417,14 @@ CUBLASAPI cublasStatus_t CUBLASWINAPI cublasGemmBatchedEx  (cublasHandle_t handl
                                                       int n,
                                                       int k,
                                                       const void *alpha, /* host or device pointer */  
-                                                      const void *Aarray[], 
+                                                      const void *const Aarray[], 
                                                       cudaDataType Atype,
                                                       int lda,
-                                                      const void *Barray[],
+                                                      const void *const Barray[],
                                                       cudaDataType Btype,
                                                       int ldb, 
                                                       const void *beta, /* host or device pointer */  
-                                                      void *Carray[],
+                                                      void *const Carray[],
                                                       cudaDataType Ctype,
                                                       int ldc,
                                                       int batchCount,
@@ -2607,7 +2632,7 @@ CUBLASAPI cublasStatus_t CUBLASWINAPI cublasZgeam(cublasHandle_t handle,
 /* Batched LU - GETRF*/
 CUBLASAPI cublasStatus_t CUBLASWINAPI cublasSgetrfBatched(cublasHandle_t handle,
                                                   int n, 
-                                                  float *A[],                      /*Device pointer*/
+                                                  float *const A[],                /*Device pointer*/
                                                   int lda, 
                                                   int *P,                          /*Device Pointer*/
                                                   int *info,                       /*Device Pointer*/
@@ -2615,7 +2640,7 @@ CUBLASAPI cublasStatus_t CUBLASWINAPI cublasSgetrfBatched(cublasHandle_t handle,
 
 CUBLASAPI cublasStatus_t CUBLASWINAPI cublasDgetrfBatched(cublasHandle_t handle,
                                                   int n, 
-                                                  double *A[],                     /*Device pointer*/
+                                                  double *const A[],               /*Device pointer*/
                                                   int lda, 
                                                   int *P,                          /*Device Pointer*/
                                                   int *info,                       /*Device Pointer*/
@@ -2623,7 +2648,7 @@ CUBLASAPI cublasStatus_t CUBLASWINAPI cublasDgetrfBatched(cublasHandle_t handle,
 
 CUBLASAPI cublasStatus_t CUBLASWINAPI cublasCgetrfBatched(cublasHandle_t handle,
                                                   int n, 
-                                                  cuComplex *A[],                 /*Device pointer*/
+                                                  cuComplex *const A[],           /*Device pointer*/
                                                   int lda, 
                                                   int *P,                         /*Device Pointer*/
                                                   int *info,                      /*Device Pointer*/
@@ -2631,7 +2656,7 @@ CUBLASAPI cublasStatus_t CUBLASWINAPI cublasCgetrfBatched(cublasHandle_t handle,
 
 CUBLASAPI cublasStatus_t CUBLASWINAPI cublasZgetrfBatched(cublasHandle_t handle,
                                                   int n, 
-                                                  cuDoubleComplex *A[],           /*Device pointer*/
+                                                  cuDoubleComplex *const A[],     /*Device pointer*/
                                                   int lda, 
                                                   int *P,                         /*Device Pointer*/
                                                   int *info,                      /*Device Pointer*/
@@ -2640,40 +2665,40 @@ CUBLASAPI cublasStatus_t CUBLASWINAPI cublasZgetrfBatched(cublasHandle_t handle,
 /* Batched inversion based on LU factorization from getrf */
 CUBLASAPI cublasStatus_t CUBLASWINAPI cublasSgetriBatched(cublasHandle_t handle,
                                                   int n,
-                                                  const float *A[],               /*Device pointer*/
+                                                  const float *const A[],         /*Device pointer*/
                                                   int lda,
                                                   const int *P,                   /*Device pointer*/
-                                                  float *C[],                     /*Device pointer*/
+                                                  float *const C[],               /*Device pointer*/
                                                   int ldc,
                                                   int *info,
                                                   int batchSize);
 
 CUBLASAPI cublasStatus_t CUBLASWINAPI cublasDgetriBatched(cublasHandle_t handle,
                                                   int n,
-                                                  const double *A[],              /*Device pointer*/
+                                                  const double *const A[],        /*Device pointer*/
                                                   int lda,
                                                   const int *P,                   /*Device pointer*/
-                                                  double *C[],                    /*Device pointer*/
+                                                  double *const C[],              /*Device pointer*/
                                                   int ldc,
                                                   int *info,
                                                   int batchSize);
 
 CUBLASAPI cublasStatus_t CUBLASWINAPI cublasCgetriBatched(cublasHandle_t handle,
                                                   int n,
-                                                  const cuComplex *A[],            /*Device pointer*/
+                                                  const cuComplex *const A[],     /*Device pointer*/
                                                   int lda,
                                                   const int *P,                   /*Device pointer*/
-                                                  cuComplex *C[],                 /*Device pointer*/
+                                                  cuComplex *const C[],           /*Device pointer*/
                                                   int ldc,
                                                   int *info,
                                                   int batchSize);
 
 CUBLASAPI cublasStatus_t CUBLASWINAPI cublasZgetriBatched(cublasHandle_t handle,
                                                   int n,
-                                                  const cuDoubleComplex *A[],     /*Device pointer*/
+                                                  const cuDoubleComplex *const A[], /*Device pointer*/
                                                   int lda,
-                                                  const int *P,                   /*Device pointer*/
-                                                  cuDoubleComplex *C[],           /*Device pointer*/
+                                                  const int *P,                     /*Device pointer*/
+                                                  cuDoubleComplex *const C[],       /*Device pointer*/
                                                   int ldc,
                                                   int *info,
                                                   int batchSize);
@@ -2684,10 +2709,10 @@ CUBLASAPI cublasStatus_t  CUBLASWINAPI cublasSgetrsBatched( cublasHandle_t handl
                                                             cublasOperation_t trans, 
                                                             int n, 
                                                             int nrhs, 
-                                                            const float *Aarray[], 
+                                                            const float *const Aarray[], 
                                                             int lda, 
                                                             const int *devIpiv, 
-                                                            float *Barray[], 
+                                                            float *const Barray[], 
                                                             int ldb, 
                                                             int *info,
                                                             int batchSize);
@@ -2696,10 +2721,10 @@ CUBLASAPI cublasStatus_t CUBLASWINAPI cublasDgetrsBatched( cublasHandle_t handle
                                                            cublasOperation_t trans, 
                                                            int n, 
                                                            int nrhs, 
-                                                           const double *Aarray[], 
+                                                           const double *const Aarray[], 
                                                            int lda, 
                                                            const int *devIpiv, 
-                                                           double *Barray[], 
+                                                           double *const Barray[], 
                                                            int ldb, 
                                                            int *info,
                                                            int batchSize);
@@ -2708,10 +2733,10 @@ CUBLASAPI cublasStatus_t  CUBLASWINAPI cublasCgetrsBatched( cublasHandle_t handl
                                                             cublasOperation_t trans, 
                                                             int n, 
                                                             int nrhs, 
-                                                            const cuComplex *Aarray[], 
+                                                            const cuComplex *const Aarray[], 
                                                             int lda, 
                                                             const int *devIpiv, 
-                                                            cuComplex *Barray[], 
+                                                            cuComplex *const Barray[], 
                                                             int ldb, 
                                                             int *info,
                                                             int batchSize);
@@ -2721,10 +2746,10 @@ CUBLASAPI cublasStatus_t  CUBLASWINAPI cublasZgetrsBatched( cublasHandle_t handl
                                                             cublasOperation_t trans, 
                                                             int n, 
                                                             int nrhs, 
-                                                            const cuDoubleComplex *Aarray[], 
+                                                            const cuDoubleComplex *const Aarray[], 
                                                             int lda, 
                                                             const int *devIpiv, 
-                                                            cuDoubleComplex *Barray[], 
+                                                            cuDoubleComplex *const Barray[], 
                                                             int ldb, 
                                                             int *info,
                                                             int batchSize);
@@ -2740,9 +2765,9 @@ CUBLASAPI cublasStatus_t CUBLASWINAPI cublasStrsmBatched( cublasHandle_t    hand
                                                           int m, 
                                                           int n, 
                                                           const float *alpha,           /*Host or Device Pointer*/
-                                                          const float *A[], 
+                                                          const float *const A[], 
                                                           int lda,
-                                                          float *B[], 
+                                                          float *const B[], 
                                                           int ldb,
                                                           int batchCount);
 
@@ -2754,9 +2779,9 @@ CUBLASAPI cublasStatus_t CUBLASWINAPI cublasDtrsmBatched( cublasHandle_t    hand
                                                           int m, 
                                                           int n, 
                                                           const double *alpha,          /*Host or Device Pointer*/
-                                                          const double *A[], 
+                                                          const double *const A[], 
                                                           int lda,
-                                                          double *B[], 
+                                                          double *const B[], 
                                                           int ldb,
                                                           int batchCount);
 
@@ -2768,9 +2793,9 @@ CUBLASAPI cublasStatus_t CUBLASWINAPI cublasCtrsmBatched( cublasHandle_t    hand
                                                           int m, 
                                                           int n, 
                                                           const cuComplex *alpha,       /*Host or Device Pointer*/
-                                                          const cuComplex *A[], 
+                                                          const cuComplex *const A[], 
                                                           int lda,
-                                                          cuComplex *B[], 
+                                                          cuComplex *const B[], 
                                                           int ldb,
                                                           int batchCount);
 
@@ -2782,83 +2807,83 @@ CUBLASAPI cublasStatus_t CUBLASWINAPI cublasZtrsmBatched( cublasHandle_t    hand
                                                           int m, 
                                                           int n, 
                                                           const cuDoubleComplex *alpha, /*Host or Device Pointer*/
-                                                          const cuDoubleComplex *A[], 
+                                                          const cuDoubleComplex *const A[], 
                                                           int lda,
-                                                          cuDoubleComplex *B[], 
+                                                          cuDoubleComplex *const B[], 
                                                           int ldb,
                                                           int batchCount);
 
 /* Batched - MATINV*/
 CUBLASAPI cublasStatus_t CUBLASWINAPI cublasSmatinvBatched(cublasHandle_t handle,
                                                           int n, 
-                                                          const float *A[],                  /*Device pointer*/
+                                                          const float *const A[],      /*Device pointer*/
                                                           int lda, 
-                                                          float *Ainv[],               /*Device pointer*/
+                                                          float *const Ainv[],         /*Device pointer*/
                                                           int lda_inv, 
                                                           int *info,                   /*Device Pointer*/
                                                           int batchSize);
 
 CUBLASAPI cublasStatus_t CUBLASWINAPI cublasDmatinvBatched(cublasHandle_t handle,
                                                           int n, 
-                                                          const double *A[],                 /*Device pointer*/
+                                                          const double *const A[],     /*Device pointer*/
                                                           int lda, 
-                                                          double *Ainv[],              /*Device pointer*/
+                                                          double *const Ainv[],        /*Device pointer*/
                                                           int lda_inv, 
                                                           int *info,                   /*Device Pointer*/
                                                           int batchSize);
 
 CUBLASAPI cublasStatus_t CUBLASWINAPI cublasCmatinvBatched(cublasHandle_t handle,
                                                           int n, 
-                                                          const cuComplex *A[],              /*Device pointer*/
+                                                          const cuComplex *const A[],  /*Device pointer*/
                                                           int lda, 
-                                                          cuComplex *Ainv[],           /*Device pointer*/
+                                                          cuComplex *const Ainv[],     /*Device pointer*/
                                                           int lda_inv, 
                                                           int *info,                   /*Device Pointer*/
                                                           int batchSize);
 
 CUBLASAPI cublasStatus_t CUBLASWINAPI cublasZmatinvBatched(cublasHandle_t handle,
                                                           int n, 
-                                                          const cuDoubleComplex *A[],        /*Device pointer*/
+                                                          const cuDoubleComplex *const A[], /*Device pointer*/
                                                           int lda, 
-                                                          cuDoubleComplex *Ainv[],     /*Device pointer*/
+                                                          cuDoubleComplex *const Ainv[],    /*Device pointer*/
                                                           int lda_inv, 
-                                                          int *info,                   /*Device Pointer*/
+                                                          int *info,                        /*Device Pointer*/
                                                           int batchSize);
 
 /* Batch QR Factorization */
 CUBLASAPI cublasStatus_t CUBLASWINAPI cublasSgeqrfBatched( cublasHandle_t handle, 
                                                            int m, 
                                                            int n,
-                                                           float *Aarray[],           /*Device pointer*/
-                                                           int lda, 
-                                                           float *TauArray[],        /* Device pointer*/                                                           
+                                                           float *const Aarray[],      /*Device pointer*/
+                                                           int lda,
+                                                           float *const TauArray[],    /*Device pointer*/                                                           
                                                            int *info,
                                                            int batchSize);
 
 CUBLASAPI cublasStatus_t CUBLASWINAPI  cublasDgeqrfBatched( cublasHandle_t handle, 
                                                             int m, 
                                                             int n,
-                                                            double *Aarray[],           /*Device pointer*/
+                                                            double *const Aarray[],     /*Device pointer*/
                                                             int lda, 
-                                                            double *TauArray[],        /* Device pointer*/                                                            
+                                                            double *const TauArray[],   /*Device pointer*/                                                            
                                                             int *info,
                                                             int batchSize);
 
 CUBLASAPI cublasStatus_t CUBLASWINAPI  cublasCgeqrfBatched( cublasHandle_t handle, 
                                                             int m, 
                                                             int n,
-                                                            cuComplex *Aarray[],           /*Device pointer*/
+                                                            cuComplex *const Aarray[],          /*Device pointer*/
                                                             int lda, 
-                                                            cuComplex *TauArray[],        /* Device pointer*/                                                            
+                                                            cuComplex *const TauArray[],        /*Device pointer*/                                                            
                                                             int *info,
                                                             int batchSize);
                                                             
 CUBLASAPI cublasStatus_t CUBLASWINAPI  cublasZgeqrfBatched( cublasHandle_t handle, 
                                                             int m, 
                                                             int n,
-                                                            cuDoubleComplex *Aarray[],           /*Device pointer*/
-                                                            int lda, 
-                                                            cuDoubleComplex *TauArray[],        /* Device pointer*/                                                          
+                                                            cuDoubleComplex *const Aarray[],    /*Device pointer*/
+                                                            int lda,
+                                                            cuDoubleComplex *const TauArray[],  /*Device pointer*/
                                                             int *info,
                                                             int batchSize);
 /* Least Square Min only m >= n and Non-transpose supported */
@@ -2867,52 +2892,52 @@ CUBLASAPI cublasStatus_t CUBLASWINAPI  cublasSgelsBatched( cublasHandle_t handle
                                                            int m,  
                                                            int n,
                                                            int nrhs,
-                                                           float *Aarray[], /*Device pointer*/
+                                                           float *const Aarray[],      /*Device pointer*/
                                                            int lda, 
-                                                           float *Carray[], /* Device pointer*/
-                                                           int ldc,                                                                 
+                                                           float *const Carray[],      /*Device pointer*/
+                                                           int ldc,
                                                            int *info, 
-                                                           int *devInfoArray, /* Device pointer*/
+                                                           int *devInfoArray,          /*Device pointer*/
                                                            int batchSize );
                                                                 
 CUBLASAPI cublasStatus_t CUBLASWINAPI  cublasDgelsBatched( cublasHandle_t handle,
-                                                           cublasOperation_t trans,  
-                                                           int m,  
+                                                           cublasOperation_t trans,
+                                                           int m,
                                                            int n,
                                                            int nrhs,
-                                                           double *Aarray[], /*Device pointer*/
+                                                           double *const Aarray[],     /*Device pointer*/
                                                            int lda, 
-                                                           double *Carray[], /* Device pointer*/
-                                                           int ldc,                                                                 
+                                                           double *const Carray[],     /*Device pointer*/
+                                                           int ldc,
                                                            int *info, 
-                                                           int *devInfoArray, /* Device pointer*/
+                                                           int *devInfoArray,          /*Device pointer*/
                                                            int batchSize);
                                                                 
-CUBLASAPI cublasStatus_t CUBLASWINAPI  cublasCgelsBatched( cublasHandle_t handle, 
-                                                           cublasOperation_t trans, 
-                                                           int m,  
+CUBLASAPI cublasStatus_t CUBLASWINAPI  cublasCgelsBatched( cublasHandle_t handle,
+                                                           cublasOperation_t trans,
+                                                           int m,
                                                            int n,
                                                            int nrhs,
-                                                           cuComplex *Aarray[], /*Device pointer*/
-                                                           int lda, 
-                                                           cuComplex *Carray[], /* Device pointer*/
-                                                           int ldc,                                                                 
-                                                           int *info, 
+                                                           cuComplex *const Aarray[],  /*Device pointer*/
+                                                           int lda,
+                                                           cuComplex *const Carray[],  /*Device pointer*/
+                                                           int ldc,
+                                                           int *info,
                                                            int *devInfoArray,
                                                            int batchSize);
                                                                 
-CUBLASAPI cublasStatus_t CUBLASWINAPI  cublasZgelsBatched( cublasHandle_t handle, 
-                                                           cublasOperation_t trans, 
-                                                           int m,  
+CUBLASAPI cublasStatus_t CUBLASWINAPI  cublasZgelsBatched( cublasHandle_t handle,
+                                                           cublasOperation_t trans,
+                                                           int m,
                                                            int n,
                                                            int nrhs,
-                                                           cuDoubleComplex *Aarray[], /*Device pointer*/
-                                                           int lda, 
-                                                           cuDoubleComplex *Carray[], /* Device pointer*/
-                                                           int ldc,                                                                 
-                                                           int *info, 
+                                                           cuDoubleComplex *const Aarray[],  /*Device pointer*/
+                                                           int lda,
+                                                           cuDoubleComplex *const Carray[],  /*Device pointer*/
+                                                           int ldc,
+                                                           int *info,
                                                            int *devInfoArray,
-                                                           int batchSize);                                                                                                                                                                                                
+                                                           int batchSize);
 /* DGMM */
 CUBLASAPI cublasStatus_t CUBLASWINAPI cublasSdgmm(cublasHandle_t handle,
                                                   cublasSideMode_t mode, 

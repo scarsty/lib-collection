@@ -528,13 +528,20 @@ static __inline__ __host__ cudaError_t cudaMallocManaged(
  * only take effect when, previous work in stream has completed. Any
  * previous association is automatically replaced.
  *
- * \p devPtr must point to an address within managed memory space declared
- * using the __managed__ keyword or allocated with ::cudaMallocManaged.
+ * \p devPtr must point to an one of the following types of memories:
+ * - managed memory declared using the __managed__ keyword or allocated with
+ *   ::cudaMallocManaged.
+ * - a valid host-accessible region of system-allocated pageable memory. This
+ *   type of memory may only be specified if the device associated with the
+ *   stream reports a non-zero value for the device attribute
+ *   ::cudaDevAttrPageableMemoryAccess.
  *
- * \p length must be zero, to indicate that the entire allocation's
- * stream association is being changed.  Currently, it's not possible
- * to change stream association for a portion of an allocation. The default
- * value for \p length is zero.
+ * For managed allocations, \p length must be either zero or the entire
+ * allocation's size. Both indicate that the entire allocation's stream
+ * association is being changed. Currently, it is not possible to change stream
+ * association for a portion of a managed allocation.
+ *
+ * For pageable allocations, \p length must be non-zero.
  *
  * The stream association is specified using \p flags which must be
  * one of ::cudaMemAttachGlobal, ::cudaMemAttachHost or ::cudaMemAttachSingle.
@@ -560,7 +567,7 @@ static __inline__ __host__ cudaError_t cudaMallocManaged(
  * Accessing memory on the device from streams that are not associated with
  * it will produce undefined results. No error checking is performed by the
  * Unified Memory system to ensure that kernels launched into other streams
- * do not access this region. 
+ * do not access this region.
  *
  * It is a program's responsibility to order calls to ::cudaStreamAttachMemAsync
  * via events, synchronization or other means to ensure legal access to memory
@@ -575,8 +582,10 @@ static __inline__ __host__ cudaError_t cudaMallocManaged(
  * happen until all work in the stream has completed.
  *
  * \param stream  - Stream in which to enqueue the attach operation
- * \param devPtr  - Pointer to memory (must be a pointer to managed memory)
- * \param length  - Length of memory (must be zero, defaults to zero)
+ * \param devPtr  - Pointer to memory (must be a pointer to managed memory or
+ *                  to a valid host-accessible region of system-allocated
+ *                  memory)
+ * \param length  - Length of memory (defaults to zero)
  * \param flags   - Must be one of ::cudaMemAttachGlobal, ::cudaMemAttachHost or ::cudaMemAttachSingle (defaults to ::cudaMemAttachSingle)
  *
  * \return
@@ -1252,11 +1261,13 @@ static __inline__ __host__ cudaError_t cudaBindTextureToMipmappedArray(
 /**
  * \brief \hl Unbinds a texture
  *
- * Unbinds the texture bound to \p tex.
+ * Unbinds the texture bound to \p tex. If \p texref is not currently bound, no operation is performed.
  *
  * \param tex - Texture to unbind
  *
- * \return ::cudaSuccess
+ * \return 
+ * ::cudaSuccess,
+ * ::cudaErrorInvalidTexture
  * \notefnerr
  *
  * \sa \ref ::cudaCreateChannelDesc(void) "cudaCreateChannelDesc (C++ API)",
@@ -1923,14 +1934,14 @@ static __inline__ __host__ cudaError_t cudaFuncGetAttributes(
  * This function sets the attributes of a function specified via \p entry.
  * The parameter \p entry must be a pointer to a function that executes
  * on the device. The parameter specified by \p entry must be declared as a \p __global__
- * function. The enumeration defined by \p attr is set to the value defined by \p value
+ * function. The enumeration defined by \p attr is set to the value defined by \p value.
  * If the specified function does not exist, then ::cudaErrorInvalidDeviceFunction is returned.
  * If the specified attribute cannot be written, or if the value is incorrect, 
  * then ::cudaErrorInvalidValue is returned.
  *
  * Valid values for \p attr are:
- * ::cuFuncAttrMaxDynamicSharedMem - Maximum size of dynamic shared memory per block
- * ::cuFuncAttrPreferredShmemCarveout - Preferred shared memory-L1 cache split ratio in percent of shared memory.
+ * - ::cudaFuncAttributeMaxDynamicSharedMemorySize - Maximum size of dynamic shared memory per block
+ * - ::cudaFuncAttributePreferredSharedMemoryCarveout - Preferred shared memory-L1 cache split ratio in percent of maximum shared memory.
  *
  * \param entry - Function to get attributes of
  * \param attr  - Attribute to set

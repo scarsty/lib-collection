@@ -297,9 +297,6 @@ cufftResult CUFFTAPI cufftExecZ2D(cufftHandle plan,
 cufftResult CUFFTAPI cufftSetStream(cufftHandle plan,
                                     cudaStream_t stream);
 
-cufftResult CUFFTAPI cufftSetCompatibilityMode(cufftHandle plan,
-                                               cufftCompatibility mode);
-
 cufftResult CUFFTAPI cufftDestroy(cufftHandle plan);
 
 cufftResult CUFFTAPI cufftGetVersion(int *version);

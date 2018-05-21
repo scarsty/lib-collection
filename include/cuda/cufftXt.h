@@ -120,6 +120,15 @@ typedef struct cufftXt1dFactors_t {
     int factor2Shift;
 } cufftXt1dFactors;
 
+//
+// cufftXtWorkAreaPolicy specifies policy for cufftXtSetWorkAreaPolicy
+//
+typedef enum cufftXtWorkAreaPolicy_t {
+    CUFFT_WORKAREA_MINIMAL = 0, /* maximum reduction */
+    CUFFT_WORKAREA_USER = 1, /* use workSize parameter as limit */
+    CUFFT_WORKAREA_PERFORMANCE = 2, /* default - 1x overhead or more, maximum performance */
+} cufftXtWorkAreaPolicy;
+
 // multi-GPU routines
 cufftResult CUFFTAPI cufftXtSetGPUs(cufftHandle handle, int nGPUs, int *whichGPUs);
 
@@ -237,6 +246,8 @@ cufftResult CUFFTAPI cufftXtExecDescriptor(cufftHandle plan,
                                            cudaLibXtDesc *input,
                                            cudaLibXtDesc *output,
                                            int direction);
+
+cufftResult CUFFTAPI cufftXtSetWorkAreaPolicy(cufftHandle plan, cufftXtWorkAreaPolicy policy, size_t *workSize);
 
 #ifdef __cplusplus
 }

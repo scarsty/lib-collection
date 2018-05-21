@@ -103,6 +103,7 @@ extern "C" {
 #define nvmlDeviceGetHandleByIndex  nvmlDeviceGetHandleByIndex_v2
 #define nvmlDeviceGetHandleByPciBusId nvmlDeviceGetHandleByPciBusId_v2
 #define nvmlDeviceGetNvLinkRemotePciInfo nvmlDeviceGetNvLinkRemotePciInfo_v2
+#define nvmlDeviceRemoveGpu         nvmlDeviceRemoveGpu_v2
 
 /***************************************************************************************************/
 /** @defgroup nvmlDeviceStructs Device Structs
@@ -481,6 +482,7 @@ typedef enum nvmlBrandType_enum
     NVML_BRAND_NVS     = 3,
     NVML_BRAND_GRID    = 4,
     NVML_BRAND_GEFORCE = 5,
+    NVML_BRAND_TITAN   = 6,
 
     // Keep this last
     NVML_BRAND_COUNT
@@ -914,7 +916,10 @@ typedef enum nvmlGpuVirtualizationMode {
 
 #define NVML_FI_DEV_NVLINK_LINK_COUNT        91  //!< Number of NVLinks present on the device
 
-#define NVML_FI_MAX 92 //!< One greater than the largest field ID defined above
+#define NVML_FI_DEV_RETIRED_PENDING_SBE      92  //!< If any pages are pending retirement due to SBE. 1=yes. 0=no.
+#define NVML_FI_DEV_RETIRED_PENDING_DBE      93  //!< If any pages are pending retirement due to DBE. 1=yes. 0=no.
+
+#define NVML_FI_MAX 94 //!< One greater than the largest field ID defined above
 
 /**
  * Information for a Field Value Sample
@@ -1196,6 +1201,12 @@ typedef struct nvmlEventData_st
  */
 #define nvmlClocksThrottleReasonHwPowerBrakeSlowdown      0x0000000000000080LL
 
+/** GPU clocks are limited by current setting of Display clocks
+ *
+ * @see bug 1997531
+ */
+#define nvmlClocksThrottleReasonDisplayClockSetting       0x0000000000000100LL
+
 /** Bit mask representing no clocks throttling
  *
  * Clocks are as high as possible.
@@ -1214,6 +1225,7 @@ typedef struct nvmlEventData_st
       | nvmlClocksThrottleReasonSwThermalSlowdown                 \
       | nvmlClocksThrottleReasonHwThermalSlowdown                 \
       | nvmlClocksThrottleReasonHwPowerBrakeSlowdown              \
+      | nvmlClocksThrottleReasonDisplayClockSetting               \
 )
 /** @} */
 
@@ -1272,13 +1284,14 @@ typedef struct nvmlAccountingStats_st {
 
 #define NVML_VGPU_NAME_BUFFER_SIZE          64
 
-#define NVML_MAX_VGPU_TYPES_PER_PGPU        17
-
-#define NVML_MAX_VGPU_INSTANCES_PER_PGPU    24
-
 #define NVML_GRID_LICENSE_FEATURE_MAX_COUNT 3
 
-#define NVML_GRID_LICENSE_INFO_MAX_LENGTH   128
+/*!
+ * Macros for pGPU's virtualization capabilities bitfield.
+ */
+#define NVML_VGPU_PGPU_VIRTUALIZATION_CAP_MIGRATION         0:0
+#define NVML_VGPU_PGPU_VIRTUALIZATION_CAP_MIGRATION_NO      0x0
+#define NVML_VGPU_PGPU_VIRTUALIZATION_CAP_MIGRATION_YES     0x1
 
 /** @} */
 
@@ -1369,7 +1382,7 @@ typedef struct nvmlGridLicensableFeature_st
 {
     nvmlGridLicenseFeatureCode_t    featureCode;         //<! Licensed feature code
     unsigned int                    featureState;        //<! Non-zero if feature is currently licensed, otherwise zero
-    char                            licenseInfo[NVML_GRID_LICENSE_INFO_MAX_LENGTH];
+    char                            licenseInfo[NVML_GRID_LICENSE_BUFFER_SIZE];
 } nvmlGridLicensableFeature_t;
 
 typedef struct nvmlGridLicensableFeatures_st
@@ -1414,6 +1427,32 @@ typedef struct nvmlEncoderSessionInfo_st
 /** @} */
 
 /***************************************************************************************************/
+/** @defgroup nvmlDrainDefs definitions related to the drain state
+ *  @{
+ */
+/***************************************************************************************************/
+
+/**
+ *  Is the GPU device to be removed from the kernel by nvmlDeviceRemoveGpu()
+ */
+typedef enum nvmlDetachGpuState_enum
+{
+    NVML_DETACH_GPU_KEEP         = 0,
+    NVML_DETACH_GPU_REMOVE,
+} nvmlDetachGpuState_t;
+
+/**
+ *  Parent bridge PCIe link state requested by nvmlDeviceRemoveGpu()
+ */
+typedef enum nvmlPcieLinkState_enum
+{
+    NVML_PCIE_LINK_KEEP         = 0,
+    NVML_PCIE_LINK_SHUT_DOWN,
+} nvmlPcieLinkState_t;
+
+/** @} */
+
+/***************************************************************************************************/
 /** @defgroup nvmlInitializationAndCleanup Initialization and Cleanup
  * This chapter describes the methods that handle NVML initialization and cleanup.
  * It is the user's responsibility to call \ref nvmlInit() before calling any other methods, and 
@@ -1422,7 +1461,8 @@ typedef struct nvmlEncoderSessionInfo_st
  */
 /***************************************************************************************************/
 
-#define NVML_INIT_FLAG_NO_GPUS  1   //!< Don't fail nvmlInit() when no GPUs are found
+#define NVML_INIT_FLAG_NO_GPUS      1   //!< Don't fail nvmlInit() when no GPUs are found
+#define NVML_INIT_FLAG_NO_ATTACH    2   //!< Don't attach GPUs
 
 /**
  * Initialize NVML, but don't initialize any GPUs yet.
@@ -1440,8 +1480,6 @@ typedef struct nvmlEncoderSessionInfo_st
  *       a bad or unstable state.
  * 
  * For all products.
- *
- * @param flags                                 behaviour modifier flags
  *
  * This method, should be called once before invoking any other methods in the library.
  * A reference count of the number of initializations is maintained.  Shutdown only occurs
@@ -3515,7 +3553,7 @@ nvmlReturn_t DECLDIR nvmlDeviceGetUtilizationRates(nvmlDevice_t device, nvmlUtil
 nvmlReturn_t DECLDIR nvmlDeviceGetEncoderUtilization(nvmlDevice_t device, unsigned int *utilization, unsigned int *samplingPeriodUs);
 
 /**
- * Retrieves the current capacity of the device's encoder, in macroblocks per second.
+ * Retrieves the current capacity of the device's encoder, as a percentage of maximum encoder capacity with valid values in the range 0-100.
  *
  * For Maxwell &tm; or newer fully supported devices.
  *
@@ -4904,6 +4942,9 @@ nvmlReturn_t DECLDIR nvmlDeviceQueryDrainState (nvmlPciInfo_t *pciInfo, nvmlEnab
  * Some Kepler devices supported.
  *
  * @param pciInfo                              The PCI address of the GPU to be removed
+ * @param gpuState                             Whether the GPU is to be removed, from the OS
+ *                                             see \ref nvmlDetachGpuState_t
+ * @param linkState                            Requested upstream PCIe link state, see \ref nvmlPcieLinkState_t
  *
  * @return
  *         - \ref NVML_SUCCESS                 if counters were successfully reset
@@ -4912,7 +4953,7 @@ nvmlReturn_t DECLDIR nvmlDeviceQueryDrainState (nvmlPciInfo_t *pciInfo, nvmlEnab
  *         - \ref NVML_ERROR_NOT_SUPPORTED     if the device doesn't support this feature
  *         - \ref NVML_ERROR_IN_USE            if the device is still in use and cannot be removed
  */
-nvmlReturn_t DECLDIR nvmlDeviceRemoveGpu (nvmlPciInfo_t *pciInfo);
+nvmlReturn_t DECLDIR nvmlDeviceRemoveGpu (nvmlPciInfo_t *pciInfo, nvmlDetachGpuState_t gpuState, nvmlPcieLinkState_t linkState);
 
 /**
  * Request the OS and the NVIDIA kernel driver to rediscover a portion of the PCI subsystem looking for GPUs that
@@ -5431,7 +5472,7 @@ nvmlReturn_t DECLDIR nvmlVgpuInstanceGetType(nvmlVgpuInstance_t vgpuInstance, nv
 nvmlReturn_t DECLDIR nvmlVgpuInstanceGetFrameRateLimit(nvmlVgpuInstance_t vgpuInstance, unsigned int *frameRateLimit);
 
 /**
- * Retrieve the encoder Capacity of a vGPU instance, in macroblocks per second.
+ * Retrieve the encoder capacity of a vGPU instance, as a percentage of maximum encoder capacity with valid values in the range 0-100.
  *
  * For Maxwell &tm; or newer fully supported devices.
  *
@@ -5447,7 +5488,7 @@ nvmlReturn_t DECLDIR nvmlVgpuInstanceGetFrameRateLimit(nvmlVgpuInstance_t vgpuIn
 nvmlReturn_t DECLDIR nvmlVgpuInstanceGetEncoderCapacity(nvmlVgpuInstance_t vgpuInstance, unsigned int *encoderCapacity);
 
 /**
- * Set the encoder Capacity of a vGPU instance, in macroblocks per second.
+ * Set the encoder capacity of a vGPU instance, as a percentage of maximum encoder capacity with valid values in the range 0-100.
  *
  * For Maxwell &tm; or newer fully supported devices.
  *
@@ -5665,10 +5706,156 @@ nvmlReturn_t DECLDIR nvmlDeviceGetProcessUtilization(nvmlDevice_t device, nvmlPr
 
 /** @} */
 
+/***************************************************************************************************/
+/** @defgroup nvml vGPU Migration
+ * This chapter describes NVML operations that are associated with vGPU Migration.
+ *  @{
+ */
+/***************************************************************************************************/
+
+/**
+ * vGPU metadata structure.
+ */
+typedef struct nvmlVgpuMetadata_st
+{
+    unsigned int             version;                                                    //!< Current version of the structure
+    unsigned int             revision;                                                   //!< Current revision of the structure
+    nvmlVgpuGuestInfoState_t guestInfoState;                                             //!< Current state of Guest-dependent fields
+    char                     guestDriverVersion[NVML_SYSTEM_DRIVER_VERSION_BUFFER_SIZE]; //!< Version of driver installed in guest
+    char                     hostDriverVersion[NVML_SYSTEM_DRIVER_VERSION_BUFFER_SIZE];  //!< Version of driver installed in host
+    unsigned int             reserved[8];                                                //!< Reserved for internal use
+    unsigned int             opaqueDataSize;                                             //!< Size of opaque data field in bytes
+    char                     opaqueData[4];                                              //!< Opaque data
+} nvmlVgpuMetadata_t;
+
+/**
+ * Physical GPU metadata structure
+ */
+typedef struct nvmlVgpuPgpuMetadata_st
+{
+    unsigned int            version;                                                    //!< Current version of the structure
+    unsigned int            revision;                                                   //!< Current revision of the structure
+    char                    hostDriverVersion[NVML_SYSTEM_DRIVER_VERSION_BUFFER_SIZE];  //!< Host driver version
+    unsigned int            pgpuVirtualizationCaps;                                     //!< Pgpu virtualizaion capabilities bitfileld
+    unsigned int            reserved[7];                                                //!< Reserved for internal use
+    unsigned int            opaqueDataSize;                                             //!< Size of opaque data field in bytes
+    char                    opaqueData[4];                                              //!< Opaque data
+} nvmlVgpuPgpuMetadata_t;
+
+/**
+ * vGPU VM compatibility codes
+ */
+typedef enum nvmlVgpuVmCompatibility_enum
+{
+    NVML_VGPU_VM_COMPATIBILITY_NONE         = 0x0,    //!< vGPU is not runnable
+    NVML_VGPU_VM_COMPATIBILITY_COLD         = 0x1,    //!< vGPU is runnable from a cold / powered-off state (ACPI S5)
+    NVML_VGPU_VM_COMPATIBILITY_HIBERNATE    = 0x2,    //!< vGPU is runnable from a hibernated state (ACPI S4)
+    NVML_VGPU_VM_COMPATIBILITY_SLEEP        = 0x4,    //!< vGPU is runnable from a sleeped state (ACPI S3)
+    NVML_VGPU_VM_COMPATIBILITY_LIVE         = 0x8,    //!< vGPU is runnable from a live/paused (ACPI S0)
+} nvmlVgpuVmCompatibility_t;
+
+/**
+ *  vGPU-pGPU compatibility limit codes
+ */
+typedef enum nvmlVgpuPgpuCompatibilityLimitCode_enum
+{
+    NVML_VGPU_COMPATIBILITY_LIMIT_NONE          = 0x0,           //!< Compatibility is not limited.
+    NVML_VGPU_COMPATIBILITY_LIMIT_HOST_DRIVER   = 0x1,           //!< Compatibility is limited by host driver version.
+    NVML_VGPU_COMPATIBILITY_LIMIT_GUEST_DRIVER  = 0x2,           //!< Compatibility is limited by guest driver version.
+    NVML_VGPU_COMPATIBILITY_LIMIT_GPU           = 0x4,           //!< Compatibility is limited by GPU hardware.
+    NVML_VGPU_COMPATIBILITY_LIMIT_OTHER         = 0x80000000,    //!< Compatibility is limited by an undefined factor.
+} nvmlVgpuPgpuCompatibilityLimitCode_t;
+
+/**
+ * vGPU-pGPU compatibility structure
+ */
+typedef struct nvmlVgpuPgpuCompatibility_st
+{
+    nvmlVgpuVmCompatibility_t               vgpuVmCompatibility;    //!< Compatibility of vGPU VM. See \ref nvmlVgpuVmCompatibility_t
+    nvmlVgpuPgpuCompatibilityLimitCode_t    compatibilityLimitCode; //!< Limiting factor for vGPU-pGPU compatibility. See \ref nvmlVgpuPgpuCompatibilityLimitCode_t
+} nvmlVgpuPgpuCompatibility_t;
+
+/**
+ * Returns vGPU metadata structure for a running vGPU. The structure contains information about the vGPU and its associated VM
+ * such as the currently installed NVIDIA guest driver version, together with host driver version and an opaque data section
+ * containing internal state.
+ *
+ * nvmlVgpuInstanceGetMetadata() may be called at any time for a vGPU instance. Some fields in the returned structure are
+ * dependent on information obtained from the guest VM, which may not yet have reached a state where that information
+ * is available. The current state of these dependent fields is reflected in the info structure's \ref guestInfoState field.
+ *
+ * The VMM may choose to read and save the vGPU's VM info as persistent metadata associated with the VM, and provide
+ * it to GRID Virtual GPU Manager when creating a vGPU for subsequent instances of the VM.
+ *
+ * The caller passes in a buffer via \a vgpuMetadata, with the size of the buffer in \a bufferSize. If the vGPU Metadata structure
+ * is too large to fit in the supplied buffer, the function returns NVML_ERROR_INSUFFICIENT_SIZE with the size needed
+ * in \a bufferSize.
+ *
+ * @param vgpuInstance             vGPU instance handle
+ * @param vgpuMetadata             Pointer to caller-supplied buffer into which vGPU metadata is written
+ * @param bufferSize               Size of vgpuMetadata buffer
+ *
+ * @return
+ *         - \ref NVML_SUCCESS                   vGPU metadata structure was successfully returned
+ *         - \ref NVML_ERROR_INSUFFICIENT_SIZE   vgpuMetadata buffer is too small, required size is returned in \a bufferSize
+ *         - \ref NVML_ERROR_INVALID_ARGUMENT    if \a bufferSize is NULL or \a vgpuInstance is invalid; if \a vgpuMetadata is NULL and the value of \a bufferSize is not 0.
+ *         - \ref NVML_ERROR_UNKNOWN             on any unexpected error
+ */
+nvmlReturn_t DECLDIR nvmlVgpuInstanceGetMetadata(nvmlVgpuInstance_t vgpuInstance, nvmlVgpuMetadata_t *vgpuMetadata, unsigned int *bufferSize);
+
+/**
+ * Returns a vGPU metadata structure for the physical GPU indicated by \a device. The structure contains information about
+ * the GPU and the currently installed NVIDIA host driver version that's controlling it, together with an opaque data section
+ * containing internal state.
+ *
+ * The caller passes in a buffer via \a pgpuMetadata, with the size of the buffer in \a bufferSize. If the \a pgpuMetadata
+ * structure is too large to fit in the supplied buffer, the function returns NVML_ERROR_INSUFFICIENT_SIZE with the size needed
+ * in \a bufferSize.
+ *
+ * @param device                The identifier of the target device
+ * @param pgpuMetadata          Pointer to caller-supplied buffer into which \a pgpuMetadata is written
+ * @param bufferSize            Pointer to size of \a pgpuMetadata buffer
+ *
+ * @return
+ *         - \ref NVML_SUCCESS                   GPU metadata structure was successfully returned
+ *         - \ref NVML_ERROR_INSUFFICIENT_SIZE   pgpuMetadata buffer is too small, required size is returned in \a bufferSize
+ *         - \ref NVML_ERROR_INVALID_ARGUMENT    if \a bufferSize is NULL or \a device is invalid; if \a pgpuMetadata is NULL and the value of \a bufferSize is not 0.
+ *         - \ref NVML_ERROR_NOT_SUPPORTED       vGPU is not supported by the system
+ *         - \ref NVML_ERROR_UNKNOWN             on any unexpected error
+ */
+nvmlReturn_t DECLDIR nvmlDeviceGetVgpuMetadata(nvmlDevice_t device, nvmlVgpuPgpuMetadata_t *pgpuMetadata, unsigned int *bufferSize);
+
+/**
+ * Takes a vGPU instance metadata structure read from \ref nvmlVgpuInstanceGetMetadata(), and a vGPU metadata structure for a
+ * physical GPU read from \ref nvmlDeviceGetVgpuMetadata(), and returns compatibility information of the vGPU instance and the
+ * physical GPU.
+ *
+ * The caller passes in a buffer via \a compatibilityInfo, into which a compatibility information structure is written. The
+ * structure defines the states in which the vGPU / VM may be booted on the physical GPU. If the vGPU / VM compatibility
+ * with the physical GPU is limited, a limit code indicates the factor limiting compability.
+ * (see \ref nvmlVgpuPgpuCompatibilityLimitCode_t for details).
+ *
+ * Note: vGPU compatibility does not take into account dynamic capacity conditions that may limit a system's ability to
+ *       boot a given vGPU or associated VM.
+ *
+ * @param vgpuMetadata          Pointer to caller-supplied vGPU metadata structure
+ * @param pgpuMetadata          Pointer to caller-supplied GPU metadata structure
+ * @param compatibilityInfo     Pointer to caller-supplied buffer to hold compatibility info
+ *
+ * @return
+ *         - \ref NVML_SUCCESS                   vGPU metadata structure was successfully returned
+ *         - \ref NVML_ERROR_INVALID_ARGUMENT    if \a vgpuMetadata or \a pgpuMetadata or \a bufferSize are NULL
+ *         - \ref NVML_ERROR_UNKNOWN             on any unexpected error
+ */
+nvmlReturn_t DECLDIR nvmlGetVgpuCompatibility(nvmlVgpuMetadata_t *vgpuMetadata, nvmlVgpuPgpuMetadata_t *pgpuMetadata, nvmlVgpuPgpuCompatibility_t *compatibilityInfo);
+
+/** @} */
+
 /**
  * NVML API versioning support
  */
 #if defined(__NVML_API_VERSION_INTERNAL)
+#undef nvmlDeviceRemoveGpu
 #undef nvmlDeviceGetNvLinkRemotePciInfo
 #undef nvmlDeviceGetPciInfo
 #undef nvmlDeviceGetCount

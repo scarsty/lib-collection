@@ -53,6 +53,16 @@
 /**
  * CUDA API versioning support
  */
+#if defined(__CUDA_API_VERSION_INTERNAL) || defined(__DOXYGEN_ONLY__) || defined(CUDA_ENABLE_DEPRECATED)
+#define __CUDA_DEPRECATED
+#elif defined(_MSC_VER)
+#define __CUDA_DEPRECATED __declspec(deprecated)
+#elif defined(__GNUC__)
+#define __CUDA_DEPRECATED __attribute__((deprecated))
+#else
+#define __CUDA_DEPRECATED
+#endif
+
 #if defined(CUDA_FORCE_API_VERSION)
     #if (CUDA_FORCE_API_VERSION == 3010)
         #define __CUDA_API_VERSION 3010
@@ -60,7 +70,7 @@
         #error "Unsupported value of CUDA_FORCE_API_VERSION"
     #endif
 #else
-    #define __CUDA_API_VERSION 9010
+    #define __CUDA_API_VERSION 9020
 #endif /* CUDA_FORCE_API_VERSION */
 
 #if defined(__CUDA_API_VERSION_INTERNAL) || __CUDA_API_VERSION >= 3020
@@ -283,7 +293,7 @@ CUresult CUDAAPI cuGraphicsD3D11RegisterResource(CUgraphicsResource *pCudaResour
  * ::cuD3D11GetDevice,
  * ::cuGraphicsD3D11RegisterResource
  */
-CUresult CUDAAPI cuD3D11CtxCreate(CUcontext *pCtx, CUdevice *pCudaDevice, unsigned int Flags, ID3D11Device *pD3DDevice);
+__CUDA_DEPRECATED CUresult CUDAAPI cuD3D11CtxCreate(CUcontext *pCtx, CUdevice *pCudaDevice, unsigned int Flags, ID3D11Device *pD3DDevice);
 
 /**
  * \brief Create a CUDA context for interoperability with Direct3D 11
@@ -314,8 +324,7 @@ CUresult CUDAAPI cuD3D11CtxCreate(CUcontext *pCtx, CUdevice *pCudaDevice, unsign
  * ::cuD3D11GetDevices,
  * ::cuGraphicsD3D11RegisterResource
  */
-
-CUresult CUDAAPI cuD3D11CtxCreateOnDevice(CUcontext *pCtx, unsigned int flags, ID3D11Device *pD3DDevice, CUdevice cudaDevice);
+__CUDA_DEPRECATED CUresult CUDAAPI cuD3D11CtxCreateOnDevice(CUcontext *pCtx, unsigned int flags, ID3D11Device *pD3DDevice, CUdevice cudaDevice);
 
 /**
  * \brief Get the Direct3D 11 device against which the current CUDA context was
@@ -339,7 +348,7 @@ CUresult CUDAAPI cuD3D11CtxCreateOnDevice(CUcontext *pCtx, unsigned int flags, I
  * \sa
  * ::cuD3D11GetDevice
  */
-CUresult CUDAAPI cuD3D11GetDirect3DDevice(ID3D11Device **ppD3DDevice);
+__CUDA_DEPRECATED CUresult CUDAAPI cuD3D11GetDirect3DDevice(ID3D11Device **ppD3DDevice);
 
 #endif /* __CUDA_API_VERSION >= 3020 */
 
@@ -365,6 +374,7 @@ CUresult CUDAAPI cuD3D11CtxCreate(CUcontext *pCtx, CUdevice *pCudaDevice, unsign
 #endif
 
 #undef __CUDA_API_VERSION
+#undef __CUDA_DEPRECATED
 
 #endif
 

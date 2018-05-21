@@ -700,6 +700,67 @@ cusolverStatus_t CUSOLVERAPI cusolverSpXcsrsymamdHost(
     const int *csrColIndA,
     int *p);
 
+/* --------- CPU metis 
+ *   symmetric reordering 
+ */
+cusolverStatus_t CUSOLVERAPI cusolverSpXcsrmetisndHost(
+    cusolverSpHandle_t handle,
+    int n,
+    int nnzA,
+    const cusparseMatDescr_t descrA,
+    const int *csrRowPtrA,
+    const int *csrColIndA,
+    const int64_t *options,
+    int *p);
+
+
+/* --------- CPU zfd
+ *  Zero free diagonal reordering
+ */
+cusolverStatus_t CUSOLVERAPI cusolverSpScsrzfdHost(
+    cusolverSpHandle_t handle,
+    int n,
+    int nnz,
+    const cusparseMatDescr_t descrA,
+    const float *csrValA,
+    const int *csrRowPtrA,
+    const int *csrColIndA,
+    int *P,
+    int *numnz);
+
+cusolverStatus_t CUSOLVERAPI cusolverSpDcsrzfdHost(
+    cusolverSpHandle_t handle,
+    int n,
+    int nnz,
+    const cusparseMatDescr_t descrA,
+    const double *csrValA,
+    const int *csrRowPtrA,
+    const int *csrColIndA,
+    int *P,
+    int *numnz);
+
+cusolverStatus_t CUSOLVERAPI cusolverSpCcsrzfdHost(
+    cusolverSpHandle_t handle,
+    int n,
+    int nnz,
+    const cusparseMatDescr_t descrA,
+    const cuComplex *csrValA,
+    const int *csrRowPtrA,
+    const int *csrColIndA,
+    int *P,
+    int *numnz);
+
+cusolverStatus_t CUSOLVERAPI cusolverSpZcsrzfdHost(
+    cusolverSpHandle_t handle,
+    int n,
+    int nnz,
+    const cusparseMatDescr_t descrA,
+    const cuDoubleComplex *csrValA,
+    const int *csrRowPtrA,
+    const int *csrColIndA,
+    int *P,
+    int *numnz);
+
 
 /* --------- CPU permuation
  *   P*A*Q^T        

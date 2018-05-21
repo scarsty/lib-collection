@@ -53,6 +53,16 @@
 /**
  * CUDA API versioning support
  */
+#if defined(__CUDA_API_VERSION_INTERNAL) || defined(__DOXYGEN_ONLY__) || defined(CUDA_ENABLE_DEPRECATED)
+#define __CUDA_DEPRECATED
+#elif defined(_MSC_VER)
+#define __CUDA_DEPRECATED __declspec(deprecated)
+#elif defined(__GNUC__)
+#define __CUDA_DEPRECATED __attribute__((deprecated))
+#else
+#define __CUDA_DEPRECATED
+#endif
+
 #if defined(CUDA_FORCE_API_VERSION)
     #if (CUDA_FORCE_API_VERSION == 3010)
         #define __CUDA_API_VERSION 3010
@@ -60,7 +70,7 @@
         #error "Unsupported value of CUDA_FORCE_API_VERSION"
     #endif
 #else
-    #define __CUDA_API_VERSION 9010
+    #define __CUDA_API_VERSION 9020
 #endif /* CUDA_FORCE_API_VERSION */
 
 #if defined(__CUDA_API_VERSION_INTERNAL) || __CUDA_API_VERSION >= 3020
@@ -483,7 +493,7 @@ typedef enum CUd3d9map_flags_enum {
  * \sa
  * ::cuGraphicsD3D9RegisterResource
  */
-CUresult CUDAAPI cuD3D9RegisterResource(IDirect3DResource9 *pResource, unsigned int Flags);
+__CUDA_DEPRECATED CUresult CUDAAPI cuD3D9RegisterResource(IDirect3DResource9 *pResource, unsigned int Flags);
 
 /**
  * \brief Unregister a Direct3D resource
@@ -510,7 +520,7 @@ CUresult CUDAAPI cuD3D9RegisterResource(IDirect3DResource9 *pResource, unsigned 
  * \sa
  * ::cuGraphicsUnregisterResource
  */
-CUresult CUDAAPI cuD3D9UnregisterResource(IDirect3DResource9 *pResource);
+__CUDA_DEPRECATED CUresult CUDAAPI cuD3D9UnregisterResource(IDirect3DResource9 *pResource);
 
 /**
  * \brief Map Direct3D resources for access by CUDA
@@ -549,7 +559,7 @@ CUresult CUDAAPI cuD3D9UnregisterResource(IDirect3DResource9 *pResource);
  * \sa
  * ::cuGraphicsMapResources
  */
-CUresult CUDAAPI cuD3D9MapResources(unsigned int count, IDirect3DResource9 **ppResource);
+__CUDA_DEPRECATED CUresult CUDAAPI cuD3D9MapResources(unsigned int count, IDirect3DResource9 **ppResource);
 
 /**
  * \brief Unmaps Direct3D resources
@@ -584,7 +594,7 @@ CUresult CUDAAPI cuD3D9MapResources(unsigned int count, IDirect3DResource9 **ppR
  * \sa
  * ::cuGraphicsUnmapResources
  */
-CUresult CUDAAPI cuD3D9UnmapResources(unsigned int count, IDirect3DResource9 **ppResource);
+__CUDA_DEPRECATED CUresult CUDAAPI cuD3D9UnmapResources(unsigned int count, IDirect3DResource9 **ppResource);
 
 /**
  * \brief Set usage flags for mapping a Direct3D resource
@@ -624,7 +634,7 @@ CUresult CUDAAPI cuD3D9UnmapResources(unsigned int count, IDirect3DResource9 **p
  *
  * \sa ::cuGraphicsResourceSetMapFlags
  */
-CUresult CUDAAPI cuD3D9ResourceSetMapFlags(IDirect3DResource9 *pResource, unsigned int Flags);
+__CUDA_DEPRECATED CUresult CUDAAPI cuD3D9ResourceSetMapFlags(IDirect3DResource9 *pResource, unsigned int Flags);
 
 #if __CUDA_API_VERSION >= 3020
 /**
@@ -668,7 +678,7 @@ CUresult CUDAAPI cuD3D9ResourceSetMapFlags(IDirect3DResource9 *pResource, unsign
  *
  * \sa ::cuGraphicsSubResourceGetMappedArray
  */
-CUresult CUDAAPI cuD3D9ResourceGetSurfaceDimensions(size_t *pWidth, size_t *pHeight, size_t *pDepth, IDirect3DResource9 *pResource, unsigned int Face, unsigned int Level);
+__CUDA_DEPRECATED CUresult CUDAAPI cuD3D9ResourceGetSurfaceDimensions(size_t *pWidth, size_t *pHeight, size_t *pDepth, IDirect3DResource9 *pResource, unsigned int Face, unsigned int Level);
 #endif /* __CUDA_API_VERSION >= 3020 */
 
 /**
@@ -708,7 +718,7 @@ CUresult CUDAAPI cuD3D9ResourceGetSurfaceDimensions(size_t *pWidth, size_t *pHei
  *
  * \sa ::cuGraphicsSubResourceGetMappedArray
  */
-CUresult CUDAAPI cuD3D9ResourceGetMappedArray(CUarray *pArray, IDirect3DResource9 *pResource, unsigned int Face, unsigned int Level);
+__CUDA_DEPRECATED CUresult CUDAAPI cuD3D9ResourceGetMappedArray(CUarray *pArray, IDirect3DResource9 *pResource, unsigned int Face, unsigned int Level);
 
 #if __CUDA_API_VERSION >= 3020
 /**
@@ -754,7 +764,7 @@ CUresult CUDAAPI cuD3D9ResourceGetMappedArray(CUarray *pArray, IDirect3DResource
  *
  * \sa ::cuGraphicsResourceGetMappedPointer
  */
-CUresult CUDAAPI cuD3D9ResourceGetMappedPointer(CUdeviceptr *pDevPtr, IDirect3DResource9 *pResource, unsigned int Face, unsigned int Level);
+__CUDA_DEPRECATED CUresult CUDAAPI cuD3D9ResourceGetMappedPointer(CUdeviceptr *pDevPtr, IDirect3DResource9 *pResource, unsigned int Face, unsigned int Level);
 
 /**
  * \brief Get the size of a subresource of a Direct3D resource which has been
@@ -792,7 +802,7 @@ CUresult CUDAAPI cuD3D9ResourceGetMappedPointer(CUdeviceptr *pDevPtr, IDirect3DR
  *
  * \sa ::cuGraphicsResourceGetMappedPointer
  */
-CUresult CUDAAPI cuD3D9ResourceGetMappedSize(size_t *pSize, IDirect3DResource9 *pResource, unsigned int Face, unsigned int Level);
+__CUDA_DEPRECATED CUresult CUDAAPI cuD3D9ResourceGetMappedSize(size_t *pSize, IDirect3DResource9 *pResource, unsigned int Face, unsigned int Level);
 
 /**
  * \brief Get the pitch of a subresource of a Direct3D resource which has been
@@ -849,18 +859,18 @@ CUresult CUDAAPI cuD3D9ResourceGetMappedSize(size_t *pSize, IDirect3DResource9 *
  *
  * \sa ::cuGraphicsSubResourceGetMappedArray
  */
-CUresult CUDAAPI cuD3D9ResourceGetMappedPitch(size_t *pPitch, size_t *pPitchSlice, IDirect3DResource9 *pResource, unsigned int Face, unsigned int Level);
+__CUDA_DEPRECATED CUresult CUDAAPI cuD3D9ResourceGetMappedPitch(size_t *pPitch, size_t *pPitchSlice, IDirect3DResource9 *pResource, unsigned int Face, unsigned int Level);
 #endif /* __CUDA_API_VERSION >= 3020 */
 
 /* CUDA 1.x compatibility API. These functions are deprecated, please use the ones above. */
-CUresult CUDAAPI cuD3D9Begin(IDirect3DDevice9 *pDevice);
-CUresult CUDAAPI cuD3D9End(void);
-CUresult CUDAAPI cuD3D9RegisterVertexBuffer(IDirect3DVertexBuffer9 *pVB);
+__CUDA_DEPRECATED CUresult CUDAAPI cuD3D9Begin(IDirect3DDevice9 *pDevice);
+__CUDA_DEPRECATED CUresult CUDAAPI cuD3D9End(void);
+__CUDA_DEPRECATED CUresult CUDAAPI cuD3D9RegisterVertexBuffer(IDirect3DVertexBuffer9 *pVB);
 #if __CUDA_API_VERSION >= 3020
-CUresult CUDAAPI cuD3D9MapVertexBuffer(CUdeviceptr *pDevPtr, size_t *pSize, IDirect3DVertexBuffer9 *pVB);
+__CUDA_DEPRECATED CUresult CUDAAPI cuD3D9MapVertexBuffer(CUdeviceptr *pDevPtr, size_t *pSize, IDirect3DVertexBuffer9 *pVB);
 #endif /* __CUDA_API_VERSION >= 3020 */
-CUresult CUDAAPI cuD3D9UnmapVertexBuffer(IDirect3DVertexBuffer9 *pVB);
-CUresult CUDAAPI cuD3D9UnregisterVertexBuffer(IDirect3DVertexBuffer9 *pVB);
+__CUDA_DEPRECATED CUresult CUDAAPI cuD3D9UnmapVertexBuffer(IDirect3DVertexBuffer9 *pVB);
+__CUDA_DEPRECATED CUresult CUDAAPI cuD3D9UnregisterVertexBuffer(IDirect3DVertexBuffer9 *pVB);
 
 /** @} */ /* END CUDA_D3D9_DEPRECATED */
 /** @} */ /* END CUDA_D3D9 */
@@ -902,6 +912,7 @@ CUresult CUDAAPI cuD3D9MapVertexBuffer(CUdeviceptr *pDevPtr, unsigned int *pSize
 #endif
 
 #undef __CUDA_API_VERSION
+#undef __CUDA_DEPRECATED
 
 #endif
 

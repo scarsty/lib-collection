@@ -1,5 +1,5 @@
 /*
- * Copyright 1993-2016 NVIDIA Corporation.  All rights reserved.
+ * Copyright 1993-2018 NVIDIA Corporation.  All rights reserved.
  *
  * NOTICE TO LICENSEE:
  *
@@ -277,6 +277,41 @@ static __inline__ __host__ __device__ bool isinf(float a)
 #endif /* defined(__CUDA_ARCH__) */
 }
 
+#elif (defined(__ANDROID__) && defined(_LIBCPP_VERSION))
+#if defined(__CUDA_ARCH__)
+__forceinline__ __host__ __device__ __cudart_builtin__ int signbit(float x) { return __signbitf(x); }
+__forceinline__ __host__ __device__ __cudart_builtin__ int signbit(double x) { return __signbit(x); }
+__forceinline__ __host__ __device__ __cudart_builtin__ int signbit(long double x) { return __signbitl(x);}
+
+__forceinline__ __host__ __device__ __cudart_builtin__ int isfinite(float x) { return __finitef(x); }
+__forceinline__ __host__ __device__ __cudart_builtin__ int isfinite(double x) { return __finite(x); }
+__forceinline__ __host__ __device__ __cudart_builtin__ int isfinite(long double x) { return __finitel(x); }
+
+__forceinline__ __host__ __device__ __cudart_builtin__ int isnan(float x) { return __isnanf(x); }
+__forceinline__ __host__ __device__ __cudart_builtin__ int isnan(double x)  { return __isnan(x); }
+__forceinline__ __host__ __device__ __cudart_builtin__ int isnan(long double x) { return __isnanl(x); }
+
+__forceinline__ __host__ __device__ __cudart_builtin__ int isinf(float x) { return __isinff(x); }
+__forceinline__ __host__ __device__ __cudart_builtin__ int isinf(double x) { return __isinf(x); }
+__forceinline__ __host__ __device__ __cudart_builtin__ int isinf(long double x) { return __isinfl(x); }
+#else /* !defined(__CUDA_ARCH__) */
+__forceinline__ __host__ __device__ __cudart_builtin__ int signbit(float x) { return signbit<float>(x); }
+__forceinline__ __host__ __device__ __cudart_builtin__ int signbit(double x) { return signbit<double>(x); }
+__forceinline__ __host__ __device__ __cudart_builtin__ int signbit(long double x) { return signbit<long double>(x);}
+
+__forceinline__ __host__ __device__ __cudart_builtin__ int isfinite(float x) { return isfinite<float>(x); }
+__forceinline__ __host__ __device__ __cudart_builtin__ int isfinite(double x) { return isfinite<double>(x); }
+__forceinline__ __host__ __device__ __cudart_builtin__ int isfinite(long double x) { return isfinite<long double>(x); }
+
+__forceinline__ __host__ __device__ __cudart_builtin__ int isnan(float x) { return isnan<float>(x); }
+/* int isnan(double) provided by math.h */
+__forceinline__ __host__ __device__ __cudart_builtin__ int isnan(long double x) { return isnan<long double>(x); }
+
+__forceinline__ __host__ __device__ __cudart_builtin__ int isinf(float x) { return isinf<float>(x); }
+/* int isinf(double) provided by math.h */
+__forceinline__ __host__ __device__ __cudart_builtin__ int isinf(long double x) { return isinf<long double>(x); }
+#endif  /* defined(__CUDA_ARCH__) */
+
 #else /* !(__QNX__ || __HORIZON__) */
 __forceinline__ __host__ __device__ __cudart_builtin__ int signbit(float x) { return __signbitf(x); }
 #if defined(__ICC)
@@ -347,7 +382,7 @@ __forceinline__ __host__ __device__ __cudart_builtin__ int isinf(long double x) 
 #endif /* __APPLE__ */
 
 #if defined(__arm__) && !defined(_STLPORT_VERSION) && !_GLIBCXX_USE_C99
-#if !defined(__ANDROID__) || __GNUC__ < 4 || (__GNUC__ == 4 && __GNUC_MINOR__ < 8)
+#if !defined(__ANDROID__) || (!defined(_LIBCPP_VERSION) && (__GNUC__ < 4 || (__GNUC__ == 4 && __GNUC_MINOR__ < 8)))
 
 #if !defined(__QNX__) && !defined(__HORIZON__)
 static __inline__ __host__ __device__ __cudart_builtin__ long long int abs(long long int a)
@@ -356,7 +391,7 @@ static __inline__ __host__ __device__ __cudart_builtin__ long long int abs(long 
 }
 #endif /* !__QNX__ && !__HORIZON__*/
 
-#endif /* !__ANDROID__ || __GNUC__ < 4 || (__GNUC__ == 4 && __GNUC_MINOR__ < 8) */
+#endif /* !defined(__ANDROID__) || (!defined(_LIBCPP_VERSION) && (__GNUC__ < 4 || (__GNUC__ == 4 && __GNUC_MINOR__ < 8))) */
 #endif /* __arm__ && !_STLPORT_VERSION && !_GLIBCXX_USE_C99 */
 
 #elif defined(_WIN32)
@@ -1164,14 +1199,9 @@ __HELPER_FUNC_LINKAGE unsigned long long int ullmax(unsigned long long int a,
 
 __func__(int __isnan(double a))
 {
-  volatile union {
-    double                 d;
-    unsigned long long int l;
-  } cvt;
-
-  cvt.d = a;
-
-  return cvt.l << 1 > 0xffe0000000000000ull;
+  unsigned long long int l;
+  memcpy(&l, &a, sizeof(double));
+  return l << 1 > 0xffe0000000000000ull;
 }
 
 #endif /* _WIN32 || __APPLE__ || __ANDROID__ || __QNX__ */
@@ -1211,14 +1241,9 @@ __func__(void sincosf(float a, float *sptr, float *cptr))
 
 __func__(int __isinf(double a))
 {
-  volatile union {
-    double                 d;
-    unsigned long long int l;
-  } cvt;
-
-  cvt.d = a;
-
-  return cvt.l << 1 == 0xffe0000000000000ull;
+  unsigned long long int l;
+  memcpy(&l, &a, sizeof(double));
+  return l << 1 == 0xffe0000000000000ull;
 }
 
 #endif /* _WIN32 || __APPLE__ */
@@ -1244,39 +1269,28 @@ __func__(double log2(double a))
 
 __func__(int __signbit(double a))
 {
-  volatile union {
-    double               d;
-    signed long long int l;
-  } cvt;
-
-  cvt.d = a;
-  return cvt.l < 0ll;
+  signed long long int l;
+  memcpy(&l, &a, sizeof(double));
+  return l < 0ll;
 }
 
 #if (!defined(_MSC_VER) || _MSC_VER < 1800)
 __func__(double copysign(double a, double b))
 {
-  volatile union {
-    double                 d;
-    unsigned long long int l;
-  } cvta, cvtb;
-
-  cvta.d = a;
-  cvtb.d = b;
-  cvta.l = (cvta.l & 0x7fffffffffffffffULL) | (cvtb.l & 0x8000000000000000ULL);
-  return cvta.d;
+  unsigned long long int la, lb;
+  memcpy(&la, &a, sizeof(double));
+  memcpy(&lb, &b, sizeof(double));
+  la = (la & 0x7fffffffffffffffULL) | (lb & 0x8000000000000000ULL);
+  memcpy(&a, &la, sizeof(double));
+  return a;
 }
 #endif /* MSC_VER < 1800 */
 
 __func__(int __finite(double a))
 {
-  volatile union {
-    double                 d;
-    unsigned long long int l;
-  } cvt;
-
-  cvt.d = a;
-  return cvt.l << 1 < 0xffe0000000000000ull;
+  unsigned long long int l;
+  memcpy(&l, &a, sizeof(double));
+  return l << 1 < 0xffe0000000000000ull;
 }
 
 #if (!defined(_MSC_VER) || _MSC_VER < 1800)
@@ -1501,17 +1515,13 @@ __func__(double atanh(double a))
 
 __func__(int ilogb(double a))
 {
-  volatile union {
-    double                 d;
-    unsigned long long int l;
-  } x;
   unsigned long long int i;
   int expo = -1022;
 
   if (__isnan(a)) return -__cuda_INT_MAX-1;
   if (__isinf(a)) return __cuda_INT_MAX;
-  x.d = a;
-  i = x.l & 0x7fffffffffffffffull;
+  memcpy(&i, &a, sizeof(double));
+  i = i & 0x7fffffffffffffffull;
   if (i == 0) return -__cuda_INT_MAX-1;
   if (i >= 0x0010000000000000ull) {
     return (int)(((i >> 52) & 0x7ff) - 1023);
@@ -1525,17 +1535,13 @@ __func__(int ilogb(double a))
 
 __func__(double logb(double a))
 {
-  volatile union {
-    double                 d;
-    unsigned long long int l;
-  } x;
   unsigned long long int i;
   int expo = -1022;
 
   if (__isnan(a)) return a + a;
   if (__isinf(a)) return fabs(a);
-  x.d = a;
-  i = x.l & 0x7fffffffffffffffull;
+  memcpy(&i, &a, sizeof(double));
+  i = i & 0x7fffffffffffffffull;
   if (i == 0) return -1.0/fabs(a);
   if (i >= 0x0010000000000000ull) {
     return (double)((int)((i >> 52) & 0x7ff) - 1023);
@@ -1549,10 +1555,7 @@ __func__(double logb(double a))
 
 __func__(double remquo(double a, double b, int *quo))
 {
-  volatile union {
-    double                 d;
-    unsigned long long int l;
-  } cvt;
+  unsigned long long int aa, bb;
   int rem1 = 1; /* do FPREM1, a.k.a IEEE remainder */
   int expo_a;
   int expo_b;
@@ -1569,15 +1572,15 @@ __func__(double remquo(double a, double b, int *quo))
   int l;
   int iter;
 
-  cvt.d = a;
-  mant_a = (cvt.l << 11) | 0x8000000000000000ULL;
-  expo_a = (int)((cvt.l >> 52) & 0x7ff) - 1023;
-  sign_a = (int)(cvt.l >> 63);
+  memcpy(&aa, &a, sizeof(double));
+  mant_a = (aa << 11) | 0x8000000000000000ULL;
+  expo_a = (int)((aa >> 52) & 0x7ff) - 1023;
+  sign_a = (int)(aa >> 63);
 
-  cvt.d = b;
-  mant_b = (cvt.l << 11) | 0x8000000000000000ULL;
-  expo_b = (int)((cvt.l >> 52) & 0x7ff) - 1023;
-  sign_b = (int)(cvt.l >> 63);
+  memcpy(&bb, &b, sizeof(double));
+  mant_b = (bb << 11) | 0x8000000000000000ULL;
+  expo_b = (int)((bb >> 52) & 0x7ff) - 1023;
+  sign_b = (int)(bb >> 63);
 
   sign_c = sign_a;  /* remainder has sign of dividend */
   expo_c = expo_a;  /* default */
@@ -1589,8 +1592,9 @@ __func__(double remquo(double a, double b, int *quo))
   }
   if (__isinf(a) || (b == 0.0)) {
     *quo = quot;
-    cvt.l = 0xfff8000000000000ULL;
-    return cvt.d;
+    aa = 0xfff8000000000000ULL;
+    memcpy(&a, &aa, sizeof(double));
+    return a;
   }
   if ((a == 0.0) || (__isinf(b))) {
     *quo = quot;
@@ -1643,8 +1647,9 @@ __func__(double remquo(double a, double b, int *quo))
   if (mant_c == 0) {
     quot = quot & 7;
     *quo = (sign_a ^ sign_b) ? -quot : quot;
-    cvt.l = (unsigned long long int)sign_c << 63;
-    return cvt.d;
+    aa = (unsigned long long int)sign_c << 63;
+    memcpy(&a, &aa, sizeof(double));
+    return a;
   }
   /* Normalize result */
   while (!(mant_c & 0x8000000000000000ULL)) {
@@ -1686,8 +1691,8 @@ __func__(double remquo(double a, double b, int *quo))
   }
   quot = quot & 7; /* mask quotient down to least significant three bits */
   *quo = (sign_a ^ sign_b) ? -quot : quot;
-  cvt.l = mant_c;
-  return cvt.d;
+  memcpy(&a, &mant_c, sizeof(double));
+  return a;
 }
 
 __func__(double remainder(double a, double b))
@@ -1698,27 +1703,25 @@ __func__(double remainder(double a, double b))
 
 __func__(double fma (double a, double b, double c))
 {
-  volatile union {
-    struct {
-      unsigned int lo;
-      unsigned int hi;
-    } part;
-    double d;
+  struct {
+    unsigned int lo;
+    unsigned int hi;
   } xx, yy, zz, ww;
+  double d;
   unsigned int s, t, u, prod0, prod1, prod2, prod3, expo_x, expo_y, expo_z;
-  
-  xx.d = a;
-  yy.d = b;
-  zz.d = c;
+
+  memcpy(&xx, &a, sizeof(double));
+  memcpy(&yy, &b, sizeof(double));
+  memcpy(&zz, &c, sizeof(double));
 
   expo_z = 0x7FF;
-  t =  xx.part.hi >> 20;
+  t =  xx.hi >> 20;
   expo_x = expo_z & t;
   expo_x = expo_x - 1;    /* expo(x) - 1 */
-  t =  yy.part.hi >> 20;
+  t =  yy.hi >> 20;
   expo_y = expo_z & t;
   expo_y = expo_y - 1;    /* expo(y) - 1 */
-  t =  zz.part.hi >> 20;
+  t =  zz.hi >> 20;
   expo_z = expo_z & t;
   expo_z = expo_z - 1;    /* expo(z) - 1 */
 
@@ -1730,17 +1733,20 @@ __func__(double fma (double a, double b, double c))
        fma (x, nan, z) --> nan
        fma (x, y, nan) --> nan 
     */
-    if (((yy.part.hi << 1) | (yy.part.lo != 0)) > 0xffe00000) {
-      yy.part.hi |= 0x00080000;
-      return yy.d;
+    if (((yy.hi << 1) | (yy.lo != 0)) > 0xffe00000) {
+      yy.hi |= 0x00080000;
+      memcpy(&d, &yy, sizeof(double));
+      return d;
     }
-    if (((zz.part.hi << 1) | (zz.part.lo != 0)) > 0xffe00000) {
-      zz.part.hi |= 0x00080000;
-      return zz.d;
+    if (((zz.hi << 1) | (zz.lo != 0)) > 0xffe00000) {
+      zz.hi |= 0x00080000;
+      memcpy(&d, &zz, sizeof(double));
+      return d;
     }
-    if (((xx.part.hi << 1) | (xx.part.lo != 0)) > 0xffe00000) {
-      xx.part.hi |= 0x00080000;
-      return xx.d;
+    if (((xx.hi << 1) | (xx.lo != 0)) > 0xffe00000) {
+      xx.hi |= 0x00080000;
+      memcpy(&d, &xx, sizeof(double));
+      return d;
     }
     
     /* fma (0, inf, z) --> INDEFINITE
@@ -1754,21 +1760,23 @@ __func__(double fma (double a, double b, double c))
        fma (+inf,+y,-inf) --> INDEFINITE
        fma (+x,+inf,-inf) --> INDEFINITE
     */
-    if (((((xx.part.hi << 1) | xx.part.lo) == 0) && 
-         (((yy.part.hi << 1) | (yy.part.lo != 0)) == 0xffe00000)) ||
-        ((((yy.part.hi << 1) | yy.part.lo) == 0) && 
-         (((xx.part.hi << 1) | (xx.part.lo != 0)) == 0xffe00000))) {
-      xx.part.hi = 0xfff80000;
-      xx.part.lo = 0x00000000;
-      return xx.d;
+    if (((((xx.hi << 1) | xx.lo) == 0) && 
+         (((yy.hi << 1) | (yy.lo != 0)) == 0xffe00000)) ||
+        ((((yy.hi << 1) | yy.lo) == 0) && 
+         (((xx.hi << 1) | (xx.lo != 0)) == 0xffe00000))) {
+      xx.hi = 0xfff80000;
+      xx.lo = 0x00000000;
+      memcpy(&d, &xx, sizeof(double));
+      return d;
     }
-    if (((zz.part.hi << 1) | (zz.part.lo != 0)) == 0xffe00000) {
-      if ((((yy.part.hi << 1) | (yy.part.lo != 0)) == 0xffe00000) ||
-          (((xx.part.hi << 1) | (xx.part.lo != 0)) == 0xffe00000)) {
-        if ((int)(xx.part.hi ^ yy.part.hi ^ zz.part.hi) < 0) {
-          xx.part.hi = 0xfff80000;
-          xx.part.lo = 0x00000000;
-          return xx.d;
+    if (((zz.hi << 1) | (zz.lo != 0)) == 0xffe00000) {
+      if ((((yy.hi << 1) | (yy.lo != 0)) == 0xffe00000) ||
+          (((xx.hi << 1) | (xx.lo != 0)) == 0xffe00000)) {
+        if ((int)(xx.hi ^ yy.hi ^ zz.hi) < 0) {
+          xx.hi = 0xfff80000;
+          xx.lo = 0x00000000;
+          memcpy(&d, &xx, sizeof(double));
+          return d;
         }
       }
     }
@@ -1776,198 +1784,204 @@ __func__(double fma (double a, double b, double c))
        fma (x, inf, z) --> inf
        fma (x, y, inf) --> inf
     */
-    if (((xx.part.hi << 1) | (xx.part.lo != 0)) == 0xffe00000) {
-      xx.part.hi = xx.part.hi ^ (yy.part.hi & 0x80000000);
-      return xx.d;
+    if (((xx.hi << 1) | (xx.lo != 0)) == 0xffe00000) {
+      xx.hi = xx.hi ^ (yy.hi & 0x80000000);
+      memcpy(&d, &xx, sizeof(double));
+      return d;
     }
-    if (((yy.part.hi << 1) | (yy.part.lo != 0)) == 0xffe00000) {
-      yy.part.hi = yy.part.hi ^ (xx.part.hi & 0x80000000);
-      return yy.d;
+    if (((yy.hi << 1) | (yy.lo != 0)) == 0xffe00000) {
+      yy.hi = yy.hi ^ (xx.hi & 0x80000000);
+      memcpy(&d, &yy, sizeof(double));
+      return d;
     }
-    if (((zz.part.hi << 1) | (zz.part.lo != 0)) == 0xffe00000) {
-      return zz.d;
+    if (((zz.hi << 1) | (zz.lo != 0)) == 0xffe00000) {
+      memcpy(&d, &zz, sizeof(double));
+      return d;
     }
     /* fma (+0, -y, -0) --> -0
        fma (-0, +y, -0) --> -0
        fma (+x, -0, -0) --> -0
        fma (-x, +0, -0) --> -0
     */
-    if ((zz.part.hi == 0x80000000) && (zz.part.lo == 0)) {
-      if ((((xx.part.hi << 1) | xx.part.lo) == 0) ||
-          (((yy.part.hi << 1) | yy.part.lo) == 0)) {
-        if ((int)(xx.part.hi ^ yy.part.hi) < 0) {
-          return zz.d;
+    if ((zz.hi == 0x80000000) && (zz.lo == 0)) {
+      if ((((xx.hi << 1) | xx.lo) == 0) ||
+          (((yy.hi << 1) | yy.lo) == 0)) {
+        if ((int)(xx.hi ^ yy.hi) < 0) {
+          memcpy(&d, &zz, sizeof(double));
+          return d;
         }
       }
     }
     /* fma (0, y, 0) --> +0  (-0 if round down and signs of addend differ)
        fma (x, 0, 0) --> +0  (-0 if round down and signs of addend differ)
     */
-    if ((((zz.part.hi << 1) | zz.part.lo) == 0) &&
-        ((((xx.part.hi << 1) | xx.part.lo) == 0) ||
-         (((yy.part.hi << 1) | yy.part.lo) == 0))) {
-      zz.part.hi &= 0x7fffffff;
-      return zz.d;
+    if ((((zz.hi << 1) | zz.lo) == 0) &&
+        ((((xx.hi << 1) | xx.lo) == 0) ||
+         (((yy.hi << 1) | yy.lo) == 0))) {
+      zz.hi &= 0x7fffffff;
+      memcpy(&d, &zz, sizeof(double));
+      return d;
     }
     
     /* fma (0, y, z) --> z
        fma (x, 0, z) --> z
     */
-    if ((((xx.part.hi << 1) | xx.part.lo) == 0) ||
-        (((yy.part.hi << 1) | yy.part.lo) == 0)) {
-      return zz.d;
+    if ((((xx.hi << 1) | xx.lo) == 0) ||
+        (((yy.hi << 1) | yy.lo) == 0)) {
+      memcpy(&d, &zz, sizeof(double));
+      return d;
     }
     
     if (expo_x == 0xffffffff) {
       expo_x++;
-      t = xx.part.hi & 0x80000000;
-      s = xx.part.lo >> 21;
-      xx.part.lo = xx.part.lo << 11;
-      xx.part.hi = xx.part.hi << 11;
-      xx.part.hi = xx.part.hi | s;
-      if (!xx.part.hi) {
-        xx.part.hi = xx.part.lo;
-        xx.part.lo = 0;
+      t = xx.hi & 0x80000000;
+      s = xx.lo >> 21;
+      xx.lo = xx.lo << 11;
+      xx.hi = xx.hi << 11;
+      xx.hi = xx.hi | s;
+      if (!xx.hi) {
+        xx.hi = xx.lo;
+        xx.lo = 0;
         expo_x -= 32;
       }
-      while ((int)xx.part.hi > 0) {
-        s = xx.part.lo >> 31;
-        xx.part.lo = xx.part.lo + xx.part.lo;
-        xx.part.hi = xx.part.hi + xx.part.hi;
-        xx.part.hi = xx.part.hi | s;
+      while ((int)xx.hi > 0) {
+        s = xx.lo >> 31;
+        xx.lo = xx.lo + xx.lo;
+        xx.hi = xx.hi + xx.hi;
+        xx.hi = xx.hi | s;
         expo_x--;
       }
-      xx.part.lo = (xx.part.lo >> 11);
-      xx.part.lo |= (xx.part.hi << 21);
-      xx.part.hi = (xx.part.hi >> 11) | t;
+      xx.lo = (xx.lo >> 11);
+      xx.lo |= (xx.hi << 21);
+      xx.hi = (xx.hi >> 11) | t;
     }
     if (expo_y == 0xffffffff) {
       expo_y++;
-      t = yy.part.hi & 0x80000000;
-      s = yy.part.lo >> 21;
-      yy.part.lo = yy.part.lo << 11;
-      yy.part.hi = yy.part.hi << 11;
-      yy.part.hi = yy.part.hi | s;
-      if (!yy.part.hi) {
-        yy.part.hi = yy.part.lo;
-        yy.part.lo = 0;
+      t = yy.hi & 0x80000000;
+      s = yy.lo >> 21;
+      yy.lo = yy.lo << 11;
+      yy.hi = yy.hi << 11;
+      yy.hi = yy.hi | s;
+      if (!yy.hi) {
+        yy.hi = yy.lo;
+        yy.lo = 0;
         expo_y -= 32;
       }
-      while ((int)yy.part.hi > 0) {
-        s = yy.part.lo >> 31;
-        yy.part.lo = yy.part.lo + yy.part.lo;
-        yy.part.hi = yy.part.hi + yy.part.hi;
-        yy.part.hi = yy.part.hi | s;
+      while ((int)yy.hi > 0) {
+        s = yy.lo >> 31;
+        yy.lo = yy.lo + yy.lo;
+        yy.hi = yy.hi + yy.hi;
+        yy.hi = yy.hi | s;
         expo_y--;
       }
-      yy.part.lo = (yy.part.lo >> 11);
-      yy.part.lo |= (yy.part.hi << 21);
-      yy.part.hi = (yy.part.hi >> 11) | t;
+      yy.lo = (yy.lo >> 11);
+      yy.lo |= (yy.hi << 21);
+      yy.hi = (yy.hi >> 11) | t;
     }
     if (expo_z == 0xffffffff) {
       expo_z++;
-      t = zz.part.hi & 0x80000000;
-      s = zz.part.lo >> 21;
-      zz.part.lo = zz.part.lo << 11;
-      zz.part.hi = zz.part.hi << 11;
-      zz.part.hi = zz.part.hi | s;
-      if (!zz.part.hi) {
-        zz.part.hi = zz.part.lo;
-        zz.part.lo = 0;
+      t = zz.hi & 0x80000000;
+      s = zz.lo >> 21;
+      zz.lo = zz.lo << 11;
+      zz.hi = zz.hi << 11;
+      zz.hi = zz.hi | s;
+      if (!zz.hi) {
+        zz.hi = zz.lo;
+        zz.lo = 0;
         expo_z -= 32;
       }
-      while ((int)zz.part.hi > 0) {
-        s = zz.part.lo >> 31;
-        zz.part.lo = zz.part.lo + zz.part.lo;
-        zz.part.hi = zz.part.hi + zz.part.hi;
-        zz.part.hi = zz.part.hi | s;
+      while ((int)zz.hi > 0) {
+        s = zz.lo >> 31;
+        zz.lo = zz.lo + zz.lo;
+        zz.hi = zz.hi + zz.hi;
+        zz.hi = zz.hi | s;
         expo_z--;
       }
-      zz.part.lo = (zz.part.lo >> 11);
-      zz.part.lo |= (zz.part.hi << 21);
-      zz.part.hi = (zz.part.hi >> 11) | t;
+      zz.lo = (zz.lo >> 11);
+      zz.lo |= (zz.hi << 21);
+      zz.hi = (zz.hi >> 11) | t;
     }
   }
   
   expo_x = expo_x + expo_y;
-  expo_y = xx.part.hi ^ yy.part.hi;
-  t = xx.part.lo >> 21;
-  xx.part.lo = xx.part.lo << 11;
-  xx.part.hi = xx.part.hi << 11;
-  xx.part.hi = xx.part.hi | t;
-  yy.part.hi = yy.part.hi & 0x000fffff;
-  xx.part.hi = xx.part.hi | 0x80000000; /* set mantissa hidden bit */
-  yy.part.hi = yy.part.hi | 0x00100000; /* set mantissa hidden bit */
+  expo_y = xx.hi ^ yy.hi;
+  t = xx.lo >> 21;
+  xx.lo = xx.lo << 11;
+  xx.hi = xx.hi << 11;
+  xx.hi = xx.hi | t;
+  yy.hi = yy.hi & 0x000fffff;
+  xx.hi = xx.hi | 0x80000000; /* set mantissa hidden bit */
+  yy.hi = yy.hi | 0x00100000; /* set mantissa hidden bit */
 
-  prod0 = xx.part.lo * yy.part.lo;
-  prod1 =(unsigned)(((unsigned long long)xx.part.lo*(unsigned long long)yy.part.lo)>>32);
-  prod2 = xx.part.hi * yy.part.lo;
-  prod3 = xx.part.lo * yy.part.hi;
+  prod0 = xx.lo * yy.lo;
+  prod1 =(unsigned)(((unsigned long long)xx.lo*(unsigned long long)yy.lo)>>32);
+  prod2 = xx.hi * yy.lo;
+  prod3 = xx.lo * yy.hi;
   prod1 += prod2;
   t = (unsigned)(prod1 < prod2);
   prod1 += prod3;
   t += prod1 < prod3;
-  prod2 =(unsigned)(((unsigned long long)xx.part.hi*(unsigned long long)yy.part.lo)>>32);
-  prod3 =(unsigned)(((unsigned long long)xx.part.lo*(unsigned long long)yy.part.hi)>>32);
+  prod2 =(unsigned)(((unsigned long long)xx.hi*(unsigned long long)yy.lo)>>32);
+  prod3 =(unsigned)(((unsigned long long)xx.lo*(unsigned long long)yy.hi)>>32);
   prod2 += prod3;
   s = (unsigned)(prod2 < prod3);
-  prod3 = xx.part.hi * yy.part.hi;
+  prod3 = xx.hi * yy.hi;
   prod2 += prod3;
   s += prod2 < prod3;
   prod2 += t;
   s += prod2 < t;
-  prod3 =(unsigned)(((unsigned long long)xx.part.hi*(unsigned long long)yy.part.hi)>>32);
+  prod3 =(unsigned)(((unsigned long long)xx.hi*(unsigned long long)yy.hi)>>32);
   prod3 = prod3 + s;
   
-  yy.part.lo = prod0;                 /* mantissa */
-  yy.part.hi = prod1;                 /* mantissa */
-  xx.part.lo = prod2;                 /* mantissa */
-  xx.part.hi = prod3;                 /* mantissa */
+  yy.lo = prod0;                 /* mantissa */
+  yy.hi = prod1;                 /* mantissa */
+  xx.lo = prod2;                 /* mantissa */
+  xx.hi = prod3;                 /* mantissa */
   expo_x = expo_x - (1023 - 2);  /* expo-1 */
   expo_y = expo_y & 0x80000000;  /* sign */
 
-  if (xx.part.hi < 0x00100000) {
-    s = xx.part.lo >> 31;
-    s = (xx.part.hi << 1) + s;
-    xx.part.hi = s;
-    s = yy.part.hi >> 31;
-    s = (xx.part.lo << 1) + s;
-    xx.part.lo = s;
-    s = yy.part.lo >> 31;
-    s = (yy.part.hi << 1) + s;
-    yy.part.hi = s;
-    s = yy.part.lo << 1;
-    yy.part.lo = s;
+  if (xx.hi < 0x00100000) {
+    s = xx.lo >> 31;
+    s = (xx.hi << 1) + s;
+    xx.hi = s;
+    s = yy.hi >> 31;
+    s = (xx.lo << 1) + s;
+    xx.lo = s;
+    s = yy.lo >> 31;
+    s = (yy.hi << 1) + s;
+    yy.hi = s;
+    s = yy.lo << 1;
+    yy.lo = s;
     expo_x--;
   }
 
   t = 0;
-  if (((zz.part.hi << 1) | zz.part.lo) != 0) { /* z is not zero */
+  if (((zz.hi << 1) | zz.lo) != 0) { /* z is not zero */
     
-    s = zz.part.hi & 0x80000000;
+    s = zz.hi & 0x80000000;
     
-    zz.part.hi &= 0x000fffff;
-    zz.part.hi |= 0x00100000;
-    ww.part.hi = 0;
-    ww.part.lo = 0;
+    zz.hi &= 0x000fffff;
+    zz.hi |= 0x00100000;
+    ww.hi = 0;
+    ww.lo = 0;
     
     /* compare and swap. put augend into xx:yy */
     if ((int)expo_z > (int)expo_x) {
       t = expo_z;
       expo_z = expo_x;
       expo_x = t;
-      t = zz.part.hi;
-      zz.part.hi = xx.part.hi;
-      xx.part.hi = t;
-      t = zz.part.lo;
-      zz.part.lo = xx.part.lo;
-      xx.part.lo = t;
-      t = ww.part.hi;
-      ww.part.hi = yy.part.hi;
-      yy.part.hi = t;
-      t = ww.part.lo;
-      ww.part.lo = yy.part.lo;
-      yy.part.lo = t;
+      t = zz.hi;
+      zz.hi = xx.hi;
+      xx.hi = t;
+      t = zz.lo;
+      zz.lo = xx.lo;
+      xx.lo = t;
+      t = ww.hi;
+      ww.hi = yy.hi;
+      yy.hi = t;
+      t = ww.lo;
+      ww.lo = yy.lo;
+      yy.lo = t;
       t = expo_y;
       expo_y = s;
       s = t;
@@ -1981,63 +1995,64 @@ __func__(double fma (double a, double b, double c))
       /* denormalize addend */
       t = 0;
       while (expo_z >= 32) {
-        t     = ww.part.lo | (t != 0);
-        ww.part.lo = ww.part.hi;
-        ww.part.hi = zz.part.lo;
-        zz.part.lo = zz.part.hi;
-        zz.part.hi = 0;
+        t     = ww.lo | (t != 0);
+        ww.lo = ww.hi;
+        ww.hi = zz.lo;
+        zz.lo = zz.hi;
+        zz.hi = 0;
         expo_z -= 32;
       }
       if (expo_z) {
-        t     = (t     >> expo_z) | (ww.part.lo << (32 - expo_z)) | 
+        t     = (t     >> expo_z) | (ww.lo << (32 - expo_z)) | 
                 ((t << (32 - expo_z)) != 0);
-        ww.part.lo = (ww.part.lo >> expo_z) | (ww.part.hi << (32 - expo_z));
-        ww.part.hi = (ww.part.hi >> expo_z) | (zz.part.lo << (32 - expo_z));
-        zz.part.lo = (zz.part.lo >> expo_z) | (zz.part.hi << (32 - expo_z));
-        zz.part.hi = (zz.part.hi >> expo_z);
+        ww.lo = (ww.lo >> expo_z) | (ww.hi << (32 - expo_z));
+        ww.hi = (ww.hi >> expo_z) | (zz.lo << (32 - expo_z));
+        zz.lo = (zz.lo >> expo_z) | (zz.hi << (32 - expo_z));
+        zz.hi = (zz.hi >> expo_z);
       }
     } else {
       t = 1;
-      ww.part.lo = 0;
-      ww.part.hi = 0;
-      zz.part.lo = 0;
-      zz.part.hi = 0;
+      ww.lo = 0;
+      ww.hi = 0;
+      zz.lo = 0;
+      zz.hi = 0;
     }
     if ((int)u < 0) {
       /* signs differ, effective subtraction */
       t = (unsigned)(-(int)t);
       s = (unsigned)(t != 0);
-      u = yy.part.lo - s;
-      s = (unsigned)(u > yy.part.lo);
-      yy.part.lo = u - ww.part.lo;
-      s += yy.part.lo > u;
-      u = yy.part.hi - s;
-      s = (unsigned)(u > yy.part.hi);
-      yy.part.hi = u - ww.part.hi;
-      s += yy.part.hi > u;
-      u = xx.part.lo - s;
-      s = (unsigned)(u > xx.part.lo);
-      xx.part.lo = u - zz.part.lo;
-      s += xx.part.lo > u;
-      xx.part.hi = (xx.part.hi - zz.part.hi) - s;
-      if (!(xx.part.hi | xx.part.lo | yy.part.hi | yy.part.lo | t)) {
+      u = yy.lo - s;
+      s = (unsigned)(u > yy.lo);
+      yy.lo = u - ww.lo;
+      s += yy.lo > u;
+      u = yy.hi - s;
+      s = (unsigned)(u > yy.hi);
+      yy.hi = u - ww.hi;
+      s += yy.hi > u;
+      u = xx.lo - s;
+      s = (unsigned)(u > xx.lo);
+      xx.lo = u - zz.lo;
+      s += xx.lo > u;
+      xx.hi = (xx.hi - zz.hi) - s;
+      if (!(xx.hi | xx.lo | yy.hi | yy.lo | t)) {
         /* complete cancelation, return 0 */
-        return xx.d;
+        memcpy(&d, &xx, sizeof(double));
+        return d;
       }
-      if ((int)xx.part.hi < 0) {
+      if ((int)xx.hi < 0) {
         /* Oops, augend had smaller mantissa. Negate mantissa and flip
            sign of result
         */
         t = ~t;
-        yy.part.lo = ~yy.part.lo;
-        yy.part.hi = ~yy.part.hi;
-        xx.part.lo = ~xx.part.lo;
-        xx.part.hi = ~xx.part.hi;
+        yy.lo = ~yy.lo;
+        yy.hi = ~yy.hi;
+        xx.lo = ~xx.lo;
+        xx.hi = ~xx.hi;
         if (++t == 0) {
-          if (++yy.part.lo == 0) {
-            if (++yy.part.hi == 0) {
-              if (++xx.part.lo == 0) {
-              ++xx.part.hi;
+          if (++yy.lo == 0) {
+            if (++yy.hi == 0) {
+              if (++xx.lo == 0) {
+              ++xx.hi;
               }
             }
           }
@@ -2046,95 +2061,93 @@ __func__(double fma (double a, double b, double c))
       }
         
       /* normalize mantissa, if necessary */
-      while (!(xx.part.hi & 0x00100000)) {
-        xx.part.hi = (xx.part.hi << 1) | (xx.part.lo >> 31);
-        xx.part.lo = (xx.part.lo << 1) | (yy.part.hi >> 31);
-        yy.part.hi = (yy.part.hi << 1) | (yy.part.lo >> 31);
-        yy.part.lo = (yy.part.lo << 1);
+      while (!(xx.hi & 0x00100000)) {
+        xx.hi = (xx.hi << 1) | (xx.lo >> 31);
+        xx.lo = (xx.lo << 1) | (yy.hi >> 31);
+        yy.hi = (yy.hi << 1) | (yy.lo >> 31);
+        yy.lo = (yy.lo << 1);
         expo_x--;
       }
     } else {
       /* signs are the same, effective addition */
-      yy.part.lo = yy.part.lo + ww.part.lo;
-      s = (unsigned)(yy.part.lo < ww.part.lo);
-      yy.part.hi = yy.part.hi + s;
-      u = (unsigned)(yy.part.hi < s);
-      yy.part.hi = yy.part.hi + ww.part.hi;
-      u += yy.part.hi < ww.part.hi;
-      xx.part.lo = xx.part.lo + u;
-      s = (unsigned)(xx.part.lo < u);
-      xx.part.lo = xx.part.lo + zz.part.lo;
-      s += xx.part.lo < zz.part.lo;
-      xx.part.hi = xx.part.hi + zz.part.hi + s;
-      if (xx.part.hi & 0x00200000) {
-        t = t | (yy.part.lo << 31);
-        yy.part.lo = (yy.part.lo >> 1) | (yy.part.hi << 31);
-        yy.part.hi = (yy.part.hi >> 1) | (xx.part.lo << 31);
-        xx.part.lo = (xx.part.lo >> 1) | (xx.part.hi << 31);
-        xx.part.hi = ((xx.part.hi & 0x80000000) | (xx.part.hi >> 1)) & ~0x40000000;
+      yy.lo = yy.lo + ww.lo;
+      s = (unsigned)(yy.lo < ww.lo);
+      yy.hi = yy.hi + s;
+      u = (unsigned)(yy.hi < s);
+      yy.hi = yy.hi + ww.hi;
+      u += yy.hi < ww.hi;
+      xx.lo = xx.lo + u;
+      s = (unsigned)(xx.lo < u);
+      xx.lo = xx.lo + zz.lo;
+      s += xx.lo < zz.lo;
+      xx.hi = xx.hi + zz.hi + s;
+      if (xx.hi & 0x00200000) {
+        t = t | (yy.lo << 31);
+        yy.lo = (yy.lo >> 1) | (yy.hi << 31);
+        yy.hi = (yy.hi >> 1) | (xx.lo << 31);
+        xx.lo = (xx.lo >> 1) | (xx.hi << 31);
+        xx.hi = ((xx.hi & 0x80000000) | (xx.hi >> 1)) & ~0x40000000;
         expo_x++;
       }
     }
   }
-  t = yy.part.lo | (t != 0);
-  t = yy.part.hi | (t != 0);
+  t = yy.lo | (t != 0);
+  t = yy.hi | (t != 0);
         
-  xx.part.hi |= expo_y; /* or in sign bit */
+  xx.hi |= expo_y; /* or in sign bit */
   if (expo_x <= 0x7FD) {
     /* normal */
-    xx.part.hi = xx.part.hi & ~0x00100000; /* lop off integer bit */
-    s = xx.part.lo & 1; /* mantissa lsb */
-    u = xx.part.lo;
-    xx.part.lo += (t == 0x80000000) ? s : (t >> 31);
-    xx.part.hi += (u > xx.part.lo);
-    xx.part.hi += ((expo_x + 1) << 20);
-    return xx.d;
+    xx.hi = xx.hi & ~0x00100000; /* lop off integer bit */
+    s = xx.lo & 1; /* mantissa lsb */
+    u = xx.lo;
+    xx.lo += (t == 0x80000000) ? s : (t >> 31);
+    xx.hi += (u > xx.lo);
+    xx.hi += ((expo_x + 1) << 20);
+    memcpy(&d, &xx, sizeof(double));
+    return d;
   } else if ((int)expo_x >= 2046) {      
     /* overflow */
-    xx.part.hi = (xx.part.hi & 0x80000000) | 0x7ff00000;
-    xx.part.lo = 0;
-    return xx.d;
+    xx.hi = (xx.hi & 0x80000000) | 0x7ff00000;
+    xx.lo = 0;
+    memcpy(&d, &xx, sizeof(double));
+    return d;
   }
   /* subnormal */
   expo_x = (unsigned)(-(int)expo_x);
   if (expo_x > 54) {
-    xx.part.hi = xx.part.hi & 0x80000000;
-    xx.part.lo = 0;
-    return xx.d;
+    xx.hi = xx.hi & 0x80000000;
+    xx.lo = 0;
+    memcpy(&d, &xx, sizeof(double));
+    return d;
   }  
-  yy.part.hi = xx.part.hi &  0x80000000;   /* save sign bit */
-  xx.part.hi = xx.part.hi & ~0xffe00000;
+  yy.hi = xx.hi &  0x80000000;   /* save sign bit */
+  xx.hi = xx.hi & ~0xffe00000;
   if (expo_x >= 32) {
-    t = xx.part.lo | (t != 0);
-    xx.part.lo = xx.part.hi;
-    xx.part.hi = 0;
+    t = xx.lo | (t != 0);
+    xx.lo = xx.hi;
+    xx.hi = 0;
     expo_x -= 32;
   }
   if (expo_x) {
-    t     = (t     >> expo_x) | (xx.part.lo << (32 - expo_x)) | (t != 0);
-    xx.part.lo = (xx.part.lo >> expo_x) | (xx.part.hi << (32 - expo_x));
-    xx.part.hi = (xx.part.hi >> expo_x);
+    t     = (t     >> expo_x) | (xx.lo << (32 - expo_x)) | (t != 0);
+    xx.lo = (xx.lo >> expo_x) | (xx.hi << (32 - expo_x));
+    xx.hi = (xx.hi >> expo_x);
   }
-  expo_x = xx.part.lo & 1; 
-  u = xx.part.lo;
-  xx.part.lo += (t == 0x80000000) ? expo_x : (t >> 31);
-  xx.part.hi += (u > xx.part.lo);
-  xx.part.hi |= yy.part.hi;
-  return xx.d;
+  expo_x = xx.lo & 1; 
+  u = xx.lo;
+  xx.lo += (t == 0x80000000) ? expo_x : (t >> 31);
+  xx.hi += (u > xx.lo);
+  xx.hi |= yy.hi;
+  memcpy(&d, &xx, sizeof(double));
+  return d;
 }
 
 __func__(double nextafter(double a, double b))
 {
-  volatile union {
-    double d;
-    unsigned long long int l;
-  } cvt;
   unsigned long long int ia;
   unsigned long long int ib;
-  cvt.d = a;
-  ia = cvt.l;
-  cvt.d = b;
-  ib = cvt.l;
+  memcpy(&ia, &a, sizeof(double));
+  memcpy(&ib, &b, sizeof(double));
   if (__isnan(a) || __isnan(b)) return a + b; /* NaN */
   if (((ia | ib) << 1) == 0ULL) return b;
   if (a == 0.0) {
@@ -2144,8 +2157,8 @@ __func__(double nextafter(double a, double b))
   if ((a < b) && (a > 0.0)) ia++;
   if ((a > b) && (a < 0.0)) ia++;
   if ((a > b) && (a > 0.0)) ia--;
-  cvt.l = ia;
-  return cvt.d;
+  memcpy(&a, &ia, sizeof(double));
+  return a;
 }
 
 __func__(double erf(double a))
@@ -2480,13 +2493,11 @@ __func__(unsigned long long int __internal_host_nan_kernel(const char *s))
 
 __func__(double nan(const char *tagp))
 {
-  volatile union {
-    unsigned long long l;
-    double d;
-  } cvt;
-
-  cvt.l = __internal_host_nan_kernel(tagp);
-  return cvt.d;
+  unsigned long long l;
+  double d;
+  l = __internal_host_nan_kernel(tagp);
+  memcpy(&d, &l, sizeof(double));
+  return d;
 }
 
 __func__(double __host_tgamma_kernel(double a))
@@ -2840,29 +2851,20 @@ __func__(float remainderf(float a, float b))
 #if (!defined(_MSC_VER) || _MSC_VER < 1800)
 __func__(float copysignf(float a, float b))
 {
-  volatile union {
-    float f;
-    unsigned int i;
-  } aa, bb;
-
-  aa.f = a;
-  bb.f = b;
-  aa.i = (aa.i & ~0x80000000) | (bb.i & 0x80000000);
-  return aa.f;
+  unsigned int aa, bb;
+  memcpy(&aa, &a, sizeof(float));
+  memcpy(&bb, &b, sizeof(float));
+  aa = (aa & ~0x80000000) | (bb & 0x80000000);
+  memcpy(&a, &aa, sizeof(float));
+  return a;
 }
 
 __func__(float nextafterf(float a, float b))
 {
-  volatile union {
-    float f;
-    unsigned int i;
-  } cvt;
   unsigned int ia;
   unsigned int ib;
-  cvt.f = a;
-  ia = cvt.i;
-  cvt.f = b;
-  ib = cvt.i;
+  memcpy(&ia, &a, sizeof(float));
+  memcpy(&ib, &b, sizeof(float));
   if (__isnanf(a) || __isnanf(b)) return a + b; /*NaN*/
   if (((ia | ib) << 1) == 0) return b;
   if (a == 0.0f) {
@@ -2872,20 +2874,18 @@ __func__(float nextafterf(float a, float b))
   if ((a < b) && (a > 0.0f)) ia++;
   if ((a > b) && (a < 0.0f)) ia++;
   if ((a > b) && (a > 0.0f)) ia--;
-  cvt.i = ia;
-  return cvt.f;
+  memcpy(&a, &ia, sizeof(float));
+  return a;
 }
 
 __func__(float nanf(const char *tagp))
 {
-  volatile union {
-    float f;
-    unsigned int i;
-  } cvt;
-  
-  cvt.i = (unsigned int)__internal_host_nan_kernel(tagp);
-  cvt.i = (cvt.i & 0x007fffff) | 0x7fc00000;
-  return cvt.f;
+  float f;
+  unsigned int i;
+  i = (unsigned int)__internal_host_nan_kernel(tagp);
+  i = (i & 0x007fffff) | 0x7fc00000;
+  memcpy(&f, &i, sizeof(float));
+  return f;
 }
 
 #endif /* (!defined(_MSC_VER) || _MSC_VER < 1800) */
@@ -2992,17 +2992,14 @@ __func__(void sincospi(double a, double *sptr, double *cptr))
 __func__(double erfinv(double a))
 {
   double p, q, t, fa;
-  volatile union {
-    double d;
-    unsigned long long int l;
-  } cvt;
+  unsigned long long int l;
 
   fa = fabs(a);
   if (fa >= 1.0) {
-    cvt.l = 0xfff8000000000000ull;
-    t = cvt.d;                    /* INDEFINITE */
+    l = 0xfff8000000000000ull;
+    memcpy(&t, &l, sizeof(double)); /* INDEFINITE */
     if (fa == 1.0) {
-      t = a * exp(1000.0);        /* Infinity */
+      t = a * exp(1000.0);          /* Infinity */
     }
   } else if (fa >= 0.9375) {
     /* Based on: J.M. Blair, C.A. Edwards, J.H. Johnson: Rational Chebyshev
@@ -3088,17 +3085,14 @@ __func__(double erfinv(double a))
 __func__(double erfcinv(double a))
 {
   double t;
-  volatile union {
-    double d;
-    unsigned long long int l;
-  } cvt;
+  unsigned long long int l;
 
   if (__isnan(a)) {
     return a + a;
   }
   if (a <= 0.0) {
-    cvt.l = 0xfff8000000000000ull;
-    t = cvt.d;                        /* INDEFINITE */
+    l = 0xfff8000000000000ull;
+    memcpy(&t, &l, sizeof(double));   /* INDEFINITE */
     if (a == 0.0) {
         t = (1.0 - a) * exp(1000.0);  /* Infinity */
     }

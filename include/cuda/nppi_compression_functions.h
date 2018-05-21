@@ -898,7 +898,7 @@ NppStatus nppiJpegDecodeJob(const NppiJpegDecodeJob * pJob, const NppiJpegDecode
  * `*pJob.pScan` will be overwritten.
  *
  * If the caller had manually zeroed the memory for DCT buffers,
- * (note: whole \ref nppiJpegDecodeDCTBufferSize has to be zeroed).
+ * (note: whole \ref nppiJpegDecodeGetDCTBufferSize has to be zeroed).
  * this job doesn't have to be executed.
  */
 NppStatus nppiJpegDecodeJobCreateMemzero(NppiJpegDecodeJob * pJob);

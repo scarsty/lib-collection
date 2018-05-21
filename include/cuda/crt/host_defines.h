@@ -51,7 +51,7 @@
 #define __HOST_DEFINES_H__
 
 /* CUDA JIT mode (__CUDACC_RTC__) also uses GNU style attributes */
-#if defined(__GNUC__) || defined(__CUDA_LIBDEVICE__) || defined(__CUDACC_RTC__)
+#if defined(__GNUC__) || (defined(__PGIC__) && defined(__linux__)) || defined(__CUDA_LIBDEVICE__) || defined(__CUDACC_RTC__)
 
 #if defined(__CUDACC_RTC__)
 #define __volatile__ volatile

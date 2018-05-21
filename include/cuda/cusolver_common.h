@@ -60,6 +60,15 @@
 #endif
 #endif
 
+
+#if defined(_MSC_VER)
+typedef __int64 int64_t;
+#else
+#include <inttypes.h>
+#endif
+
+
+
 #if defined(__cplusplus)
 extern "C" {
 #endif /* __cplusplus */

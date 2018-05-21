@@ -150,27 +150,27 @@ public:
     }
 
     _CG_QUALIFIER void sync() const {
-        cg_assert(is_valid());
+        _CG_ASSERT(is_valid());
         __internal::multi_grid::sync(_data.handle);
     }
 
     _CG_QUALIFIER unsigned int size() const {
-        cg_assert(is_valid());
+        _CG_ASSERT(is_valid());
         return (_data.size);
     }
 
     _CG_QUALIFIER unsigned int thread_rank() const {
-        cg_assert(is_valid());
+        _CG_ASSERT(is_valid());
         return (_data.rank);
     }
 
     _CG_QUALIFIER unsigned int grid_rank() const {
-        cg_assert(is_valid());
+        _CG_ASSERT(is_valid());
         return (__internal::multi_grid::grid_rank(_data.handle));
     }
 
     _CG_QUALIFIER unsigned int num_grids() const {
-        cg_assert(is_valid());
+        _CG_ASSERT(is_valid());
         return (__internal::multi_grid::num_grids(_data.handle));
     }
 };
@@ -225,19 +225,25 @@ class grid_group
     }
 
     _CG_QUALIFIER void sync() const {
-        cg_assert(is_valid());
+        _CG_ASSERT(is_valid());
         __internal::grid::sync(_data.handle);
     }
 
     _CG_QUALIFIER unsigned int size() const {
-        cg_assert(is_valid());
+        _CG_ASSERT(is_valid());
         return (_data.size);
     }
 
     _CG_QUALIFIER unsigned int thread_rank() const {
-        cg_assert(is_valid());
+        _CG_ASSERT(is_valid());
         return (_data.rank);
     }
+
+    _CG_QUALIFIER dim3 group_dim() const {
+        _CG_ASSERT(is_valid());
+        return (__internal::grid::grid_dim());
+    }
+
 };
 
 /**
@@ -276,7 +282,7 @@ class thread_block : public thread_group
 
         // Invalid, immediately fail
         if (tilesz == 0 || (tilesz > 32) || !pow2_tilesz) {
-            die();
+            __internal::abort();
             return (thread_block());
         }
 
@@ -312,6 +318,10 @@ class thread_block : public thread_group
 
     _CG_QUALIFIER dim3 thread_index() const {
         return (__internal::cta::thread_index());
+    }
+
+    _CG_QUALIFIER dim3 group_dim() const {
+        return (__internal::cta::block_dim());
     }
 
 };
@@ -362,7 +372,7 @@ class coalesced_group : public thread_group
 
         // Invalid, immediately fail
         if (tilesz == 0 || (tilesz > 32) || !pow2_tilesz) {
-            die();
+            __internal::abort();
             return (coalesced_group(0));
         }
         if (size() <= tilesz) {
@@ -397,7 +407,7 @@ class coalesced_group : public thread_group
         }
         else {
             // None in _CG_VERSION 1000
-            die();
+            __internal::abort();
         }
 
         return (coalesced_group(0));
@@ -581,7 +591,7 @@ class __thread_block_tile_base : public thread_group
         __syncwarp(build_mask());
     }
     _CG_QUALIFIER unsigned int thread_rank() const {
-        return (threadIdx.x & (numThreads - 1));
+        return (__internal::laneid() & (numThreads - 1));
     }
     _CG_QUALIFIER unsigned int size() const {
         return (numThreads);

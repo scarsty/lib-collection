@@ -107,11 +107,11 @@
 
 #if defined(_CG_DEBUG) && (_CG_DEBUG == 1) && !defined(NDEBUG)
 # include <assert.h>
-# define cg_assert(x) assert((x));
-# define die() assert(0);
+# define _CG_ASSERT(x) assert((x));
+# define _CG_ABORT() assert(0);
 #else
-# define cg_assert(x)
-# define die() __trap();
+# define _CG_ASSERT(x)
+# define _CG_ABORT() __trap();
 #endif
 
 _CG_BEGIN_NAMESPACE
@@ -156,6 +156,11 @@ namespace __internal {
                     ((threadIdx.z * blockDim.y * blockDim.x) +
                      (threadIdx.y * blockDim.x) +
                      threadIdx.x));
+        }
+
+        _CG_STATIC_QUALIFIER dim3 grid_dim()
+        {
+            return (dim3(gridDim.x, gridDim.y, gridDim.z));
         }
     };
 
@@ -236,6 +241,11 @@ namespace __internal {
             return (dim3(threadIdx.x, threadIdx.y, threadIdx.z));
         }
 
+        _CG_STATIC_QUALIFIER dim3 block_dim()
+        {
+            return (dim3(blockDim.x, blockDim.y, blockDim.z));
+        }
+
     };
 
     _CG_STATIC_QUALIFIER unsigned int laneid()
@@ -264,6 +274,11 @@ namespace __internal {
         unsigned int lanemask32_lt;
         asm volatile("mov.u32 %0, %%lanemask_lt;" : "=r"(lanemask32_lt));
         return (lanemask32_lt);
+    }
+
+    _CG_STATIC_QUALIFIER void abort()
+    {
+        _CG_ABORT();
     }
 
 }; // !Namespace internal

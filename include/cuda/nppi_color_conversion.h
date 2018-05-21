@@ -605,6 +605,43 @@ NppStatus nppiYUV420ToRGB_8u_P3AC4R(const Npp8u * const pSrc[3], int rSrcStep[3]
 
 /** @} yuv420torgb */
 
+/** @defgroup nv12torgb NV12ToRGB 
+ *  NV12 to RGB color conversion.
+ *
+ * @{
+ *
+ */
+
+/**
+ *  2 channel 8-bit unsigned planar NV12 to 3 channel 8-bit
+ *  unsigned packed RGB color conversion.
+ *
+ * \param pSrc \ref source_planar_image_pointer_array (one for Y
+ *  	  plane, one for UV plane).
+ * \param rSrcStep \ref source_planar_image_line_step_array.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus nppiNV12ToRGB_8u_P2C3R(const Npp8u * const pSrc[2], int rSrcStep, Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
+
+/**
+ *  2 channel 8-bit unsigned planar NV12 to 3 channel 8-bit
+ *  unsigned packed RGB 709 HDTV full color conversion.
+ *
+ * \param pSrc \ref source_planar_image_pointer_array (one for Y
+ *  	  plane, one for UV plane).
+ * \param rSrcStep \ref source_planar_image_line_step_array.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus nppiNV12ToRGB_709HDTV_8u_P2C3R(const Npp8u * const pSrc[2], int rSrcStep, Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
+
+/** @} nv12torgb */
+
 /** @defgroup nv21torgb NV21ToRGB 
  *  NV21 to RGB color conversion.
  *
@@ -680,6 +717,43 @@ NppStatus nppiYUV420ToBGR_8u_P3C3R(const Npp8u * const pSrc[3], int rSrcStep[3],
 NppStatus nppiYUV420ToBGR_8u_P3C4R(const Npp8u * const pSrc[3], int rSrcStep[3], Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
 
 /** @} yuv420tobgr */
+
+/** @defgroup nv12tobgr NV12ToBGR 
+ *  NV12 to BGR color conversion.
+ *
+ * @{
+ *
+ */
+
+/**
+ *  2 channel 8-bit unsigned planar NV12 to 3 channel 8-bit
+ *  unsigned packed BGR color conversion.
+ *
+ * \param pSrc \ref source_planar_image_pointer_array (one for Y
+ *  	  plane, one for UV plane).
+ * \param rSrcStep \ref source_planar_image_line_step_array.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus nppiNV12ToBGR_8u_P2C3R(const Npp8u * const pSrc[2], int rSrcStep, Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
+
+/**
+ *  2 channel 8-bit unsigned planar NV12 to 3 channel 8-bit
+ *  unsigned packed BGR 709 HDTV full color conversion.
+ *
+ * \param pSrc \ref source_planar_image_pointer_array (one for Y
+ *  	  plane, one for UV plane).
+ * \param rSrcStep \ref source_planar_image_line_step_array.
+ * \param pDst \ref destination_image_pointer.
+ * \param nDstStep \ref destination_image_line_step.
+ * \param oSizeROI \ref roi_specification.
+ * \return \ref image_data_error_codes, \ref roi_error_codes
+ */
+NppStatus nppiNV12ToBGR_709HDTV_8u_P2C3R(const Npp8u * const pSrc[2], int rSrcStep, Npp8u * pDst, int nDstStep, NppiSize oSizeROI);
+
+/** @} nv12tobgr */
 
 /** @defgroup nv21tobgr NV21ToBGR 
  *  NV21 to BGR color conversion.
