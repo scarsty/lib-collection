@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2006 Evgeniy Stepanov <eugeni.stepanov@gmail.com>
+ * Copyright (C) 2011 Grigori Goronzy <greg@chown.ath.cx>
  *
  * This file is part of libass.
  *
@@ -27,6 +28,21 @@
 #define HALIGN_LEFT 1
 #define HALIGN_CENTER 2
 #define HALIGN_RIGHT 3
+#define ASS_JUSTIFY_AUTO 0
+#define ASS_JUSTIFY_LEFT 1
+#define ASS_JUSTIFY_CENTER 2
+#define ASS_JUSTIFY_RIGHT 3
+
+#define FONT_WEIGHT_LIGHT  300
+#define FONT_WEIGHT_MEDIUM 400
+#define FONT_WEIGHT_BOLD   700
+#define FONT_SLANT_NONE    0
+#define FONT_SLANT_ITALIC  100
+#define FONT_SLANT_OBLIQUE 110
+#define FONT_WIDTH_CONDENSED 75
+#define FONT_WIDTH_NORMAL    100
+#define FONT_WIDTH_EXPANDED  125
+
 
 /* Opaque objects internally used by libass.  Contents are private. */
 typedef struct ass_renderer ASS_Renderer;
@@ -61,7 +77,9 @@ typedef struct ass_style {
     int Encoding;
     int treat_fontname_as_pattern;
     double Blur;
+    int Justify;
 } ASS_Style;
+
 
 /*
  * ASS_Event corresponds to a single Dialogue line;
