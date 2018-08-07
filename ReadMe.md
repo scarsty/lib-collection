@@ -15,6 +15,7 @@ A collection of some useful libraries (head files and import lib), which can be 
   - avcodec
   - avformat
   - swresample
+  - swscale
 - minizip
 - lua
 - BASS: an audio library (<http://www.un4seen.com>)
@@ -24,3 +25,4 @@ A collection of some useful libraries (head files and import lib), which can be 
 - cuda: Nvidia computation library
 - yaml-cpp: A YAML parser (<https://github.com/jbeder/yaml-cpp>)
 - opencc: Open Chinese Convert 開放中文轉換 (<https://github.com/BYVoid/OpenCC>)
+- hanz2piny: <https://github.com/yangyangwithgnu/hanz2piny>
