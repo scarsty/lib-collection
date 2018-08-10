@@ -1,1 +1,11 @@
 *.zip
+*.vs*
+*.obj
+*.log
+*.tlog
+*.pdb
+*.exp
+*.iobj
+*.ipdb
+*Release*
+*Debug*
