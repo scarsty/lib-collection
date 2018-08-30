@@ -27,3 +27,5 @@ A collection of some useful libraries (head files and import lib), which can be 
 - opencc: Open Chinese Convert 開放中文轉換 (<https://github.com/BYVoid/OpenCC>)
 - hanz2piny: <https://github.com/yangyangwithgnu/hanz2piny>
 - Fast C++ CSV Parser: <https://github.com/ben-strasser/fast-cpp-csv-parser>
+- asio
+- PicoSHA2: <https://github.com/okdshin/PicoSHA2>
