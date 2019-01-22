@@ -11,7 +11,6 @@ A collection of some useful libraries (head files and import lib), which can be 
 - ass: render ass subtitles of a media file (<https://github.com/libass/libass>)
 - ffmpeg (<https://www.ffmpeg.org/>)
   - Windows Builds (<https://ffmpeg.zeranoe.com/builds/>)
-- minizip
 - lua (<https://www.lua.org/>)
 - BASS: an audio library (<http://www.un4seen.com>)
   - BASSMIDI

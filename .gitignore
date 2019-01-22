@@ -9,3 +9,5 @@
 *.ipdb
 *Release*
 *Debug*
+*.dll
+*.exe
