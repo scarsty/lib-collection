@@ -22,3 +22,4 @@ A collection of some useful libraries (head files and import lib), which can be 
 - asio
 - PicoSHA2: <https://github.com/okdshin/PicoSHA2>
 - cmdline: <https://github.com/tanakh/cmdline>
+- sqlite: <https://www.sqlite.org/>
