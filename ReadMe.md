@@ -5,8 +5,9 @@ A collection of some useful libraries (head files and import lib), which can be 
 ## Content
 
 - SDL2: a famous game library (<https://www.libsdl.org/>)
-  - SDL2-image
-  - SDL2-ttf
+  - SDL2_image
+  - SDL2_ttf
+  - SDL2_mixer
 - OpenCV: very famous image library (<https://opencv.org/>)
 - ass: render ass subtitles of a media file (<https://github.com/libass/libass>)
 - ffmpeg (<https://www.ffmpeg.org/>)
