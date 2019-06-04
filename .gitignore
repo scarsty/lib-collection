@@ -11,3 +11,4 @@
 *Debug*
 *.dll
 *.exe
+include/cuda10.0/
