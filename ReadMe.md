@@ -10,6 +10,5 @@ Please prefer VCPKG <https://github.com/microsoft/vcpkg>.
 - BASS: an audio library (<http://www.un4seen.com>)
   - BASSMIDI
 - cblas: c interface of BLAS (Basic Linear Algebra Subprograms)
-- opencc: Open Chinese Convert 開放中文轉換 (<https://github.com/BYVoid/OpenCC>)
 - Fast C++ CSV Parser: <https://github.com/ben-strasser/fast-cpp-csv-parser>
 
