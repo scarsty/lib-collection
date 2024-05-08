@@ -44,12 +44,6 @@
 
 #include "opencv2/core/core_c.h"
 #include "opencv2/imgproc/imgproc_c.h"
-#ifdef HAVE_OPENCV_IMGCODECS
-#include "opencv2/imgcodecs/imgcodecs_c.h"
-#endif
-#ifdef HAVE_OPENCV_VIDEOIO
-#include "opencv2/videoio/videoio_c.h"
-#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -239,7 +233,7 @@ CVAPI(void) cvUpdateWindow(const char* window_name);
 #define set_preprocess_func cvSetPreprocessFuncWin32
 #define set_postprocess_func cvSetPostprocessFuncWin32
 
-#if defined WIN32 || defined _WIN32
+#if defined _WIN32
 
 CVAPI(void) cvSetPreprocessFuncWin32_(const void* callback);
 CVAPI(void) cvSetPostprocessFuncWin32_(const void* callback);
